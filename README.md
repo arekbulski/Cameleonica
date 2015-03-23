@@ -1,15 +1,23 @@
   Cameleonica filesystem
 ==========================
 
-It is a managed implementation of a **safe cryptographic steganographic advanced filesystem** with a file/partition backend and Fuse/Gtk frontend. It aims to guarantee confidentiality, integrity, plausible deniability on per-password basis, directories containing different-password entities, weak or strong ACID transaction properties, read-only snapshots of selected directories, instantaneous copying of files. Secure cryptographic schemes will be used, such as AES 256bit, SHA-512, CTR and LRW modes, PMAC, /dev/urandom, Salsa20, RIPEM-D, SHA-3. Internally, extents, copy on write, deniably encrypted pointers will be used.
+Cameleonica is a **safe cryptographic steganographic advanced filesystem.** It aims to guarantee **confidentiality, authenticity, plausible deniability,
+transactions, snapshots and versioning, instantaneous copying, permanent
+deletion, high performance and low delays, compression, and hashing.**
+
+Further design will include a FUSE frontend and Nautilus extension. Secure cryptographic schemes will be used, such as AES 256bit, Salsa20, SHA-512, SHA-3, CTR mode, GCM authenticated encryption, /dev/urandom. Internally, extents, copy on write, deniably encrypted pointers will be used.
 
   Development notice
 ----------------------
 
-Project will remain in EXPERIMENTAL phase for several months. Please be patient, there will be more documentation on planned features posted on the project site. At this point, this projects is just a messy idea in my head.
+Project will remain in EXPERIMENTAL phase for several months. Please be patient, there will be more documentation published as time goes by. So far you can read:
 
-Current C# code (Mono.Fuse) will possibly be discarded and replaced with new Python/Cython code (python-fuse) in the future. The decision to switch to Python has not been made yet.
+- [Mission statement](https://github.com/arekbulski/Cameleonica/blob/master/mission.pdf)
 
-Git rebase may happen during initial days of development.
+Code will be developed in Python/Cython. Documentation is created in LibreOffice and XMind mind mapping tool. 
+Deprecated C# code was put away but kept for reference. It will be removed in the future when real code is more mature.
 
-License is set to MIT Licence, until a more permanent decision be made.
+Git rebase may happen during development.
+
+License is set to MIT Licence, unless there will be a reason to change it.
+
