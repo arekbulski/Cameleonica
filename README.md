@@ -14,7 +14,7 @@ Project will remain in EXPERIMENTAL phase for several months. Only initial ideas
 
 - [Mission statement](https://github.com/arekbulski/Cameleonica/blob/master/mission.pdf) (6 pages)
 
-There is no code yet. Further designs will be written down before anything runnable will be created. 
+There is no code yet. Further designs will be written down before anything runnable is created. 
 
   Development notice
 ----------------------
