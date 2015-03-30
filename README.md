@@ -12,7 +12,7 @@ Further design will include a FUSE frontend and Nautilus extension. Secure crypt
 
 Project will remain in EXPERIMENTAL phase for several months. Only initial ideas have been written down so far. Please be patient, there will be more documentation published with time. You can read:
 
-- [Mission statement](https://github.com/arekbulski/Cameleonica/blob/master/mission.pdf) (6 pages)
+- [Mission statement](https://github.com/arekbulski/Cameleonica/blob/master/documentation/mission.pdf) (6 pages)
 
 There is no code yet. Further designs will be written down before anything runnable is created. 
 
