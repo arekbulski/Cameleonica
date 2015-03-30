@@ -19,8 +19,7 @@ There is no code yet. Further designs will be written down before anything runna
   Development notice
 ----------------------
 
-Code will be developed in Python/Cython. Documentation is created in LibreOffice writer and XMind mind mapping tool. 
-Deprecated C# code was put away but kept for reference. It will be removed in the future when real code is more mature.
+Code will be developed in Python/Cython. Documentation is created in LibreOffice writer and XMind mind mapping tool. Deprecated C# code was put away but kept for reference. It will be removed in the future when real code is more mature. There are also some random notes kept, you can just ignore them.
 
 Git rebase may happen occasionally during development.
 
