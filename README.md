@@ -3,7 +3,7 @@
 
 Cameleonica is a **safe cryptographic steganographic advanced filesystem**. It aims to guarantee confidentiality, authenticity, plausible deniability, transactions, snapshots and versioning, instantaneous copying, permanent deletion, high performance and low delays, compression, and hashing.
 
-Further design will include a FUSE frontend and Nautilus extension. Secure cryptographic schemes will be used such as AES, Salsa20, SHA-2, SHA-3, scrypt, CTR mode, GCM authenticated encryption, /dev/urandom, CryptGenRandom. Internally extents, copy on write, complete inodes, and deniably encrypted pointers will be used.
+Further design will include a FUSE frontend and Nautilus extension. Secure cryptographic schemes will be used such as AES, Salsa20, SHA-2, SHA-3, scrypt, CTR mode, GCM authenticated encryption, /dev/urandom, CryptGenRandom. Internally extents, copy on write, ring buffers of discrete updates, complete inodes, and deniably encrypted pointers will be used.
 
   Project status and roadmap
 ------------------------------
