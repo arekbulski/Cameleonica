@@ -17,9 +17,9 @@ There is no code yet. Further designs will be written down before anything runna
   Development notice
 ----------------------
 
-Code will be developed in Python/Cython. Documentation is created in LibreOffice writer and XMind mind mapping tool. Deprecated C# code was put away but kept for reference. It will be removed in the future when real code is more mature. There are also some random notes kept, you can just ignore them.
+Code will be developed in Python/Cython. Documentation is created in LibreOffice writer and XMind mind mapping tool. User experience design is done in Glade. Referenced documentation is a local copy of published material, good read saved for future need. There are also some random notes, you can just ignore them.
 
-Git rebase may happen occasionally during development.
+Deprecated C# code was put away but kept for reference. It will be removed in the future when real code is more mature. 
 
 License is set to MIT Licence, unless something changes.
 
