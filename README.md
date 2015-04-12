@@ -23,3 +23,12 @@ Referenced documentation is a local copy of published material, a good read save
 
 License is set to MIT Licence, unless something changes.
 
+  How to contribute
+---------------------
+
+Easiest way for you to submit anything is to create a new Issue. GitHub account is all you need for that. No special access to repository is needed.
+
+If you want to just ask a question, feel free to open an Issue as well. I will mark it as such and close it after you are satisfied with answers.
+
+Pull requests and patches are also welcomed if you want to submit some code.
+
