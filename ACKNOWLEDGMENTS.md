@@ -7,3 +7,5 @@ Wallpapers were collected from the internet. Specific authors are unknown. I onl
 
 Contribution recognition image comes from nuxeo.com.
 
+Standards (filesystems) comic comes from xkcd.com.
+
