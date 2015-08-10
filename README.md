@@ -3,7 +3,7 @@
 
 Cameleonica is a **safe cryptographic steganographic advanced filesystem**. It aims to guarantee confidentiality, authenticity, plausible deniability, transactions, snapshots, versioning, instantaneous copying, permanent deletion, high performance, low delays, compression, and hashing.
 
-Further design will include a FUSE frontend and Nautilus extension. A graphical interface will also be provided where a filesystem driver may not be possible to implement (Windows). Secure cryptographic schemes will be used such as AES-GCM and ChaCha20-Poly1305 authenticated encryption, SHA-3 and scrypt, /dev/urandom and CryptGenRandom. Internally extents, complete inodes, copy on write, ring buffers of discrete updates, and deniably encrypted pointers will be used.
+Further design will include a FUSE frontend and Nautilus extension. A graphical interface will also be provided where a filesystem driver may not be possible to implement (Windows). Secure cryptographic schemes will be used such as AES-GCM and ChaCha20-Poly1305 authenticated encryption, Keccak and scrypt, /dev/urandom and CryptGenRandom. Internally extents, complete inodes, copy on write, ring buffers of discrete updates, and deniably encrypted pointers will be used.
 
   Project status and roadmap
 ------------------------------
@@ -17,9 +17,9 @@ There is no code yet. Further designs will be written down before anything runna
   Development notice
 ----------------------
 
-Code will be developed in Python/Cython. Documentation is created in LibreOffice writer and XMind mind mapping tool. User experience design will be done in Glade.
+Code will be developed in Python/Cython or C#/Mono depending on further testing. Documentation is created in LibreOffice writer and XMind mind mapping tool. User experience design will be done in Glade.
 
-Referenced documentation is a local copy of published material, a good read saved for future need. There are also some random notes, you can just ignore them. Deprecated C# code was put away but kept for reference. It will be removed in the future when real code is more mature. 
+Referenced documentation is a local copy of published material, a good read that has some interesting ideas. There are also some random notes, you can just ignore them. Deprecated C# code was put away but kept for reference. It will be removed in the future when real code is more mature. 
 
 License is set to MIT Licence, unless something changes.
 
