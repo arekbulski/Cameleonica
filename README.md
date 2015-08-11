@@ -18,7 +18,7 @@ There is no code yet. Further designs will be written down before anything runna
   Development notice
 ----------------------
 
-Code will be developed in Python/Cython or C#/Mono depending on further testing. Documentation is created in LibreOffice writer and XMind mind mapping tool. User experience design will be done in Glade.
+Code will be developed in Python/Cython or .NET/Mono depending on further testing. Documentation is created in LibreOffice writer and XMind mind mapping tool. User experience design will be done in Glade.
 
 Referenced documentation is a local copy of published material, a good read that has some interesting ideas. There are also some random notes, you can just ignore them. Deprecated C# code was put away but kept for reference. It will be removed in the future when real code is more mature. 
 
