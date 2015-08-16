@@ -11,7 +11,8 @@ Further design will include a FUSE frontend and Nautilus extension. A graphical 
 Project is under heavy work right now. Design documentation is the main focus and it will stay that way for several months. Right now, goals are better defined than the means of achieving them but that will also slowly change over time. I highly recommend reading:
 
 - [Mission statement](documentation/mission.pdf) (7 pages)
-- [Questions and Answers](documentation/responses.pdf) (2 pages)
+- [Questions and Answers](documentation/responses.pdf) (3 pages)
+- [Ideas and Observations](documentation/ideas.pdf) (2 pages)
 
 There is no code yet. Further designs will be written down before anything runnable is created. 
 
