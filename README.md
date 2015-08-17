@@ -3,7 +3,7 @@
 
 Cameleonica is a safe cryptographic steganographic advanced filesystem. It aims to guarantee confidentiality, authenticity, plausible deniability, transactions, snapshots, versioning, instantaneous copying, permanent deletion, high performance, low delays, compression, and hashing.
 
-Further design will include a FUSE frontend and Nautilus extension. A graphical interface will also be provided where a filesystem driver may not be possible to implement (Windows). Secure cryptographic schemes will be used such as AES-GCM and ChaCha20-Poly1305 authenticated encryption, Keccak and scrypt, /dev/urandom and CryptGenRandom. Internally extents, complete inodes, copy on write, ring buffers of discrete updates, and deniably encrypted pointers will be used.
+Further design will include a FUSE frontend and Nautilus extension. A graphical interface will also be provided where a filesystem driver may not be possible to implement (Windows). Secure cryptographic schemes will be used such as AES-GCM and ChaCha20-Poly1305 authenticated encryption, Keccak and scrypt, /dev/urandom and CryptGenRandom. Internally extents, complete inodes, copy on write, ring buffers of discrete updates, and deniably encrypted pointers will be used. Deterministic compilation with Bazel may be used to release binaries. 
 
   Project status and roadmap
 ------------------------------
