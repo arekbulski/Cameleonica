@@ -7,5 +7,6 @@ Wallpapers were collected from the internet. Specific authors are unknown. I onl
 
 Contribution recognition image comes from `nuxeo.com`.
 
-Standards (filesystems) comic comes from `xkcd.com`.
+Standards comic comes from `xkcd.com`.
 
+Sub-basement quote comes from a Wikipedia reference in [TEMPEST](https://en.wikipedia.org/wiki/Tempest_(codename)) article.
