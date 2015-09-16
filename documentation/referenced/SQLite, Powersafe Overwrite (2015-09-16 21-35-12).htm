@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><!--
+ Archive processed by SingleFile 
+ url: https://sqlite.org/psow.html 
+ saved date: Wed Sep 16 2015 21:35:11 GMT+0200 (CEST) 
+--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Powersafe Overwrite</title>
+<style type="text/css">
+body {
+    margin: auto;
+    font-family: Verdana, sans-serif;
+    padding: 8px 1%;
+}
+
+a { color: #044a64 }
+a:visited { color: #734559 }
+
+.logo { position:absolute; margin:3px; }
+.tagline {
+  float:right;
+  text-align:right;
+  font-style:italic;
+  width:300px;
+  margin:12px;
+  margin-top:58px;
+}
+
+.menubar {
+  clear: both;
+  border-radius: 8px;
+  background: #044a64;
+  padding: 0px;
+  margin: 0px;
+  cell-spacing: 0px;
+}    
+.toolbar {
+  text-align: center;
+  line-height: 1.6em;
+  margin: 0;
+  padding: 0px 8px;
+}
+.toolbar a { color: white; text-decoration: none; padding: 6px 12px; }
+.toolbar a:visited { color: white; }
+.toolbar a:hover { color: #044a64; background: white; }
+
+.content    { margin: 5%; }
+.content dt { font-weight:bold; }
+.content dd { margin-bottom: 25px; margin-left:20%; }
+.content ul { padding:0px; padding-left: 15px; margin:0px; }
+
+/* Things for "fancyformat" documents start here. */
+.fancy img+p {font-style:italic}
+.fancy .codeblock i { color: darkblue; }
+.fancy h1,.fancy h2,.fancy h3,.fancy h4 {font-weight:normal;color:#044a64}
+.fancy h2 { margin-left: 10px }
+.fancy h3 { margin-left: 20px }
+.fancy h4 { margin-left: 30px }
+.fancy th {white-space:nowrap;text-align:left;border-bottom:solid 1px #444}
+.fancy th, .fancy td {padding: 0.2em 1ex; vertical-align:top}
+.fancy #toc a        { color: darkblue ; text-decoration: none }
+.fancy .todo         { color: #AA3333 ; font-style : italic }
+.fancy .todo:before  { content: 'TODO:' }
+.fancy p.todo        { border: solid #AA3333 1px; padding: 1ex }
+.fancy img { display:block; }
+.fancy :link:hover, .fancy :visited:hover { background: wheat }
+.fancy p,.fancy ul,.fancy ol,.fancy dl { margin: 1em 5ex }
+.fancy li p { margin: 1em 0 }
+/* End of "fancyformat" specific rules. */
+
+</style>
+  
+<link type="image/x-icon" rel="shortcut icon" href="data:application/octet-stream;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAqKioAJikeABwUFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEyIiIiIiIjEyIiICIAIAIyIiIgIgICIiIiIiAiAgAAIgACICICAiAiIiIgEAAgAiIiIiIiAiIiIiIiICICIiIiIiIiIiICIiIAAiIAACAAAAIAIAIAIAIiIAAgAiAgAiAAAiACICACIAIiIAIAIAIjAAAiAAIgAjEyIiIiIiIjEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"></head>
+<body>
+<div><!-- container div to satisfy validator -->
+
+<a href="https://sqlite.org/index.html">
+<img class="logo" src="data:image/gif;base64,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" alt="SQLite Logo" border="0"></a>
+<div><!-- IE hack to prevent disappearing logo--></div>
+<div class="tagline">Small. Fast. Reliable.<br>Choose any three.</div>
+
+<table width="100%" class="menubar"><tbody><tr>
+  <td width="100%">
+  <div class="toolbar">
+    <a href="https://sqlite.org/about.html">About</a>
+    <a href="https://sqlite.org/sitemap.html">Sitemap</a>
+    <a href="https://sqlite.org/docs.html">Documentation</a>
+    <a href="https://sqlite.org/download.html">Download</a>
+    <a href="https://sqlite.org/copyright.html">License</a>
+    <a href="https://sqlite.org/news.html">News</a>
+    <a href="https://sqlite.org/support.html">Support</a>
+  </div>
+
+</td><td>
+    <div style="padding:0 1em 0px 0;white-space:nowrap">
+    <form name="f" method="GET" action="https://www.sqlite.org/search">
+      <input id="q" name="q" type="text" onfocus="entersearch()" onblur="leavesearch()" style="width:24ex;padding:1px 1ex; border:solid white 1px; font-size:0.9em ; font-style:italic;color:#044a64;" value="Search SQLite Docs...">
+      <input type="submit" value="Go" style="border:solid white 1px;background-color:#044a64;color:white;font-size:0.9em;padding:0 1ex">
+    </form>
+    </div>
+  </td></tr></tbody></table>
+
+<div class="startsearch"></div>
+  
+
+
+
+<h1 align="center">Powersafe Overwrite</h1>
+
+<p>"Powersafe overwrite" is a term used by the SQLite team to describe
+a behavior of some filesystems and disk-controllers related to
+data preservation during a power loss.  Powersafe overwrite
+is a boolean property: either the storage system has it or it does not.
+
+</p><p>We say that a system has the powersafe overwrite property if the following
+statement is true:
+
+</p><blockquote>
+  <b>When an application writes a range of bytes in a file, no
+  bytes outside of that range will change, even if the write occurs
+  just before a crash or power failure.</b>
+</blockquote>
+
+<p>The powersafe overwrite property says nothing about the state of the
+bytes that were written.  Those bytes might contain their old values,
+their new values, random values, or some combination of these.  The powersafe
+overwrite property merely states that writes cannot change bytes outside
+of the range of bytes written.
+
+</p><p>In other words, powersafe overwrite means that there is no "collateral
+damage" when a power loss occurs while writing.  Only those bytes actually
+being written might be damaged.
+
+</p><p>In practical terms, what the powersafe write property means is that when
+the disk controller detects an impending power loss, it finishes writing
+whatever sector it is working on prior to parking the heads.  It means that
+individual sector writes will complete once started, even if
+there is a power loss.
+
+</p><p>Consider what would happen if disk sector writes are interrupted
+by a power loss.  If an application writes two or three bytes in the middle
+of some file, the operating system will implement this by first reading
+the entire sector containing those bytes, making the change to the
+sector in memory, then writing the entire sector back to the disk.  If a power
+loss occurs during the writeback and the sector was not completely written,
+then on the next read after reboot, error correcting codes
+in the sector will probably detect irreparable damage and the disk 
+controller will read out the sector as all zeros or all ones.  Thus
+values will have changed outside of the range of the two or three bytes 
+that were written at the application level - a violation of the powersafe
+overwrite property.
+
+</p><h2>SQLite Assumptions About Powersafe Overwrite</h2>
+
+<p>All versions of SQLite up to and including version 3.7.9 assume that
+the filesystem does <u>not</u> provide powersafe overwrite.  SQLite 
+has traditionally assumed that when any one byte of a file changes, all
+other bytes within the same sector of that byte have the potential of
+being corrupted on a power loss.  When writing, SQLite has made sure
+to journal all bytes in the same sector of any modifications
+and it pads journal files out to the next sector boundary so that
+subsequent appends to that journal cannot damage prior records.
+SQLite understands the sector size to be the value returned by the
+xSectorSize method in the <a href="https://sqlite.org/vfs.html">VFS</a>.  The SQLite team has often referred
+to the value returned by xSectorSize as the "blast radius" of a write,
+since it expresses the range of bytes that might be damaged if a power
+loss occurs during the write.
+The default <a href="https://sqlite.org/vfs.html">VFSes</a> for unix and windows have always returned 512 as 
+the sector size (or blast radius) for all versions of SQLite up to
+and including version 3.7.9.
+
+</p><p>Newer disk drives have begun using 4096 byte sectors however.  Beginning
+with SQLite version 3.7.10, the SQLite development team experimented with 
+changes xSectorSize to report 4096 bytes as the blast radius.
+This had the effect of increasing write overhead on
+many databases.  For a database with a <a href="https://sqlite.org/pragma.html#pragma_page_size">PRAGMA page_size</a> of 1024
+(a very common choice) making a change to a single page in the database
+now requires SQLite to backup three other adjacent pages to the rollback
+journal, whereas formerly it only had to backup the one page that was
+changing.  In <a href="https://sqlite.org/wal.html">WAL mode</a>, each transaction had to be padded out to the
+next 4096-byte boundary in the WAL file, rather than the next 512-byte
+boundary, resulting in thousands of extra bytes being written
+per transaction.
+
+</p><p>The extra write overhead prompted a reexamination of assumptions about
+powersafe overwrite.  With modern disk drives, the capacity has become
+so large and the data density so great that a single sector is very
+small and writing a single sector takes very little time.  We know that
+disk drives can detect an impending power loss and continue
+to operate for some small amount of time on residual energy because those
+drives are able to park their heads before spinning down.  And
+so if an impending power loss is detectable by the disk controller, it
+seems reasonable that the controller will finish writing
+whatever sector it is current working on when the imminent power loss 
+is first detected, prior to parking the heads, as long as doing so
+does not take too long, which it should not with
+small and dense sectors.  Hence it seems reasonable
+to assume powersafe overwrite for modern disks.  Indeed, BerkeleyDB has
+made this assumption for decades, we are told.  Caution is advised
+though. As Roger Binns noted on the SQLite developers mailing list:
+"'poorly written' should be the main assumption about drive firmware."
+
+<a name="tornpage"></a>
+
+</p><h2>Torn Pages</h2>
+
+<p>A torn page occurs when a database page is larger than a disk sector,
+the database page is written to disk, but a power loss occurs prior to
+all sectors of the database page being written.  Then, upon recovery, part of
+the database page will have the old content while some other parts of the
+page will have the new content.  Some database engines assume that 
+page writes are atomic and hence a torn page is an unrecoverable error.
+</p>
+
+<p>SQLite never assumes that database page writes are atomic,
+regardless of the PSOW setting.<sup>(1)</sup>
+And hence SQLite is always able to automatically recover from torn pages
+induced by a crash.  Enabling PSOW does not decrease SQLite's ability
+to recover from a torn page.</p>
+
+<h2>Changes In SQLite Version 3.7.10</h2>
+
+<p>The <a href="https://sqlite.org/vfs.html">VFS</a> for SQLite version 3.7.10 adds a new device characteristic 
+named <a href="https://sqlite.org/c3ref/c_iocap_atomic.html">SQLITE_IOCAP_POWERSAFE_OVERWRITE</a>.  Database files that report this
+characteristic are assumed to reside on storage systems that have the
+powersafe overwrite property.
+The default unix and windows <a href="https://sqlite.org/vfs.html">VFSes</a> now report
+<a href="https://sqlite.org/c3ref/c_iocap_atomic.html">SQLITE_IOCAP_POWERSAFE_OVERWRITE</a> if SQLite is compiled with
+<a href="https://sqlite.org/compile.html#powersafe_overwrite">-DSQLITE_POWERSAFE_OVERWRITE=1</a> or they
+make the legacy assumption that storage does not have the powersafe
+overwrite property if compiled with
+<a href="https://sqlite.org/compile.html#powersafe_overwrite">-DSQLITE_POWERSAFE_OVERWRITE=0</a>.
+For now, the default is for powersafe overwrite to be turned on, though
+we may revisit this in the future and default it off.
+
+</p><p>The powersafe overwrite property for individual databases can be
+specified as the database is opened using the "psow" query parameter
+with a <a href="https://sqlite.org/uri.html">URI filename</a>.  For example, to always assume powersafe
+overwrite for a file (perhaps to ensure maximum write performance), 
+open it as
+
+</p><blockquote>
+   file:somefile.db?psow=1
+</blockquote>
+
+<p>Or to be extra safe with a database and to force SQLite to assume the
+database lacks powersafe overwrite, open it using
+
+</p><blockquote>
+   file:somefile.db?psow=0
+</blockquote>
+
+<p>There is also a new <a href="https://sqlite.org/c3ref/c_fcntl_busyhandler.html#sqlitefcntlpowersafeoverwrite">SQLITE_FCNTL_POWERSAFE_OVERWRITE</a> opcode for
+the <a href="https://sqlite.org/c3ref/file_control.html">sqlite3_file_control()</a> that allows
+an application to query the powersafe overwrite property for a database
+file.
+
+</p><hr>
+<h2>Notes:</h2>
+<ol><li value="1"><p>
+SQLite never assumes atomic page writes <em>in its default configurations</em>.
+But a custom <a href="https://sqlite.org/vfs.html">VFS</a> can set one of the 
+<a href="https://sqlite.org/c3ref/c_iocap_atomic.html">SQLITE_IOCAP_ATOMIC</a> bits in the result of the xDeviceCharacteristic()
+method and then SQLite will assume that page writes are atomic.  The
+application must supply a custom VFS to accomplish this, however, since
+none of the standard VFSes will ever set any of the atomic bits in the
+xDeviceCharacteristics() vector.
+</p></li></ol>
+
+</div></body></html>
