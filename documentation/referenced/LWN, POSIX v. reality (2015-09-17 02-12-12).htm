@@ -1,0 +1,3504 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><!--
+ Archive processed by SingleFile 
+ url: https://lwn.net/Articles/351422/ 
+ saved date: Thu Sep 17 2015 02:12:11 GMT+0200 (CEST) 
+--><head><title>POSIX v. reality: A position on O_PONIES [LWN.net]</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8>
+        <link rel=" icon"="" href="/images/favicon.png" type="image/png">
+        <link rel="alternate" type="application/rss+xml" title="LWN.net headlines" href="http://lwn.net/headlines/newrss">
+<link rel="alternate" type="application/rss+xml" title="Comments posted to this article" href="http://lwn.net/headlines/351422/">
+        <style rel="stylesheet" data-href="https://lwn.net/CSS/lwn">body {color: black;background-color: #ffffff;padding:0px;}h1 {margin:0px 0px 5px 0px;padding:0px;color: black;}h2 {margin:20px 0px 5px 0px;padding:0px;}h3 {margin:0px 0px 5px 0px;padding:0px;}a {text-decoration:none;}a:link { color: Blue;}a:visited {color: DarkBlue;}a:hover {color:Red;}a.name { color: black }a.name:link { color: black }a.name:hover { color: black }TABLE.Page { width: 100% }TD.LeftColumn { background-color: #ffcc99;width: 156px;overflow: hidden;vertical-align: top }TD.MidColumn { background-color: #ffffff;padding: 3px;border-style: none;vertical-align: top;}TD.MCTopBanner { background-color: #ffffff;border-style: none;padding: 0 0 0 4px;}.MCTopBanner CENTER { text-align: left; }TD.RightColumn { border-style: none none none none;border-width: thin;vertical-align: top;text-align: left;border-color: #eeeeee;padding-top: 6em; }DIV.MidColHeader { margin: 0px auto 0px 0px;padding: 0;max-width: 57em; }TABLE.Page TR { vertical-align: top; }TABLE.HeadlineView { }TABLE.HeadlineView TD { vertical-align: top }DIV.PageHeadline { text-align: center;max-width: 75em;margin-top: 1em;margin-bottom: 2em; }DIV.PageHeadline H1 { margin-bottom: 0.2em; }DIV.PageHeadline H2 { margin-top: 0.2em; }P.Cat1HL { background-color: #ffcc99;text-align: center;font-size: 200%;font-weight: bold;padding-top: 3px;padding-bottom: 5px;margin-bottom: 0.2em; }P.Cat2HL { background-color: #ffcc99;font-size: large;font-weight: bold;padding-left: 3px;margin-bottom: 0.3em; }P.Cat3HL { background-color: #ffcc99;font-weight: bold;padding-left: 3px;margin-bottom: 0.3em; }P.SummaryHL { font-weight: bold;font-size: larger;text-decoration: underline;margin-top: 0.4em;margin-bottom: 0.4em; }H2.SummaryHL { font-weight: bold;font-size: larger;text-decoration: underline;margin-top: 0.4em;margin-bottom: 0.4em; }P.SummaryHL A:link { color: black }P.SummaryHL A:visited { color: black }H2.SummaryHL A:link { color: black }H2.SummaryHL A:visited { color: black }P.IndexPrimary A:link { color: black }P.IndexPrimary A:visited { color: black }P.IndexSecondary A:link { color: black }P.IndexSecondary A:visited { color: black }TABLE.Form TH { text-align: left }SPAN { font-style: normal; font-weight: normal;color: darkred; background-color: white }SPAN.SpellingError {  background-color: #eeeeee; color: black }FONT.SpellingError {  background-color: #eeeeee }DIV.ErrorWords  { background-color: #eeeedd;border-style: groove;padding: 3px 3px 2px 3px;margin: 1px 5px 1px 0px; }DIV.BigQuote {font-style: normal; font-weight: normal;color: darkred; background-color: white;margin-left: 1cm; margin-right: 1cm }DIV.BigQuote P {margin-top: 1em; margin-bottom: 0px; }DIV.Headline { background-color: #ffcc99; font-weight: bold;font-size: larger;padding-left: 3px; }DIV.SummaryHeadline { font-weight: bold; font-size: larger;text-decoration: underline;margin-top: 0.4em;margin-bottom: 0.4em; }DIV.Byline { font-size: smaller; text-align: center }DIV.SideBox { margin: 1em 1px 1em 1px; }DIV.SideBox P { text-indent: -1em;margin: 0px 0px 1px 1em; }DIV.SideBox P.Header { font-weight: bold;text-indent: 0px;margin-left: 0px; }DIV.Comment { margin-left: 1em;background-color: inherit; }DIV.CommentSubtree { background-color: inherit; }DIV.OldCommentSubtree { background-color: #cccccc; }DIV.CommentBox, DIV.OldCommentBox {border-style: none none none solid;border-width: thin;max-width: 60em;margin-top: 1em;background-color: inherit;}DIV.CommentBox { border-color: #ffcc99; }DIV.OldCommentBox { border-color: #cccccc; }P.CommentTitle {padding: 2px 2px 2px 4px;margin: 0px;font-weight: bold;}DIV.CommentBox P.CommentTitle { background-color: #ffcc99; }DIV.OldCommentBox P.CommentTitle { background-color: #cccccc; }DIV.CommentBody { padding: 0px 4px 0px 4px;background-color: inherit; }P.CommentPoster { margin-top: 0px; }div.CommentReplyButton { display: none;text-align: right;padding: 4px; }DIV.FormattedComment { }PRE.FormattedComment { font: inherit; }DIV.FormattedComment PRE { font: inherit; }TD.Headline {background-color: #ffcc99 }TABLE.Middle { background-color: #ffffff; padding: 3px;border-style: none; width: 100% }TD.Middle { background-color: #ffffff; vertical-align: top }.Form { background-color: #eeeeee;padding: 3px;border-style: groove;}A.Current { background-color: darkred; color: white }A.Other { }P.NextLink { text-align: right }FONT.SearchItem { font-weight: bold; color: red }FONT.QuotedText { color: #990099 }FONT.Subscription { color: darkgreen }TR.Even { background-color: #eeeeee; }TR.Odd { }table.OddEven {border-spacing: 2px;border-collapse: separate;}table.OddEven tr:nth-child(even) {background-color: #ffffff;}table.OddEven tr:nth-child(odd) {background-color: #eeeeee;}table.OddEven th { background-color: #ffffff; }table.OddEven td { padding: 3px; }.s-nonexistent { background-color: red !important; }.s-withdrawn { background-color: red !important; }.s-in-progress { background-color: white !important; }.s-submitted { background-color: yellow !important; }.s-active { background-color: lightgreen !important; }P.Headlines { margin-bottom: 6px; text-indent: -1em; margin-left: 1em;margin-top: 0px }P.Feature { text-indent: -1em; margin-left: 1em; margin-top: 0px;margin-bottom: 2px}P.ErrorMessage { color: red; margin-left: 1cm;margin-right: 1cm; font-weight: bold;font-size: large }FONT.NonActive { color: red; font-weight: bold }A.NonActive { color: red; font-weight: bold }TABLE.TopNavigation { width: 100%;max-width: 55em;margin-bottom: 0;margin-top: 0px; }TD.NavLink { background-color: #eeeeee; text-align: center; max-width: 15em; }P.IndexPrimary { margin-top: 1em; margin-bottom: 0px; font-weight: bold; }P.IndexSecondary { margin-top: 0px; text-indent: 5mm; margin-bottom: 0px; }P.IndexEntry { text-indent: 1cm; margin-top: 0px; margin-bottom: 0px }DIV.TextAd { width: 150px; border-style: solid;border-width: thin;margin: 0px auto 10px auto;background-color: white;color: black; }P.TextAdHeader { background-color: #419d4a;color: white;margin-top: 0px;margin-bottom: 3px;text-align: center;font-weight: bold; }P.TextAdLink { margin: 2px }P.TextAdBody { margin: 10px 2px 2px 2px }P.TextAdFooter { border-top-style: dotted;border-top-width: thin;text-align: center;background-color: #ffcc99;margin: 2px 0px 0px 0px; }TABLE.tlnav { width: 100%; color: black; padding: 2px }TABLE.tlrw { width: 45%; float: right; background-color: #eeeedd;border-style: groove; margin: 5px; float: right }TABLE.tlr { width: 35%; float: right; background-color: #eeeedd;border-style: groove; margin: 5px; float: right }TABLE.tllw { width: 45%; float: left; background-color: #eeeedd;border-style: groove; margin: 5px }TABLE.tll { width: 35%; float: left; background-color: #eeeedd;border-style: groove; margin: 5px }P.QuoteAttr { text-align: right }DIV.tlrw { width: 45%;float: right;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 0px 1px 5px; }DIV.tlr  { width: 35%;float: right;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 0px 1px 5px; }DIV.tllw { width: 45%;float: left;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 5px 1px 0px; }DIV.tll  { width: 35%;float: left;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 5px 1px 0px; }P.tlqa { text-align: right }UL.spacylist LI { margin-bottom: 0.5em; }OL.spacylist LI { margin-bottom: 0.5em; }P.GuestAuthor { max-width: 15em; float: right; background-color: #eeeeee;border-style: groove; padding: 3px;margin: 6px 0px 2px 5px; float: right }DIV.GAByline { max-width: 15em; float: right; background-color: #eeeeee;border-style: groove; padding: 3px;margin: 6px 0px 2px 5px; float: right; text-align: center; }DIV.GAByline P { margin: 0px; text-align: left; }DIV.GAByline P:first-child {font-weight: bold; text-align: center;margin-bottom: 3px; }DIV.GAByline HR { width: 40% }DIV.FeatureByline { max-width: 20em; float: left; background-color: #eeeeee;border-style: groove; margin: 2px 5px 2px 0px;padding-bottom: 5px;padding-right: 25px;  padding-left: 5px; }DIV.FeatureByline HR { width: 40% }div.survey { margin-left: 1cm }div.sv_mc { margin-left: 10mm; margin-top: 0cm }SPAN.PullQuote { max-width: 30%;float: right;color: black;background-color: #eeeeee;margin: 2px 0px 2px 5px;padding: 5px 2px 5px 0.5em;border-style: none none none solid;border-color: #ffcc99;font-weight: normal;font-size: larger; }SPAN.invisible { display: none; }TABLE.CalM { width: 100%;border-spacing: 0 }TR.CalM { border-left-style: groove }TD.CalMDate { background-color: #eeeeee;font-size: x-large;width: 13%;border-left-style: groove;border-top-style: groove }TD.CalMEvent { font-size: smaller;vertical-align: middle;border-left-style: groove }TD.CalMContinue { font-size: smaller;vertical-align: middle;border-left-style: groove }TD.CalBlank { border-left-style: none }TD.CalMBottom { border-left-style: groove;border-bottom-style: groove }TD.CalMTop { border-left-style: none; border-top-style: groove }TD.CalMCorner { border-left-style: groove; border-top-style: groove }TD.CalMHeader { font-size: larger; font-weight: bold;text-align: center; width: 13%;padding-top: 20px; padding-bottom: 10px }TD.CalMName { font-size: x-large; font-weight: bold;text-align: center;background-color: #eeeeee;margin-bottom: 10px;border-top-style: groove;border-bottom-style: groove }TD.CalMArrow { vertical-align: middle; border-style: groove }DIV.ArticleText { margin:0px 0px 0px 0px;padding:0px 2px 0px 0px;max-width: 75em;}DIV.widepage DIV.ArticleText {max-width: 999em !important;}DIV.Printable { }DIV.Printable DIV.ArticleText { margin:0px 0px 0px 0px;padding:0px;max-width: none; }DIV.BlurbText { margin:0px 0px 0px 0px;padding:0px; }SPAN.UliMath { color: black;font-weight: bold; }SPAN.UliInvSig { color: black;font-weight: bold;text-decoration: overline }DIV.AdMarker { text-align: center;font-size: smaller;color: black;font-weight: bold; }DIV.AdRight { float:right;background-color: #ffffff;border-width: 3px;border-style: solid;border-color: #ffffff;margin-left: 2px;padding: 2px; }DIV.promobox { float: left;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 5px 1px 0px; }UL.NoBullet { list-style-type: none; }DIV.FilteredComment { display: none;background-color: #eeeeee; }DIV.CommHdr { background-color: #eeeeee; }IMG.photo {max-width: 100%;}DIV.BlurbListing {padding-left: 3px;}.comment-title {width: 98%;}.comment-body {width: 98%;}.wide-form {width: 95%;margin: 0.1em 0.5em 0.1em 0.1em;padding: 0.2em;background-color: #eeeeee;border-radius: 0.5em;}.covered {background: #eeeeee;color: #eeeeee;}.covered::-moz-selection {background: #ffffff;color: black;}.covered::selection {background: #ffffff;color: black;}</style>
+<style rel="stylesheet" data-href="https://lwn.net/CSS/nosub">div.MakeALink { display: none }</style>
+
+        
+
+
+
+        <link type="image/x-icon" rel="shortcut icon" href="data:image/x-icon;base64,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"></head>
+        <body bgcolor="#ffffff" link="Blue" vlink="Green" alink="Green">
+        <table class="Page">
+<tbody><tr>
+<td class="LeftColumn">
+
+        <center>
+        <a href="https://undefined/"><img src="data:image/png;base64,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" width="153" height="120" border="0" alt="LWN.net Logo"></a>
+        </center>
+        <p>
+        
+
+</p><p>
+</p><div class="SideBox">
+<p class="Header">Not logged in</p>
+<p><a href="https://lwn.net/login">Log in now</a></p>
+<p><a href="https://lwn.net/newaccount">Create an account</a></p>
+<p><a href="https://lwn.net/subscribe/Info">Subscribe to LWN</a></p></div>
+
+<div class="SideBox">
+<p class="Header">Weekly Edition</p>
+<p><a href="https://lwn.net/Articles/350463">Return to the Kernel page</a></p></div>
+
+<div class="SideBox">
+<p class="Header">Recent Features</p>
+<p><a href="https://lwn.net/Articles/657345">How Debian managed the systemd transition</a></p>
+<p><a href="https://lwn.net/Articles/657269">Python and crypto-strength random numbers by default</a></p>
+<p><a href="https://lwn.net/Articles/657139">The LPC Android microconference, part 2</a></p>
+<p><a href="https://lwn.net/Articles/656672">LWN.net Weekly Edition for September 11, 2015</a></p>
+<p><a href="https://lwn.net/Articles/656898">Easier Python string formatting</a></p></div>
+
+<div class="SideBox">
+<p><a href="https://lwn.net/Articles/351422/?format=printable">Printable page</a></p></div>
+
+</td><!-- LC -->
+
+<td><table><tbody><tr>
+<td class="MidColumn">
+           <table class="TopNavigation">
+
+<!-- First row - content links -->
+<tbody><tr>
+  <td class="NavLink"><a href="https://lwn.net/current">Weekly edition</a></td>
+  <td class="NavLink">
+	<a href="https://lwn.net/Kernel">Kernel</a></td>
+  <td class="NavLink"><a href="https://lwn.net/Security">Security</a></td>
+  <td class="NavLink">
+	<a href="http://lwn.net/Distributions/">Distributions</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/FAQ.lwn#contact">Contact Us</a> </td>
+  <td class="NavLink"><a href="https://lwn.net/Search">Search</a> </td>
+</tr>
+<!-- Second row: navigation links -->
+<tr>
+  <td class="NavLink"><a href="https://lwn.net/Archives">Archives</a></td>
+  <td class="NavLink"><a href="https://lwn.net/Calendar">Calendar</a></td>
+  <td class="NavLink"><a href="https://lwn.net/subscribe/Info">Subscribe</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/AuthorGuide.lwn">Write for LWN</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/FAQ.lwn">LWN.net FAQ</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/Sponsors.lwn">Sponsors</a></td>
+</tr>
+
+</tbody></table>
+</td><td></td></tr>
+<tr><td colspan="2" class="MCTopBanner">
+<div id="azk13321_leaderboard"></div></td></tr><tr><td class="MidColumn">
+<div class="PageHeadline">
+<h1>POSIX v. reality: A position on O_PONIES</h1>
+</div>
+<div class="ArticleText">
+<div class="GAByline">
+           <p>September 9, 2009</p>
+           <p>This article was contributed by Valerie Aurora (formerly Henson)</p>
+           </div>
+Sure, programmers (especially operating systems programmers) love
+their specifications.  Clean, well-defined interfaces are a key
+element of scalable software development.  But what is it about file
+systems, POSIX, and when file data is guaranteed to hit permanent
+storage that brings out the POSIX fundamentalist in all of us?  The
+recent <a href="http://lwn.net/Articles/322823/"><code>fsync()</code>/<code>rename()</code>/<code>O_PONIES</code>
+controversy</a> was the most heated in recent memory but not out of
+character for <code>fsync()</code>-related discussions.  In this
+article, we'll explore the relationship between file systems
+developers, the POSIX file I/O standard, and people who just want to
+store their data.
+<p>
+
+</p><h4>In the beginning, there was <code>creat()</code></h4>
+
+Like many practical interfaces (including HTML and TCP/IP), the POSIX file system
+interface was implemented first and specified second.  UNIX was
+written beginning in 1969; the first release of the POSIX
+specification for the UNIX file I/O interface (IEEE Standard 1003.1)
+was released in 1988.  Before UNIX, application access to non-volatile
+storage (e.g., a spinning drum) was a decidedly application- and
+hardware-specific affair.  Record-based file I/O was a common paradigm,
+growing naturally out of punch cards, and each kind of file was treated
+differently.  The new interface was designed by a few guys (Ken
+Thompson, Dennis Ritchie, et alia) screwing around with their new
+machine, writing an operating system that would make it easier
+to, well, write more operating systems.
+<p>
+
+As we know now, the new I/O interface was a hit.  It turned out to be a
+portable, versatile, simple paradigm that made modular software
+development much easier.  It was by no means perfect, of course: a
+number of warts revealed themselves over time, not all of which were
+removed before the interface was codified into the POSIX
+specification.  One example is directory hard links, which permit the
+creation of a directory cycle - a directory that is a descendant of
+itself - and its subsequent detachment from the file system hierarchy,
+resulting in allocated but inaccessible directories and files.
+Recording the time of the last access time - atime - turns every read
+into a tiny write.  And don't forget <a href="http://en.wikiquote.org/wiki/Kenneth_Thompson">the apocryphal quote from Ken
+Thompson</a> when asked if he'd do anything differently if he were
+designing UNIX today: "<span>If I had to do it over again?  Hmm... I guess
+I'd spell 'creat' with an 'e'</span>". (That's the <code>creat()</code>
+system call to create a new file.) But overall, the UNIX file system
+interface is a huge success.
+</p><p>
+
+</p><h4>POSIX file I/O today: Ponies and fsync()</h4>  
+
+Over time, various more-or-less portable additions have accreted
+around the standard set of POSIX file I/O interfaces; they have been
+occasionally standardized and added to the canon - revelations from
+latter-day prophets.  Some examples off the top of my head include
+pread()/pwrite(), direct I/O, file preallocation, extended attributes,
+access control lists (ACLs) of every stripe and color, and a vast
+array of mount-time options.  While these additions are often debated
+and implemented in incompatible forms, in most cases no one is trying
+to oppose them purely on the basis of not being present in a standard
+written in 1988.  Similarly, there is relatively little debate about
+refusing to conform to some of the more brain-dead POSIX details, such
+as the aforementioned directory hard link feature.
+<p>
+
+Why, then, does the topic of when file system data is guaranteed to be
+"on disk" suddenly turn file systems developers into pedantic
+POSIX-quoting fundamentalists?  Fundamentally (ha), the problem comes
+down to this: Waiting for data to actually hit disk before returning
+from a system call is a losing game for file system performance.  As
+the most extreme example, the original synchronous version of the UNIX
+file system frequently used only 3-5% of the disk throughput.  Nearly
+every file system performance improvement since then has been
+primarily the result of saving up writes so that we can allocate and
+write them out as a group.  As file systems developers, we are going
+to look for every loophole in <code>fsync()</code> and squirm our way
+through it.
+</p><p>
+
+<span class="PullQuote">
+<span class="invisible">[PULL QUOTE: </span>
+As file systems developers, we are going
+to look for every loophole in <code>fsync()</code> and squirm our way
+through it.
+<span class="invisible"> END QUOTE]</span>
+</span>
+
+
+Fortunately for the file systems developers, the POSIX specification
+is so very minimal that it doesn't even mention the topic of file
+system behavior after a system crash.  After all, the original
+FFS-style file systems (e.g., ext2) can theoretically lose your entire
+file system after a crash, and are still POSIX-compliant.  Ironically,
+as file systems developers, we spend 90% of our brain power coming up
+with ways to quickly recover file system consistency after system
+crash!  No wonder file systems users are irked when we define file
+system metadata as important enough to keep consistent, but not file
+data - we take care of our own so well.  File systems developers have
+magnanimously conceded, though, that on return
+from <code>fsync()</code>, and only from <code>fsync()</code>, and
+only on a file system with the right mount options, the changes to
+that file will be available if the system crashes after that point.
+</p><p>
+
+At the same time, <code>fsync()</code> is often more expensive than it
+absolutely needs to be.  The easiest way to
+implement <code>fsync()</code> is to force out every outstanding write
+to the file system, regardless of whether it is a journaling file
+system, a COW file system, or a file system with no crash recovery
+mechanism whatsoever.  This is because it is very difficult to map
+backward from a given file to the dirty file system blocks needing to
+be written to disk in order to create a consistent file system
+containing those changes.  For example, the block containing the
+bitmap for newly allocated file data blocks may also have been changed
+by a later allocation for a different file, which then requires that
+we also write out the indirect blocks pointing to the data for that
+second file, which changes another bitmap block... When you solve the
+problem of tracing specific dependencies of any particular write, you
+end up with the complexity
+of <a href="http://lwn.net/Articles/339337/">soft updates</a>.  No
+surprise then, that most file systems take the brute force approach,
+with the result that <code>fsync()</code> commonly takes time
+proportional to all outstanding writes to the file system.
+</p><p>
+
+So, now we have the following situation: <code>fsync()</code> is
+required to guarantee that file data is on stable storage, but it may
+perform arbitrarily poorly, depending on what other activity is going
+on in the file system.  Given this situation, application developers
+came to rely on what is, on the face of it, a completely reasonable
+assumption: <code>rename()</code> of one file over another will either
+result in the contents of the old file, or the contents of the new
+file as of the time of the <code>rename()</code>.  This is a subtle
+and interesting optimization: rather than asking the file system to
+synchronously write the data, it is instead a request to order the
+writes to the file system.  Ordering writes is far easier for the file
+system to do efficiently than synchronous writes.
+</p><p>
+
+However, the ordering effect of <code>rename()</code> turns out to be
+a file system specific implementation side effect.  It only works when
+changes to the file data in the file system are ordered with respect
+to changes in the file system metadata.  In ext3/4, this is only true
+when the file system is mounted with the <code>data=ordered</code>
+mount option - a name which hopefully makes more sense now!  Up until
+recently, <code>data=ordered</code> was the default journal mode for
+ext3, which, in turn, was the default file system for Linux; as a result,
+ext3 <tt>data=ordered</tt> was all that
+many Linux application developers had any experience with.  During <a href="http://lwn.net/Articles/328363/">the 
+Great File System Upheaval of 2.6.30</a>, the default journal mode for
+ext3 changed to <code>data=writeback</code>, which means that file
+data will get written to disk when the file system feels like it, very
+likely after the file's metadata specifying where its contents are
+located has been written to disk.  This not only breaks
+the <code>rename()</code> ordering assumption, but also means that the
+newly renamed file may contain arbitrary garbage - or a copy
+of <code>/etc/shadow</code>, making this a security hole as well as a
+data corruption problem.
+</p><p>
+
+Which brings us to the present
+day <code>fsync</code>/<code>rename</code>/<code>O_PONIES</code>
+controversy, in which many file systems developers argue that
+applications should explicitly call <code>fsync()</code> before
+renaming a file if they want the file's data to be on disk before the
+rename takes effect - a position which seems bizarre and random until
+you understand the individual decisions, each perfectly reasonable,
+that piled up to create the current situation.  Personally, as a file
+systems developer, I think it is counterproductive to replace a
+performance-friendly implicit ordering request in the form of
+a <code>rename()</code> with an impossible to
+optimize <code>fsync()</code>.  It may not be POSIX, but the
+programmer's intent is clear - no one ever, ever wrote
+"<code>creat(); write(); close(); rename();</code>" and hoped they
+would get an empty file if the system crashed during the next 5
+minutes.  That's what <code>truncate()</code> is for.  A generalized
+"<code>O_PONIES</code> do-what-I-want" flag is indeed not possible,
+but in this case, it is to the file systems developers' benefit to
+extend the semantics of <code>rename()</code> to imply ordering so
+that we reduce the number of <code>fsync()</code> calls we have to cope
+with. (And, I have to note, I did have a real, live pony when I was a
+kid, so I tend to be on the side of giving programmers ponies when
+they ask for them.)
+</p><p>
+
+My opinion is that POSIX and most other useful standards are helpful
+clarifications of existing practice, but are not sufficient when we
+encounter surprising new circumstances.  We criticize applications
+developers for using folk-programming practices ("It seems to work!")
+and coming to rely on file system-specific side effects, but the bare
+POSIX specification is clearly insufficient to define useful system
+behavior.  In cases where programmer intent is unambiguous, we should
+do the right thing, and put the new behavior on the list for the next
+standards session.
+</p><p></p><hr width="60%" align="left">
+           (<a href="https://lwn.net/login?target=/Articles/351422/">Log in</a> to post comments)
+           <p>
+           
+</p></div> <!-- ArticleText -->
+<p><a name="Comments"></a>
+
+<a name="CommAnchor351650"></a>
+</p><div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 15:54 UTC (Wed) by <b>JoeBuck</b> (subscriber, #2330)
+       [<a href="https://lwn.net/Articles/351650">Link</a>]
+    </p>
+    Great article.  Everyone listen to Valerie.
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351650/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351672"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Great article!</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 16:36 UTC (Wed) by <b>dwheeler</b> (guest, #1216)
+       [<a href="https://lwn.net/Articles/351672">Link</a>]
+    </p>
+    <p>
+I agree, great article.  Thanks for putting this in perspective.
+</p>
+<p>
+I appreciate the side comment that something like this should submitted to the next version of the POSIX standard.  Standards authors try to document the expectations of users and implementers, and sometimes they omit something important. It'd be hard to nail down the exact expectation, but it'd be worth it.
+</p>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351672/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor351679"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">hail czar</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 17:05 UTC (Wed) by <b>ncm</b> (subscriber, #165)
+       [<a href="https://lwn.net/Articles/351679">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I think we can shorten that to, simply, "Everyone listen to Valerie."<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351679/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351737"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">hail czar</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 20:07 UTC (Wed) by <b>sbergman27</b> (guest, #10767)
+       [<a href="https://lwn.net/Articles/351737">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I don't usually do "Me too!". But in this case, I will make an exception. Absolutely, listen to Valerie, Goddess of Sanity in the world of Linux/Unix filesystems. And whom I've always suspected was Stephen Tweedie's long lost twin sister, separated at birth.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351737/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor351930"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">hail Ivanova!</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 13:58 UTC (Thu) by <b>liljencrantz</b> (guest, #28458)
+       [<a href="https://lwn.net/Articles/351930">Link</a>]
+    </p>
+    <div class="FormattedComment">
+And keep in mind the Linux file system mantra:<br>
+<p>
+«Valerie is always right. <br>
+I will listen to Valerie.<br>
+I will not ignore Valeries recommendations.<br>
+Valerie is god.»<br>
+</p><p>
+(Stolen from B5)<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351930/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352732"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">hail Ivanova!</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 14, 2009 21:16 UTC (Mon) by <b>roelofs</b> (guest, #2599)
+       [<a href="https://lwn.net/Articles/352732">Link</a>]
+    </p>
+    <font color="#440088">«Quoters of B5 are always right.<br>
+I will listen to quoters of B5.<br>
+I will not ignore the recommendations of those who quote B5.<br>
+JMS is god.»</font>
+
+<p>
+;-)
+
+</p><p>
+(Apologies to JMS and LWN for the off-topic drivel...)
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352732/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor351654"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 16:04 UTC (Wed) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/351654">Link</a>]
+    </p>
+    <blockquote>
+Similarly, there is relatively little debate about refusing to conform to some of the more brain-dead POSIX details, such as the aforementioned directory hard link feature. 
+</blockquote>
+Thats decidedly optional, isn't it? So failing link() on directories isn't a conformance violation anyway.
+<p>
+(If it wasn't for NFS, I suspect a much wider violation would be failure to suppport the seekdir()/telldir() horror show.)
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351654/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor353436"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 18, 2009 21:02 UTC (Fri) by <b>jch</b> (guest, #51929)
+       [<a href="https://lwn.net/Articles/353436">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; Thats decidedly optional, isn't it? So failing link() on directories isn't a conformance violation anyway.</font><br>
+<p>
+Indeed.  According to the 2001 edition:<br>
+</p><p>
+<font class="QuotedText">&gt; Upon successful completion, link() shall mark for update the st_ctime field of the file. Also, the st_ctime and st_mtime fields of the direc-tory that contains the new entry shall be marked for update.</font><br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353436/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor353544"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 20, 2009 19:47 UTC (Sun) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/353544">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Um, I think you copied the wrong section of the standard ;) Also 2001 is <br>
+kind of out of date now.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353544/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor351656"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 16:10 UTC (Wed) by <b>jonth</b> (subscriber, #4008)
+       [<a href="https://lwn.net/Articles/351656">Link</a>]
+    </p>
+    <div class="FormattedComment">
+An article in the best Reithian tradition: It informed, educated and entertained. Thanks, Valerie.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351656/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351801"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 2:02 UTC (Thu) by <b>ncm</b> (subscriber, #165)
+       [<a href="https://lwn.net/Articles/351801">Link</a>]
+    </p>
+    We can only complain of what was omitted, not what was said.  What was omitted, as is unfortunately <i>always</i> omitted from presentations by file system experts howsoever brilliant, is mention of the crucial distinction between <b>crashes</b> and <b>power drops</b>.  Disks being the way they are, none of the above really applies to power drops.  If power to the drive drops, <i>your file system can offer you no guarantee</i>, O_PONIES support notwithstanding.
+<p>
+Anywhere that a power drop is overwhelmingly more likely than a system crash, which includes Most of the Known World, the whole discussion is more or less moot.  That does not make the discussion moot overall, though, because people who care about their data can move themselves into the Rest of Known World by providing a few seconds' UPS backing for the drive. We just need to make clear which part of the world we're talking about. 
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351801/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351840"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 6:14 UTC (Thu) by <b>flewellyn</b> (subscriber, #5047)
+       [<a href="https://lwn.net/Articles/351840">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Could you elaborate more on this distinction?<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351840/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352002"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 17:34 UTC (Thu) by <b>ncm</b> (subscriber, #165)
+       [<a href="https://lwn.net/Articles/352002">Link</a>]
+    </p>
+    <div class="FormattedComment">
+There are two concerns.  First, if power drops during a physical write operation, that sector is scragged.  If it was writing metadata, you have serious problems with whatever files that metadata describes, if anything points to that sector.  <br>
+<p>
+Second, more subtle but probably more important, drives lie about what is physically on disk.  To look good on benchmarks, they tell the controller that sectors have been physically copied to the platter while they are still only in buffer RAM in the drive -- up to several megabytes' worth.  A few seconds after the last controller operation, these writes have drained to the disk.  Before that, there's no guessing which have been written and which haven't, and blocks the system meant to write first may be written last.  As a consequence, after powerup the file system sees blocks that are supposed to have important metadata in them with, instead, whatever was left there.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352002/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352011"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 18:05 UTC (Thu) by <b>flewellyn</b> (subscriber, #5047)
+       [<a href="https://lwn.net/Articles/352011">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Okay, but I guess what I'm asking is, what do you classify as a crash, if power drops are not included?<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352011/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352021"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 19:19 UTC (Thu) by <b>ncm</b> (subscriber, #165)
+       [<a href="https://lwn.net/Articles/352021">Link</a>]
+    </p>
+    Back about 1998, a Windows user told me that, for him, Windows "hardly ever crashes".  Further questioning revealed that he defined "crash" as "I have to re-install".  Lockups, a multiple-daily event, didn't count.  Generally, though, by "crash" we mean the system stops responding to events, and must be re-started; usually this is a software failure, although all manner of hardware faults can cause it.  When these happen, the disk has plenty of time to drain its buffers.  <i>Usually</i> the software fault has not caused any disk writes with crazy parameters.
+<p>
+OS developers don't count power drops among crashes because those aren't their fault.  That's commendable, because when they say "crash" they mean something they accept responsibility for.
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352021/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352074"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 22:20 UTC (Thu) by <b>flewellyn</b> (subscriber, #5047)
+       [<a href="https://lwn.net/Articles/352074">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Ah, that makes sense.<br>
+<p>
+Handling power drops, to me, seems to be a matter of impossibility, at least as long as disks lie about when writes actually complete.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352074/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor352125"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 11, 2009 8:29 UTC (Fri) by <b>jschrod</b> (subscriber, #1646)
+       [<a href="https://lwn.net/Articles/352125">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I'd say a crash happens any time that my system stands still because of some kernel oops, or any time I have to press the reset button because something hangs beyond redemption. (The latter being more often the case in my environment.)<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352125/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor352015"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 18:18 UTC (Thu) by <b>aliguori</b> (subscriber, #30636)
+       [<a href="https://lwn.net/Articles/352015">Link</a>]
+    </p>
+    <div class="FormattedComment">
+&lt;i&gt;Second, more subtle but probably more important, drives lie about what is physically on disk.&lt;/i&gt;<br>
+<p>
+Not really.  You can make a disk tell you when data is actually on the platter vs in the write cache.  Furthermore, most "enterprise" drives have battery-backed write caches that guarantee enough power for the write caches to be flushed.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352015/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352020"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 19:06 UTC (Thu) by <b>ncm</b> (subscriber, #165)
+       [<a href="https://lwn.net/Articles/352020">Link</a>]
+    </p>
+    <i>You can make a disk tell you when data is actually on the platter</i>
+<p>
+No, you can <i>ask</i> a disk to tell you.  It might even be honest about it if you never get the buffer too full.  The commercial incentives to lie for the sake of benchmarks are extremely strong.  Drives that don't lie cost a lot more, and are slower. Honesty is an extra-cost option. If you don't pay for honesty (few do) you won't get it.
+</p><p>
+Honesty usually costs a lot more than a UPS.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352020/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor352023"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 19:12 UTC (Thu) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/352023">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I have yet to see a drive that includes battery backup in it, and I work at a place that spends millions of dollars a year on enterprise grade storage <br>
+<p>
+I think this is a myth like the drives that use platter energy to power themselves to write their buffer.<br>
+</p><p>
+if you can point to a drive that includes a battery backup on the drive please post a link to it.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352023/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352028"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 19:22 UTC (Thu) by <b>ncm</b> (subscriber, #165)
+       [<a href="https://lwn.net/Articles/352028">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I suspect aliguori is referring to disk-array boxes, not drives.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352028/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352175"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 11, 2009 16:24 UTC (Fri) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/352175">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Even then... it's just occurred to me that while I know my Areca RAID <br>
+controller has its own battery-backed cache, I have no idea whether it's <br>
+asked the drives it controls to turn off *their* internal write cache... <br>
+(Obviously we don't want that cache, as it's not battery-backed in any <br>
+way.)<br>
+<p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352175/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor352156"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 11, 2009 14:41 UTC (Fri) by <b>anton</b> (guest, #25547)
+       [<a href="https://lwn.net/Articles/352156">Link</a>]
+    </p>
+    <blockquote> First, if power drops during a physical write operation,
+that sector is scragged.  If it was writing metadata, you have serious
+problems with whatever files that metadata describes, if anything
+points to that sector.</blockquote>
+
+In <a href="http://www.complang.tuwien.ac.at/anton/hdtest/">my
+experiments on cutting power on disk drives while writing</a>, the
+drives did not corrupt sectors.  I have seen IBM and Maxtor drives
+corrupt sectors under more unusual power fluctuation circumstances;
+maybe that's a reason why you can no longer buy drives from IBM or
+Maxtor; Hitachi (IBM successor) and Seagate-Maxtor (not Seagate proper) are certainly
+on my dont-buy list.
+
+<p>And a modern file system can protect against the corruption of a
+single sector:
+
+</p><p>E.g., in a journaling file system, that sector is either in the log
+or in the permanent storage.  If it's in the log, just stop the replay
+when you encounter the sector.  If it's in permanent storage, then you
+will notice that the replay write fails, and the file system can remap
+the sector/block to a working one (or the drive might remap it
+transparently on the replay write, or might just perform the write on
+the original sector; in these cases the file system has nothing to do).
+Of course, if the file system performs only meta-data journaling, then
+it will likely not notice corrupt data (because it is not accessed
+during replay), but apparently neither the file system maintainer nor
+the user (or whoever decided to use a meta-data journaling file system) cares about data
+anyway, so that's ok.
+
+</p><p>In a copy-on-write file system, the sector either contains the root
+of the file system, or it contains something written after the last
+root.  In the latter case these blocks are unreachable anyway after
+recovery (unless there is also an intent log, in which case the
+discussion above applies).  If the root is affected, then on recovery
+the youngest alternative root is read, giving us the latest consistent
+state of the file system.
+
+</p><blockquote>Second, more subtle but probably more important, drives
+lie about what is physically on disk.</blockquote>
+
+In the experiments mentioned above, when the drive had write caching
+enabled (default on PATA and SATA drives), the drives not just
+reported completion right away, but worse, also reordered the writes (so using barriers or turning off write caching is essential for every kind of consistency).
+
+<p>With write caching disabled, the results of my experiments (both in
+performance and in what was on disk after powering off) are consistent
+with the theory that the drive reports the completion of writes only
+after the sector hits the platter and (with the program I used)
+consequently only wrote the sectors in order.
+
+</p><p>BTW, it's not just the drive manufacturers that default to fast
+rather than safe; the Linux kernel developers do a similar thing (with
+a much smaller performance incentive) when they disable barriers by
+default, and turned ext3 from data=journal to data=ordered (and letting
+data=journal rot), and recently to data=writeback (although that may
+be just to make ext3 as bad as ext4 so people will not switch back).
+Hmm, are Solaris or BSD developers less cavalier about their user's data?
+
+</p><p>On the subject: UPSs and computer PSUs can fail, too.  Better
+recommend a dual power supplies with dual UPSs; double failures should
+be relatively rare.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352156/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor351901"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 12:02 UTC (Thu) by <b>xilun</b> (guest, #50638)
+       [<a href="https://lwn.net/Articles/351901">Link</a>]
+    </p>
+    <div class="FormattedComment">
+On the other hand, I've already written file system _highly_ intrusive software (in the form of specialized data reordering for HFS+ to be able to non destructively resize this fs) and tested it like 20 times on a non trivial fs content by unplugging the power cord of the computer in the middle of a resize operation, without experiencing a single data corruption (and the fs was also always at least recoverable quickly, but this wasn't even needed for read only operations to properly work).<br>
+<p>
+I know that my statistic sample is to small (and worse, this was 6 years ago and I don't know if HD today are of the same quality), but anyway my first guess is that if the software is careful enough and the hardware of decent quality, the risk of massive data corruption due to a power failure is not too high (at least in absence of bad system design, like using RAID 5/6 in a power unsafe context)<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351901/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351933"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 14:13 UTC (Thu) by <b>Cato</b> (subscriber, #7643)
+       [<a href="https://lwn.net/Articles/351933">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Since we are trading anecdotes, here's mine: <a href="http://lwn.net/Articles/350072/">http://lwn.net/Articles/350072/</a> - loss of thousands of files and LVM metadata corruption on a PC using ext3 on top of LVM.  <br>
+<p>
+This PC was frequently reset accidentally by the user pressing the power button, which caused at least one data loss event within one year.  Since disabling write caching (and a couple of other changes) I've not had any data loss on this PC, but it's probably too early to be sure these changes have fixed the problem.<br>
+</p><p>
+FWIW, I believe that at least on this setup, disabling write caching helps avoid ext3 and LVM corruption.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351933/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor352102"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 11, 2009 5:28 UTC (Fri) by <b>magnus</b> (subscriber, #34778)
+       [<a href="https://lwn.net/Articles/352102">Link</a>]
+    </p>
+    <div class="FormattedComment">
+In my experience, system hangs are much more common than power outages for desktop systems. <br>
+<p>
+In the past I've had to reboot due to X server hangs (probably problems in the display driver), oopses due to unstable hardware (memory mainly) and sometimes soft hangs like losing connection to an NIS or NFS server or getting PAM misconfigured and not having a prompt to work from. <br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352102/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor353490"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 19, 2009 20:30 UTC (Sat) by <b>efexis</b> (guest, #26355)
+       [<a href="https://lwn.net/Articles/353490">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Alt+Printscreen+U. Always press it before reboot, if the kernel's not oopsed, can save you data :-)<br>
+<p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353490/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor353515"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 20, 2009 7:51 UTC (Sun) by <b>Cato</b> (subscriber, #7643)
+       [<a href="https://lwn.net/Articles/353515">Link</a>]
+    </p>
+    <div class="FormattedComment">
+There are some other handy Magic SysRq (i.e. Alt-PrintScreen) keystrokes as well: <a href="http://en.wikipedia.org/wiki/Magic_SysRq_key#.22Raising_Elephants.22_mnemonic_device">http://en.wikipedia.org/wiki/Magic_SysRq_key#.22Raising_E...</a><br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353515/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor353566"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 21, 2009 7:20 UTC (Mon) by <b>efexis</b> (guest, #26355)
+       [<a href="https://lwn.net/Articles/353566">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Although I wouldn't recommend using S(ync) as the third option for rebooting the system, after terminating processes etc. If the system's becoming unstable, syncing the drives is the very first thing I'd want to do. I prefer the order S-E-I-U-B. AFAIA, an S before U is redundant as buffers are written out as part of the remount-ro process, so a seperate sync() isn't needed (if anyone knows otherwise please correct me).<br>
+<p>
+But of all those, the U is the most important, as if it succeeds it will protect your filesystem. You may end up with some left over temp files as tasks that didn't receive the terminate request signal didn't clean up after themselves, but this is usually not too great a cost.<br>
+</p><p>
+Alex<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353566/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor353667"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 22, 2009 6:13 UTC (Tue) by <b>Cato</b> (subscriber, #7643)
+       [<a href="https://lwn.net/Articles/353667">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Yes, personally I prefer the mnemonic Raising Skinny Elephants Is Utterly Boring.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353667/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor353673"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 22, 2009 9:28 UTC (Tue) by <b>efexis</b> (guest, #26355)
+       [<a href="https://lwn.net/Articles/353673">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Does the R do much? If you're rebooting/etc anyway... if the kernel's able to trap the Alt+SysRq+R, then it can trap the S/E/I/U/B keys too? Or is there another reason for it?<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353673/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor352267"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 12, 2009 0:35 UTC (Sat) by <b>spitzak</b> (guest, #4593)
+       [<a href="https://lwn.net/Articles/352267">Link</a>]
+    </p>
+    <div class="FormattedComment">
+You are wrong.<br>
+<p>
+While the power is still running, and the disk is spinning and working perfectly, EXT4 has *already* stored information on it that says the file that the atomic rename() went to is empty. The disk is in the wrong state! It is irrelevant whether a power failure may further damage the data!<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352267/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352294"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Only with a UPS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 12, 2009 6:22 UTC (Sat) by <b>ncm</b> (subscriber, #165)
+       [<a href="https://lwn.net/Articles/352294">Link</a>]
+    </p>
+    You rather miss the point.  Given reliable storage -- i.e., doesn't lie about what's reached disk, or has enough battery backup to make sure it gets there, eventually -- it's <i>possible</i> to write a reliable file system.  Without, it doesn't matter how well done the file system is, a power drop can corrupt it.  If you want safety against power drops, you need both.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352294/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor353187"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Power loss -&gt; no guarantee?</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 17, 2009 11:11 UTC (Thu) by <b>forthy</b> (guest, #1525)
+       [<a href="https://lwn.net/Articles/353187">Link</a>]
+    </p>
+    <p>This is wrong. Consider a log-structured, checksummed file system like
+NILFS. It gathers all writes, writes them out in one go, and checksums
+every chunk it writes. What happens when power is lost during that write?
+The checksum is wrong. The last update before isn't touched, so the file
+system will revert to this last update. All is hunky dory, all ponies
+still there, no data lost except the last update - which is the guarantee
+of such a file system: You can only depend that those data is on disk
+where the transaction was completely written to disk. And note: writing
+one sector to a hard disk takes a few microseconds nowadays, so the drive
+can detect a power outage and stop writing before it randomly scrambles a
+sector - it might not complete everything, but leaving a garbled sector is
+possible to avoid.</p>
+
+<p>On the other argument: In the part of the world where I live (Munich),
+power outages are far less frequent than crashes. Our file server had some
+CPU problems two years ago and crashed about once a week. Thanks to the
+stability of ReiserFS, no data loss occurred during the half year until we
+found the root cause and replaced the CPUs. Even when not including
+hardware defects, I definitely have more crashes than power outages.
+Frequent power outages happen in poor countries with third-world
+infrastructure.</p>
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353187/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor351663"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 16:22 UTC (Wed) by <b>njd27</b> (subscriber, #5770)
+       [<a href="https://lwn.net/Articles/351663">Link</a>]
+    </p>
+    <blockquote>And, I have to note, I did have a real, live pony when I was a kid, so I tend to be on the side of giving programmers ponies when they ask for them.</blockquote>
+
+The trouble of course, as any student of ponydynamics can tell you, is that once the kernel developers start handing out ponies as the solution to any difficult problem, the workload in having to deal with mucking them out might grow exponentially. Hence the reluctance. Worse might be better.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351663/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351680"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 17:11 UTC (Wed) by <b>drag</b> (subscriber, #31333)
+       [<a href="https://lwn.net/Articles/351680">Link</a>]
+    </p>
+    <div class="FormattedComment">
+That's why they should lie about the ponies. Say they are not going to give them ponies, but give it anyway and that way only smart people notice the herd and everybody else forgets about it and lives with the better file system.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351680/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351730"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 19:43 UTC (Wed) by <b>martinfick</b> (subscriber, #4455)
+       [<a href="https://lwn.net/Articles/351730">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Hmm, seems to me they quietly gave the ponies years ago, and they are now recalling them.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351730/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351757"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Given and denied</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 21:59 UTC (Wed) by <b>man_ls</b> (guest, #15091)
+       [<a href="https://lwn.net/Articles/351757">Link</a>]
+    </p>
+    Indeed. And now they are saying it was in fact O_UNICORNS, so they were not really given to anyone.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351757/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351770"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Given and denied</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 22:59 UTC (Wed) by <b>Tara_Li</b> (guest, #26706)
+       [<a href="https://lwn.net/Articles/351770">Link</a>]
+    </p>
+    <div class="FormattedComment">
+O_UNICORNS aren't mythical - O_VIRGINS are.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351770/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor351674"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 16:46 UTC (Wed) by <b>dannf</b> (subscriber, #7105)
+       [<a href="https://lwn.net/Articles/351674">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Excellent/concise summary of this debate, thanks!<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351674/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor351706"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 18:14 UTC (Wed) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/351706">Link</a>]
+    </p>
+    <div class="FormattedComment">
+rather than useing rename to imply ordering, what is needed is a barrier() call that an application can use to day 'write everything before this point before you write anything after this point'<br>
+<p>
+barriers are starting to exist deeper inside the storage stack, but there is no way for the application writer to invoke them.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351706/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351709"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 18:36 UTC (Wed) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/351709">Link</a>]
+    </p>
+    <code>rename</code> ought to imply a barrier because there are no useful cases for a non-barrier rename, and plenty of cases for a <code>rename</code>-with-barrier. Forcing application authors to use a separate call will simply allow them to forget it, and will ensure that existing applications are still unsafe. A barrier-on-<code>rename</code> scheme adds safety with no loss in expressiveness, and is a performance increase over <code>fsync</code>, which is, well, synchronous.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351709/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351710"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 18:52 UTC (Wed) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/351710">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I am not claiming that rename should not imply a barrier.<br>
+<p>
+I am stating that rename should not be necessary to create a barrier.<br>
+</p><p>
+don't require application writers to add renames if they wouldn't otherwise need them just because they want a barrier.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351710/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351712"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 19:06 UTC (Wed) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/351712">Link</a>]
+    </p>
+    Ah, I see. <code>fbarrier</code> is an interest construct. You'd still need the <code>rename</code> trick in order to prevent observers from seeing inconsistent files at runtime. A program modifying /etc/passwd should prevent other applications from seeing an incompletely-written file. One could do this locks, but a simpler mechanism is <code>rename</code>.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351712/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351750"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 20:55 UTC (Wed) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/351750">Link</a>]
+    </p>
+    <div class="FormattedComment">
+correct, barrier() would not be a replacement for rename(), rename could (and probably should) imply a barrier.<br>
+<p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351750/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor351974"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">History (re: what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 16:18 UTC (Thu) by <b>davecb</b> (subscriber, #1574)
+       [<a href="https://lwn.net/Articles/351974">Link</a>]
+    </p>
+    Rename was one of the two Unix V6 system calls which were documented as being necessary and sufficient to allow one to do atomicity and locking: the other was open(... O_EXCL|O_CREAT).
+ The latter atomically creates files, the former atomically changes them, including atomically making them cease to exist.  I rather expect Thompson and Ritchie would be bemused by some of the discussion to date (;-)
+
+<p>--dave<br>
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351974/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352035"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">History (re: what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 20:18 UTC (Thu) by <b>aegl</b> (subscriber, #37581)
+       [<a href="https://lwn.net/Articles/352035">Link</a>]
+    </p>
+    <div class="FormattedComment">
+"Rename was one of the two Unix V6 system calls"<br>
+<p>
+Nope.  "rename" wasn't in V6 (see <a href="http://minnie.tuhs.org/UnixTree/V6/usr/sys/ken/sysent.c.html">http://minnie.tuhs.org/UnixTree/V6/usr/sys/ken/sysent.c.html</a>).<br>
+</p><p>
+"the other was open(... O_EXCL|O_CREAT)"<br>
+</p><p>
+V6 open(2) didn't have all those fancy O_* options. You just got the choice of FREAD, FWRITE, or both.<br>
+</p><p>
+Applications in V6 era typically used "link(2)" as their locking primitive (create a randomly named tempfile, then link that to a statically named lockfile. If the link call succeeds, you own the lock. If you get EEXIST, then someone else does).<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352035/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352053"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">History (re: what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 21:03 UTC (Thu) by <b>davecb</b> (subscriber, #1574)
+       [<a href="https://lwn.net/Articles/352053">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Thanks!  I used V6, but you are entirely correct,<br>
+the open/rename indeed come later. <br>
+<p>
+--dave<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352053/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor351714"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 20:02 UTC (Wed) by <b>vaurora</b> (guest, #38407)
+       [<a href="https://lwn.net/Articles/351714">Link</a>]
+    </p>
+    <div class="FormattedComment">
+That's one of the interesting parts about Featherstitch - it exports a useful write-ordering interface to userland that cannot be used to stall the system or otherwise break things, as with a "normal" transaction-style interface.  If you let userland do "transaction_start(); write(); write(); transaction_commit();" you have all sorts of issues with the app waiting too long (or never doing it) to commit, interesting interactions with other transactions, potential deadlocks, etc.<br>
+<p>
+So, you have a hierarchy something like:<br>
+</p><p>
+fsync() &lt;&lt; barrier() &lt;&lt; depends_on()<br>
+</p><p>
+Where to the left performs worse and to the right is more difficult to implement in the file system.  I need to write about Featherstitch, some amazing difficulties there.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351714/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351745"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 20:53 UTC (Wed) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/351745">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I'm not proposing full transactions (which to me imply rollback if the transaction is aborted)<br>
+<p>
+simply <br>
+</p><p>
+write1 write2 write3 barrier write4 write5<br>
+</p><p>
+will guarantee that writes 1-3 will hit the disk before writes 4 and 5 but says nothing about the ordering or timeing of the two seperate sets.<br>
+</p><p>
+this is _much_ easier to implement.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351745/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351755"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 21:49 UTC (Wed) by <b>njs</b> (guest, #40338)
+       [<a href="https://lwn.net/Articles/351755">Link</a>]
+    </p>
+    Yes, that sort of ordering is what she's talking about. (The <a href="http://featherstitch.cs.ucla.edu/">Featherstitch</a> papers are worth checking out.)
+<p>
+IIUC, the trickiness in implementing it is that you need to keep track of which writes depend on which other writes, and which intermediate states are allowed, but then you have to keep non-dependent writes as disentangled as possible, to avoid the slowdowns and soft-updates craziness that she describes in the original article -- but you can't be *too* clever about it, or your accounting overhead will become a bottleneck.
+</p><p>
+Featherstitch's solution involves careful optimizations and giant graphs in kernel memory.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351755/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351777"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 23:44 UTC (Wed) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/351777">Link</a>]
+    </p>
+    <div class="FormattedComment">
+my gut feeling is that they are trying too hard.<br>
+<p>
+if you have a way to prevent memory blocks that have been submitted for I/O from being changed before the I/O is completed this is just a matter of prohibiting reordering in the device stack.<br>
+</p><p>
+this would be overkill for what is being asked for (the user cares about ordering the changes to their file, this would order changes to the entire device), but it would do the job without having to worry about tracing dependancies<br>
+</p><p>
+if the device stack were to mark all buffers it has pending as COW when it gets a barrier() call, this doesn't seem that hard to do.<br>
+</p><p>
+now, it does open up the possibility of running out of memory and having problems writing something to swap (until the currently pending writes complete), but if you do the barrier on a per-partition basis this shouldn't be that bad (this assumes that the device stack can easily tell what partition pending writes would go to)<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351777/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351847"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 6:51 UTC (Thu) by <b>njs</b> (guest, #40338)
+       [<a href="https://lwn.net/Articles/351847">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I dunno, I'm not an expert, though "prohibiting reordering in the device stack" raises a big red flag for me -- reordering is pretty much the entire way you get speed out of spinning-disk hard drives!<br>
+<p>
+But whether my analysis is accurately pin-pointing the problem or not, with all respect, I think I'll trust Val's word over yours that there *is* a problem :-).<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351847/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351848"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 7:01 UTC (Thu) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/351848">Link</a>]
+    </p>
+    <div class="FormattedComment">
+it's only prohibiting reordering around the barrier, not all reordering.<br>
+<p>
+Val is definantly right about the difficulty in doing it the best possible way, as I noted my approach would run some possibility of the COW causing out of memory problems, but I suspect that it's a 90% solution.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351848/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351853"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 7:35 UTC (Thu) by <b>njs</b> (guest, #40338)
+       [<a href="https://lwn.net/Articles/351853">Link</a>]
+    </p>
+    <div class="FormattedComment">
+But now you're synchronizing all writes by all processes everywhere on the disk, not just the two blocks that actually got written to in this one file somewhere. If apps used that sort of barrier() too often then I think you'd end up with disk throughput that looks like you mounted with -o sync -- very little reordering would ever be allowed.<br>
+<p>
+I guess this is complicated by the question of when dirty blocks get flushed, and in how large batches; maybe it's solvable. But I don't think memory is the main concern, at least.<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351853/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351854"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 7:48 UTC (Thu) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/351854">Link</a>]
+    </p>
+    <div class="FormattedComment">
+you are absolutely correct, that's why I say it's only a 90% solution, but it may be something that gives you most of the benefit for a fraction of the effort.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351854/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor352162"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">an alternative to the application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 11, 2009 15:05 UTC (Fri) by <b>anton</b> (guest, #25547)
+       [<a href="https://lwn.net/Articles/352162">Link</a>]
+    </p>
+    <blockquote>
+write1 write2 write3 barrier write4 write5
+
+<p>will guarantee that writes 1-3 will hit the disk before writes 4 and 5
+but says nothing about the ordering or timeing of the two seperate sets.
+</p></blockquote>
+
+An alternative would be to just extend POSIX logical ordering
+guarantees (as visible by other processes) to the post-recovery state.
+That would mean that the file system would implicitly put a barrier
+between any of the writes in your example.
+
+<p>The question is: how much would this guarantee cost compared to
+what you have in mind?  In a copy-on-write filesystem it could cost
+very little, if anything.  The file system could still perform the
+user writes in any order (all of them, not just a subset), but just
+would never commit a write for which the earlier writes have not been
+performed yet.  For journaled file systems the reasoning is more
+complex, but I believe that in the usual case (writing new data) the
+cost is also very small.
+
+</p><p>The benefits of this guarantee are that it makes programming
+easier, and especially testing easier: If your files are always
+consistent as seen by other processes, they will also be consistent in
+case of a crash or power outage; no need to pull the power plug in
+order to test the crash resilience of your application.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352162/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352174"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">an alternative to the application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 11, 2009 16:29 UTC (Fri) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/352174">Link</a>]
+    </p>
+    <div class="FormattedComment">
+you don't want to put an implicit barrier between any two writes because it would prevent a lot of very useful write merging and reordering (so the performance cost would be very high)<br>
+<p>
+since most writes are less than a sector, multiple writes would be even more expensive for a COW system<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352174/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352192"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">An alternative to the application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 11, 2009 17:06 UTC (Fri) by <b>anton</b> (guest, #25547)
+       [<a href="https://lwn.net/Articles/352192">Link</a>]
+    </p>
+    Barriers certainly don't prevent write merging.  Why would they?  A
+barrier just means that logically later writes are not committed before
+logically earlier writes, but they can become visible at the same
+time.  So you can merge as many writes across barriers as you want.
+
+<p>Ok, your formulation of barriers exclude the same-time option, but
+apart from the lower performance, how could an external observer tell
+whether two logical writes happened one after another or at the same
+time?  Once they are both committed, there is no difference.
+
+</p><p>As my posting explains, they also don't prevent reordering of
+physical data writes, they only restrict which sets of writes are
+committed by a commit.
+
+</p><p>Multiple small writes can be merged together into a large one.
+
+</p><p>BTW, most writes probably happen through libc buffers, and are
+typically larger than one sector (unless most of your files are
+smaller than one sector).
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352192/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352222"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">An alternative to the application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 11, 2009 19:26 UTC (Fri) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/352222">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I have seen a LOT of code that does<br>
+<p>
+work...work<br>
+write one line, or a couple words of a line<br>
+work..work<br>
+write a little more<br>
+etc<br>
+</p><p>
+enforcing a barrier between all of these writes would kill you<br>
+</p><p>
+remember that you don't know the storage stack below you, what you submit as one write may be broken up into multiple writes, and you have no guarantee of what order those multiple writes could be done in (think a raid array where your write spans drives as one example)<br>
+</p><p>
+as a result a barrier needs to prohibit merging across the barrier as well as just reordering across the barrier.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352222/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352450"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">An alternative to the application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 13, 2009 17:46 UTC (Sun) by <b>anton</b> (guest, #25547)
+       [<a href="https://lwn.net/Articles/352450">Link</a>]
+    </p>
+    Code that writes a few characters here and a few characters there
+usually uses the FILE * based interface, which performs
+user-space buffering and then typically performs write() (or somesuch)
+calls of 4k or 8k at a time; just strace one of these programs.
+That's done to reduce the system call overhead.  But even if such
+programs perform a write() for each of the application writes, having
+barriers between each of them does not kill performance, because a
+sequence of such writes can be merged.
+
+<p>Concerning the block device below, if that does not heed the block
+device barriers or other block device ordering mechanisms that the
+file system requests, then you get no guarantee at all of any
+consistency on crash/power failure.  It's not just that merged writes
+won't work, your style of merge-preventing barriers won't work, either, and
+neither will the guarantees that fsync()/fdatasync are supposed to
+provide; that's because all of them require that the block device
+ordering mechanism(s) that the file system uses actually work, and all
+of them will produce inconsistent states if the writes happen in an
+order that violates the ordering requests.  So, if you want any
+consistency guarentees at all, you need an appropriate block device,
+and then you can implement mergeable writes just as well as anything
+else.
+
+</p><p>As for an array where a write spans drives, implementing a barrier
+or other ordering mechanism on the array level certainly requires
+something more involved than just doing barriers on the individual
+block devices, but the device has to provide these facilities, or you
+can forget about crash consistency on that device (i.e., just don't
+use it).
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352450/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352468"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">An alternative to the application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 13, 2009 20:23 UTC (Sun) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/352468">Link</a>]
+    </p>
+    <div class="FormattedComment">
+my point is that enforcing a barrier through all these layers can be expensive (on a multi-disk array you would need to make sure that one disk has completed it's work before submitting the write to the next disk)<br>
+<p>
+this isn't always needed, so don't try to do it for every write (and I've straced a lot of code that does lots of wuite() calls)<br>
+</p><p>
+do it when the programmer says that it's important. 99+% of the time it won't be (the result is not significantly more usable after a crash with part of the file if it's not all there, or this really is performance sensitive enought to risk it)<br>
+</p><p>
+you would be amazed at the amount of risk that people are willing to take to get performance. talk to the database gurus at MySQL or postgres about the number of people they see disabling f*sync on production databases in the name of speed.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352468/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352743"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">An alternative to the application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 14, 2009 22:16 UTC (Mon) by <b>anton</b> (guest, #25547)
+       [<a href="https://lwn.net/Articles/352743">Link</a>]
+    </p>
+    Fortunately writes on the file system level can be merged across file
+system barriers, resulting in few barriers that have to be passed to
+the block device level.  So there is no need to pass a block device
+barrier down for every file system barrier.
+
+<p>And since it is possible to implement these implicit barriers between each write efficiently (by merging writes), why burden
+programmers with inserting explicit file system barriers?  Look at how
+long the Linux kernel hackers needed to use block device barriers in
+the file system code.  Do you really expect application developers to
+do it at all?  And if they did, how would they test it?  This has the
+same untestability properties as asking application programmers to use
+fsync.
+
+</p><p>Concerning the risk-loving performance freaks, they will use the
+latest and greatest file system by Ted T'so instead of one that offers
+either implicit or explicit barriers, but of course they will not use
+fsync() on that file system:-).
+
+</p><p>BTW, if you also implement block device writes by avoiding
+overwriting live sectors and by using commit sectors, then you can
+implement mergeable writes at the block device level, too (e.g., for
+making them cheaper in an array).  However, the file system will not
+request a block device barrier often, so there is no need to go to such complexity
+(unless you need it for other purposes, such as when your block device
+is a flash device).
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352743/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor353507"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">An alternative to the application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 20, 2009 5:22 UTC (Sun) by <b>runekock</b> (subscriber, #50229)
+       [<a href="https://lwn.net/Articles/353507">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; Fortunately writes on the file system level can be merged across file system barriers, resulting in few barriers that have to be passed to the block device level.</font><br>
+<p>
+But what about eliminating repeated writes to the same place?  Take this contrived example:<br>
+</p><p>
+repeat 1000 times:<br>
+write first byte of file A<br>
+write first byte of file B<br>
+</p><p>
+A COW file system may well be able to merge the writes, but it would require a lot of intelligence for it to see that most of the writes could actually be skipped.  And a traditional file system would be even worse off.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353507/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor353537"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">An alternative to the application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 20, 2009 18:38 UTC (Sun) by <b>anton</b> (guest, #25547)
+       [<a href="https://lwn.net/Articles/353537">Link</a>]
+    </p>
+    For a copy-on-write file system that example would be easy: Do all the
+writes in memory (in proper order), and when the system decides that
+it's time to commit the stuff to disk, just do a commit of the new
+logical state to disk (e.g., by writing the first block each of file A
+and file B and the respective metadata to new locations, and finally
+a commit sector that makes the new on-disk state visible.
+
+<p>An update-in-place file system (without journal) would indeed have
+to perform all the writes in order to have the on-disk state reflect
+one of the logical POSIX states at all times (assuming that there are
+no repeating patterns in the two values that are written; if there are, it is theoretically possible to skip the writes between two equal
+states).
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353537/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor352268"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">an alternative to the application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 12, 2009 0:39 UTC (Sat) by <b>spitzak</b> (guest, #4593)
+       [<a href="https://lwn.net/Articles/352268">Link</a>]
+    </p>
+    <div class="FormattedComment">
+barriers do not force write ordering. If you do "write 1, barrier, write 2", all that is required is that anybody looking at the file will see *one* of these three states: nothing, write 1, or write 1+2. But that does not imply that all three states have to somehow exist, if only nothing,write1+2 ever exist, you have fulfilled the requirements.<br>
+<p>
+An actual implementation may be "allocate temporary space, write 2, write 1, make the file point at temporary space". Notice that write 2 is done BEFORE write 1, but we have fulfilled the requirements of barrier.<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352268/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor351791"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 1:43 UTC (Thu) by <b>ras</b> (subscriber, #33059)
+       [<a href="https://lwn.net/Articles/351791">Link</a>]
+    </p>
+    <div class="FormattedComment">
+The problem can be stated simply enough.  User land application writers need to be able to do atomic updates, and (orthogonally) for way for information to be sure on disk single way that works across all file systems without special libraries or having to change their code.  That means those interfaces must be in POSIX, and with the added complication that all existing file systems we have, and all those we can envisage in the future can implement them efficiently.<br>
+<p>
+Maybe write barriers are just the interface we need, maybe not.  What we need is a Paul McKenney to do for this problem what Paul did for a very similar problem in multi CPU memory architectures.  He wrote the RCU stuff and in the process became intimately familiar for the problem and all possible solutions.  He then worked for years to get a standard set of functions that solved the problem to be added to the C standard library.  Where is your white knight in shining armour when you need them?  Who knows, maybe our knight will be female for a change.<br>
+</p><p>
+One thing hasn't changed though, and that is the ability of the female of our special to create work.  Now I feel compelled to learn about Featherstich.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351791/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351894"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 11:18 UTC (Thu) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/351894">Link</a>]
+    </p>
+    <blockquote>
+He then worked for years to get a standard set of functions that solved the problem to be added to the C standard library.
+</blockquote>
+Obviously I missed something, but userspace RCU isn't in glibc and certainly isn't in POSIX.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351894/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351909"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 12:19 UTC (Thu) by <b>ras</b> (subscriber, #33059)
+       [<a href="https://lwn.net/Articles/351909">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; Obviously I missed something, but userspace RCU isn't in glibc </font><br>
+<font class="QuotedText">&gt; and certainly isn't in POSIX.</font><br>
+<p>
+Paul describes his efforts so far here: <a href="http://www.rdrop.com/users/paulmck/scalability/paper/CPP-ThreadsETB.2008.02.25a.pdf">http://www.rdrop.com/users/paulmck/scalability/paper/CPP-...</a><br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351909/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351926"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 13:37 UTC (Thu) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/351926">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Ah, thanks, great stuff. I didn't realise the 'threads cannot be implemented in a library' standardization fix had got as far as this. I'd encountered bits of this (quick_exit()), but not realised why they were useful.<br>
+<p>
+(And Paul's slides are the best explanation of the problem I've ever seen. Slide 26 is particularly good ;} )<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351926/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor351895"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">what's needed is a application barrier() call</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 11:19 UTC (Thu) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/351895">Link</a>]
+    </p>
+    <div class="FormattedComment">
+btw, even I found your female crack to be cringeworthy, and I'm male. Less of the stupid sexist jokes, please.<br>
+<p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351895/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor351684"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 18:26 UTC (Wed) by <b>iabervon</b> (subscriber, #722)
+       [<a href="https://lwn.net/Articles/351684">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I think you're a bit off about the origin of the rename() pattern; I don't think it's normally about worrying about system crashes (because, historically, when your system crashes, you lose everything that hasn't been backed up to tape; and POSIX doesn't say that, during a system crash, the kernel won't simply write garbage over all of the data that was carefully written to permanent storage with fsync() anyway). It's about two things: <br>
+<p>
+1) concurrent readers; they shouldn't sometimes see an /etc/passwd without half of the users, a mail spool without half of the messages, etc. It would be a problem if, when any user changes their password, there's a chance that other users will get random login failures. It would also be a problem if, which making modifications to messages in your inbox, a program that just looked at the state of the inbox might see messages disappear only to reappear a little while afterwards. Concurrent reads also include that all-important tape backup, which really really shouldn't catch some intermediate state of /etc/passwd.<br>
+</p><p>
+2) application crashes; if an application is trying to make a modification to a file, and it is forced to exit before it is done, the old version should be left there. The application may be forced to exit by a segfault (bug in the application), being terminated by the user, being terminated by the system, a clean system shutdown or filesystem umount/remount, etc. The application may also, due to a bug, go into an infinite loop such that it would never actually write the rest of the unchanged content, and would have to be killed such that a different program can get exclusive control over writing it.<br>
+</p><p>
+Unlike the system crash case, these cases are both required to have particular, internally visible, behaviors by POSIX, and POSIX conformance tests have something to test. Also, applications can (and sometimes do) get regression testing which tries to ensure that they work in conditions which would provoke bad behavior. Unless people develop applications on systems which panic frequently, they're not likely to consider the system crash case, probably won't do anything special in order to make sure that it behaves in some way they want, and certainly won't test that it actually does behave the way they expect. (In fact, POSIX notes that any test involving a system crash can be treated as a quality-of-implementation issue rather than a correctness issue.)<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351684/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor351708"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 18:36 UTC (Wed) by <b>alexl</b> (subscriber, #19068)
+       [<a href="https://lwn.net/Articles/351708">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I think there is some basic misunderstanding from a lot of kernel people on exactly why applications use rename() to save a file. It does not (at least did not initially) have anything to do with what happens on a system crash.<br>
+<p>
+Instead, its all about fixing race conditions. What if two applications write to the same file at the same time, or one reads a file at the same time it is replaced. If i use rename to save I am guaranteed by the posix specification (unless the system crashes) that any reader of the saved filename at *any* time, atomically gets either the full old file, or the full new file. There is never any partial or non-existing file. Similarly, if two apps write the file you only ever get one of the two files written, never some mixup of them.<br>
+</p><p>
+So, the use of rename is basic in how we replace a file. This means everyone is doing it, and it seems natural that filesystems would use the knowledge of this pattern to efficiently and safely implement crash-safe file replacement. Such a thing is not guaranteed by POSIX, but should probably be guaranteed by "good implementations" of unix filesystems. Especially since the safe alternative (fsync) is far less performant due to its semantics being more than we need.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351708/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351716"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 19:19 UTC (Wed) by <b>JoeBuck</b> (subscriber, #2330)
+       [<a href="https://lwn.net/Articles/351716">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I strongly endorse the parent comment.  This is how I was taught to write robust Unix software back in the 80s (talk into the good ear, sonny), and the reason had nothing to do with the accidental properties of the ext3 file system, which had not yet been invented.  I recall discussing what I thought were oddities of the elm mailer with its author, Dave Taylor, and he explained all the paranoid hoops he jumped through to try to assure that the user would not lose his/her mail despite application crashes, disk-full conditions and the like.  The rename pattern was a part of the solution, along with lots of consistency checking.<br>
+<p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351716/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor351738"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 20:20 UTC (Wed) by <b>job</b> (subscriber, #670)
+       [<a href="https://lwn.net/Articles/351738">Link</a>]
+    </p>
+    <div class="FormattedComment">
+My though exactly. A rename is first and foremost something that guarantees atomicity, not file system consistency. The latter is a (welcome) side effect that (Linux) programs have come to rely on.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351738/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor351758"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 22:40 UTC (Wed) by <b>njs</b> (guest, #40338)
+       [<a href="https://lwn.net/Articles/351758">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I would be shocked if you could find a filesystem developer who isn't aware of exactly what POSIX requires of rename (i.e. atomicity with respect to other processes viewing the same fs concurrently), and why it works the way it does.<br>
+<p>
+Our standards keep rising, though, and these days people actually care about what happens to data over crashes -- and POSIX's primitives *suck* for this, unless you are writing a giant database with dedicated storage.<br>
+</p><p>
+In this discussion, whenever kernel folks talk about developers coming to depend on rename's atomicity, I'm pretty sure they're talking about its atomicity with respect to crashes. (For instance, I believe Subversion's backend format uses atomic-rename for reliability over crashes, because fsync is just untenable.)<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351758/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351802"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">crash vs. power drop</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 2:15 UTC (Thu) by <b>ncm</b> (subscriber, #165)
+       [<a href="https://lwn.net/Articles/351802">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I suspect that many readers, perhaps most, are equating "crash" with "power drop".  <br>
+<p>
+How often do any of us see crashes on production systems, nowadays?  Things being the way they are, power drops are overwhelmingly more likely on your typical desktop or rack installation, just because a UPS is an extra expense and crippling data loss isn't especially likely even without.  "All of the above" is meaningful only if power doesn't drop unexpectedly, and, sadly, that needs to be repeated every time.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351802/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351836"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">crash vs. power drop</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 6:12 UTC (Thu) by <b>njs</b> (guest, #40338)
+       [<a href="https://lwn.net/Articles/351836">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Good point, though with two caveats: 1) Even if, as you've claimed, power drops can cause corruption to sectors that are in the middle of being written (it seems plausible), it isn't clear to me how frequently this happens. Your average drive probably spends most of its time seeking, for instance. 2) In principle, there's no reason a fs couldn't maintain guarantees even over events like that, though I don't know whether any current ones do.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351836/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352006"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">crash vs. power drop</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 17:50 UTC (Thu) by <b>ncm</b> (subscriber, #165)
+       [<a href="https://lwn.net/Articles/352006">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Scragged sectors are a risk, but not the main risk, of power drops.  What's worse is blocks still in buffer RAM on the drive that the system thought were already physically on disk, because the drive told it so.  <br>
+<p>
+<a href="http://lwn.net/Articles/352002/">http://lwn.net/Articles/352002/</a><br>
+</p><p>
+When the drives lie to the file system, the file system can't guarantee anything.  Most drives (i.e. the ones you have) lie.  Drives that don't lie cost way more, and are slower; it's much cheaper to add some battery backup, and even some redundancy, than to buy the expensive drives.  There's no point in discussing fine points of data ordering if you haven't got one or the other.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352006/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352109"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">crash vs. power drop</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 11, 2009 6:27 UTC (Fri) by <b>zmi</b> (guest, #4829)
+       [<a href="https://lwn.net/Articles/352109">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; Second, more subtle but probably more important, drives lie about what is</font><br>
+physically on disk.<br>
+<p>
+That's why in a RAID you really *must* turn off the drive's write cache.<br>
+I've tried to explain that in the XFS FAQ:<br>
+<a href="http://xfs.org/index.php/XFS_FAQ#Q:_What_is_the_problem_with_the_write_cach">http://xfs.org/index.php/XFS_FAQ#Q:_What_is_the_problem_w...</a><br>
+and also in the questions below that one.<br>
+</p><p>
+Short: I've got a new 2TB WD drive with 64MB cache, we intend to use them<br>
+in a RAID. Take 16 of these drives, it adds to 1024MB (1GB) of write cache.<br>
+So in the worst situation, <br>
+1) you've got an UPS, but your power supply fails and the PC/server is out<br>
+of power<br>
+2) drives have their caches full, so up to 1GB of data is lost, where the<br>
+filesystem believed they are on disk. There's a *very* high chance that<br>
+lots of metadata is included in the cached writes.<br>
+3) each of the 16 drives could write "half sectors", effectively destroying<br>
+the previous and the actual content.<br>
+</p><p>
+In all this discussion, it would have been worth noting that if you really<br>
+*care* about your data, you *must* turn off the drive write cache. Yes,<br>
+power failures are not so often in countries with good power supply. Still,<br>
+I use an UPS and in the last half year, had<br>
+a) my daughter playing around turning the power of the server off<br>
+b) a dead power supply in my workstation<br>
+and so, even with an UPS, "drive write cache off" is a must. Simply put a<br>
+hdparm -W0 /dev/sda<br>
+in your boot scripts. <br>
+</p><p>
+Note that still this only helps in 1) and 2), but for problem 3) there's<br>
+nothing anybody but the disk manufacturers can do. I must say that I have<br>
+no evidence of ever having had that problem somewhere. It might be that<br>
+happened when there are "strange filesystem problems" after a crash, but<br>
+you can't tell for sure.<br>
+</p><p>
+As for the rename: Really, there should only ever be the chance of having<br>
+either the old file or the new one, and the filesystem should care about<br>
+this even for crash situations.<br>
+</p><p>
+Note: In Linux you can tune writeback behaviour in /etc/sysctl.conf:<br>
+# start writeback at around 16MB, max. 250MB<br>
+vm.dirty_background_bytes = 16123456<br>
+vm.dirty_bytes = 250123456<br>
+# older kernels had this:<br>
+#vm.dirty_background_ratio = 5<br>
+#vm.dirty_ratio = 10<br>
+# write blocks to disk after 1 second (default: 3000ms)<br>
+vm.dirty_expire_centisecs = 1000<br>
+vm.dirty_writeback_centisecs = 100<br>
+</p><p>
+Note that dirty_bytes/dirty_ratio is to block new writes once the cache has<br>
+that many bytes to write. On systems with 8GB RAM or more, you could end up<br>
+having gigabytes of disk cache.<br>
+</p><p>
+Sorry for putting all in one post, but I hope it helps people who care<br>
+about their data to have some tunings to start with.<br>
+</p><p>
+mfg zmi<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352109/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352133"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">crash vs. power drop</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 11, 2009 11:40 UTC (Fri) by <b>Cato</b> (subscriber, #7643)
+       [<a href="https://lwn.net/Articles/352133">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Thanks for explaining all that.  <br>
+<p>
+On the topic of writing 'half sectors' due to a power drop: the author of <a href="http://lwn.net/Articles/351521/">http://lwn.net/Articles/351521/</a> has done quite a lot of tests on various hard drives, and generally found that they usually don't do this, though some instances have done.  He has a useful program that can test any drive for this behaviour, though it's mostly intended to test for out of order writes due to caching - I believe only some drives lie about this.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352133/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor352554"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">crash vs. power drop</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 14, 2009 14:13 UTC (Mon) by <b>nye</b> (guest, #51576)
+       [<a href="https://lwn.net/Articles/352554">Link</a>]
+    </p>
+    <div class="FormattedComment">
+This is why barriers *should* be a good thing.<br>
+<p>
+If all you care about is benchmark results, there's an obvious incentive for the drive to claim falsely that some data has been physically written to disk.<br>
+</p><p>
+On the other hand, there's far less incentive to lie about barriers. If all you're saying is that '*if and when* this data has been written, then that other data will have also been written', you can still happily claim that it's all done when it isn't, without breaking the barrier commitment.<br>
+</p><p>
+When you have that commitment, it's possible to build a transaction system upon it which works even under the assumption that the drive will lie. You're not going to achieve the full benchmark speed, but it's going to be far better than turning off the cache.<br>
+</p><p>
+Of course, whether drive manufacturers see it that way is another matter. Is there any data on whether drives actually honour write barriers? It would be interesting to see if there are indeed drives that aren't expensive enough to report accurately on when data has been written, but still honour the barrier request.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352554/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352560"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">crash vs. power drop</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 14, 2009 15:06 UTC (Mon) by <b>ncm</b> (subscriber, #165)
+       [<a href="https://lwn.net/Articles/352560">Link</a>]
+    </p>
+    <div class="FormattedComment">
+This is where Scott Adams's "Which is more likely" principle is useful.  We just frame the question, thus: <br>
+<p>
+Drive manufacturer A can sell almost equally as many drives made this way as that way, but "that way" costs more development time and might make it come out a little slower in benchmarks.  Some purchase decisions depend on claiming it's made "that way".  The manufacturer can make it "that way" or just say it is, but not.  Which is more likely?<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352560/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352565"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">crash vs. power drop</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 14, 2009 16:12 UTC (Mon) by <b>nye</b> (guest, #51576)
+       [<a href="https://lwn.net/Articles/352565">Link</a>]
+    </p>
+    <div class="FormattedComment">
+A fair point, but in all things there's a strong economic incentive to claim that a product does something it doesn't, if that will make more people buy it, and yet most things don't claim do do something which is simply factually not true.<br>
+<p>
+Usually when it's a feature that either works or doesn't - so it's not a subjective measurement - it's likely that a product does at least technically do what it says it does.<br>
+</p><p>
+Presumably the argument is that the manufacturers aren't specifically claiming a particular feature, but the disk is behaving in a particular way that just happens to be not what the user expected - so they're not technically lying. This does seem to weaken the idea that they're doing it to improve the chances of people buying it though, if they're not stating it as a feature.<br>
+</p><p>
+Just out of interest, I've just spent a while trying to see if I can find out what the difference is between the Samsung HE502IJ and HD502IJ - two drives which are identical on paper, but one is sold as 'RAID-class'. Neither are even remotely expensive enough not to lie about their actions, so what's the difference? Well, some forum post claims that one has a 'rotational vibration sensor', whatever that means.<br>
+</p><p>
+In conclusion, people who try to sell you things are all liars and cheats, and I intend to grow a beard and live out the rest of my days as a hermit, never having to worry about these things again. Perhaps I shall raise yaks.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352565/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352804"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">crash vs. power drop</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 15, 2009 12:52 UTC (Tue) by <b>Cato</b> (subscriber, #7643)
+       [<a href="https://lwn.net/Articles/352804">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I believe that TLER (time limited error recovery) is one characteristic of enterprise drives - simply means fewer retries so that the RAID controller or OS gets a drive failure more quickly, and knows to use redundancy to complete the I/O.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352804/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor352802"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">crash vs. power drop</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 15, 2009 12:49 UTC (Tue) by <b>Cato</b> (subscriber, #7643)
+       [<a href="https://lwn.net/Articles/352802">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Maybe the best way round this is to make sure that performance benchmarks always include a 'reliability benchmark' that detects drives which are lying about writes to hard disk.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352802/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor351859"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 8:24 UTC (Thu) by <b>alexl</b> (subscriber, #19068)
+       [<a href="https://lwn.net/Articles/351859">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I also think its unlikely that kernel people are not aware of the atomicity of rename. However, almost every post, including this one, avoid mentioning why rename is actually used, and rather use handwavy notions about application authors using rename because somehow we got hooked on it via ext3 behaviour, which is far from the truth.<br>
+<p>
+I'm all for a reasonable API addition to implement O_PONIES, and would implement support for it in the stuff i work on (glib, gio, etc) the second it was availible. However, all existing applications already use rename() to do atomic renames() for reasons unrelated to system crashes, so why not just make all these applications work without additional changes? At little cost in performance.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351859/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351868"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 8:52 UTC (Thu) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/351868">Link</a>]
+    </p>
+    <div class="FormattedComment">
+define 'a little cost in performance' that you (and everyone else)would be willing to loose.<br>
+<p>
+doing a fsync on ext3 (what the ext maintainers believe is nessasary to get to the disk to be safe) can take several seconds. if you want a rename to provide that sort of guarantee you need to be willing to pay that sort of cost for every rename.<br>
+</p><p>
+ext3 never provided the guarantees that people think it did. it just happened to work if you didn't crash too soon after doing a rename.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351868/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351869"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 9:04 UTC (Thu) by <b>alexl</b> (subscriber, #19068)
+       [<a href="https://lwn.net/Articles/351869">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Here we go again... <br>
+<p>
+NO NO NO NO. We do not need/want the file to be fsynced. <br>
+</p><p>
+Why do people keep repeating this fallacy? We all know that fsync is expensive, and don't want to use it, or something with similar semantics.<br>
+</p><p>
+What we want is something that gives us the natural behavior of rename() replace (atomically get either the old or the new file) and extend it to a system crash. This does not imply a fsync, but rather that the data for the new file is on disk before the metadata is on disk. This is much cheaper than an fsync because it does not require the data to be written immediately, but rather that we have to delay the write of the metadata until the data has been written. Thus "little cost in performance", at least in relation to fsync.<br>
+</p><p>
+And then you write "ext3 never provided the guarantees that people think it did" when my whole point has been about how everyone gives this reason for why people use rename when its not actually the reason! I am well aware that rename() does not give me system crash safety, I use it for other reasons. However, I *would* like it if this common operation that has been in use for decades before ext3 was written also was recognized by ext3 and made even more useful (even though this is in no way guaranteed by POSIX).<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351869/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351993"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 16:37 UTC (Thu) by <b>nye</b> (guest, #51576)
+       [<a href="https://lwn.net/Articles/351993">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I have noticed a tendency in this discussion (I don't mean the responses to this article, but the overall discussion) that the 'POSIX-fundamentalist' faction is unwilling or unable to accept that saying 'I want A to happen iff B happens' is *not* the same as saying 'I want a guarantee that A and B happen'.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351993/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor353287"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 17, 2009 20:38 UTC (Thu) by <b>HelloWorld</b> (guest, #56129)
+       [<a href="https://lwn.net/Articles/353287">Link</a>]
+    </p>
+    <div class="FormattedComment">
+If you want both the write and the rename to happen, you'd have to fsync() the file *and* the directory. Which means that the open(), write(), fsync(the_file), close(), rename() sequence provides exactly the semantics you describe. <br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353287/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor353553"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 21, 2009 1:52 UTC (Mon) by <b>efexis</b> (guest, #26355)
+       [<a href="https://lwn.net/Articles/353553">Link</a>]
+    </p>
+    <div class="FormattedComment">
+That's the point though... that's /not/ what people in the discussion want, or are asking for.<br>
+<p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353553/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor353577"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 21, 2009 13:45 UTC (Mon) by <b>nye</b> (guest, #51576)
+       [<a href="https://lwn.net/Articles/353577">Link</a>]
+    </p>
+    <div class="FormattedComment">
+*speechless*<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353577/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor353228"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 17, 2009 16:01 UTC (Thu) by <b>forthy</b> (guest, #1525)
+       [<a href="https://lwn.net/Articles/353228">Link</a>]
+    </p>
+    <p>I really wonder why all this "data=ordered" stuff is said to cost
+performance.  If implemented right, it must improve performance.  All you
+want to do is the following:  Push data into the write buffer.  Push
+metadata into the metadata write buffer.  Push freed blocks into the freed
+blocks buffer (but don't actually free them).  If your buffers are full,
+there's no free block around any more, or a timer expires, do the
+following:</p>
+
+<ol><li>Write out data.</li>
+<li>Write out metadata (first to journal, then to the actual file
+system).</li>
+<li>Actually free the blocks from the freed block list</li>
+</ol>
+
+<p>You only have to write data once - new files go to newly allocated
+blocks which don't appear in the metadata when you write them (they are
+still marked as free in the on-disk data).  For files with in-place
+writes, we usually don't care (there are many race conditions for writing
+in-place, so the general usage pattern is not to do that if you care about
+your data).  For crash-resilient systems, you want to write your metadata
+twice (once into a journal, once into the file system), order it (ordered
+metadata updates), or use a COW/log structured file system, where you
+write a new file system root (snapshot) on every update round.  While you
+are writing data from your buffers, open up new buffers for the OS to be
+used as buffers for the next round (double-buffering strategy).  This
+double buffering should be a common part of the FS layer, because it will
+be used in all major file systems.</p>
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353228/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor353245"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 17, 2009 16:41 UTC (Thu) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/353245">Link</a>]
+    </p>
+    <div class="FormattedComment">
+the problem with your approach is that various pieces (including the hard drive itself) will re-order anything in it's buffer to shorten the total time it takes to get everything in the buffer to disk.<br>
+<p>
+that is why barriers are needed to tell the device not to reorder across the buffer.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353245/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor351740"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 20:21 UTC (Wed) by <b>kjp</b> (subscriber, #39639)
+       [<a href="https://lwn.net/Articles/351740">Link</a>]
+    </p>
+    <div class="FormattedComment">
+The article was great other than the extremely fast and loose comment about 3.6.30 and writeback.  From the linked article:<br>
+<p>
+"Ted Ts'o has mitigated that problem somewhat, though, by adding in the same safeguards he put into ext4. In some situations (such as when a new file is renamed on top of an existing file), data will be forced out ahead of metadata."<br>
+</p><p>
+Please clarify or contradict that before you give us poor app developers any more heart trouble... thanks.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351740/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351754"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 21:08 UTC (Wed) by <b>vaurora</b> (guest, #38407)
+       [<a href="https://lwn.net/Articles/351754">Link</a>]
+    </p>
+    <div class="FormattedComment">
+My understanding is that the patches you are talking about only decrease the likelihood of the rename() data loss problem outside of ext3 with data=ordered mode.  E.g.:<br>
+<p>
+commit e7c8f5079ed9ec9e6eb1abe3defc5fb4ebfdf1cb<br>
+Author: Theodore Ts'o &lt;tytso@mit.edu&gt;<br>
+Date:   Fri Apr 3 01:34:49 2009 -0400<br>
+</p><p>
+    ext3: Add replace-on-rename hueristics for data=writeback mode<br>
+    <br>
+    In data=writeback mode, start an asynchronous flush when renaming a<br>
+    file on top of an already-existing file.  This lowers the probability<br>
+    of data loss in the case of applications that attempt to replace a<br>
+    file via using rename().<br>
+</p><p>
+---<br>
+</p><p>
+If you aren't sure, I recommend using ext3 with the explicit data=ordered option until you've had the opportunity to sit down and understand the data=writeback and/or ext4 semantics.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351754/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor351741"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 20:33 UTC (Wed) by <b>kjp</b> (subscriber, #39639)
+       [<a href="https://lwn.net/Articles/351741">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Also, in reply to "no one ever, ever wrote "creat(); write(); close(); rename();" and hoped they would get an empty file if the system crashed during the next 5 minutes. "<br>
+<p>
+I have an example of when this actually can be useful (however to be clear, I am very much in favor of rename being safe by default).<br>
+</p><p>
+A web interface needs to display a text dump from a daemon to a user.  The daemon writes out /tmp/daemon-dump.tmp, and renames it to /tmp/daemon-dump.txt.  It does this since concurrent users in the web site may still be accessing the previous version.  However, on a crash it doesn't matter what happens to this file since it is always refreshed by a web process before starting display.<br>
+</p><p>
+In a nutshell, the rename here is for IPC concurrency only and not related to any crash consistency.  However, it is FAR more sane to add a fcntl flag to say (O_EAT_MY_DATA_SPEED_TOO_IMPORTANT) for these speed freaks than brick files or entire computers....<br>
+</p><p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351741/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351746"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 21:00 UTC (Wed) by <b>jzbiciak</b> (subscriber, #5246)
+       [<a href="https://lwn.net/Articles/351746">Link</a>]
+    </p>
+    <p>I posit that there should rarely be a good reason to run fsck on<tt> /tmp</tt>.  Keeping the contents of<tt> /tmp </tt>across a crash may be useful for forensics (ie. "why did we crash?") and maybe rescuing a couple things, but otherwise you should be able to jettison it if there are any issues with the filesystem holding it, so long as<tt> /tmp </tt>is in its own filesystem.  (That said, my RHEL4 box has a<tt> /tmp/lost+found</tt>.  Hmmm.)</p>
+<p>I'd further posit that nobody <i>hopes</i> for the empty file across a system crash.  (If they did, they'd<tt> unlink() </tt>it just after opening it and before writing to it so that the file effectively evaporates on a crash.  Ok, it might show up in<tt> lost+found</tt>, but only root can play there.)  In your example, the programmer simply doesn't care.  The programmer hopes for peak performance and doesn't really care if that means the file has garbage if the system crashes.  If the contents were perfectly preserved without slowing the program down, I doubt the programmer in your example would care.</p>
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351746/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor351753"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 21:03 UTC (Wed) by <b>sbergman27</b> (guest, #10767)
+       [<a href="https://lwn.net/Articles/351753">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; Keeping the contents of /tmp across a crash may be useful for forensics (ie. "why did we crash?") and maybe rescuing a couple things, </font><br>
+<p>
+But doing so is far more likely to cause problems than to help solve them.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351753/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor351747"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 22:20 UTC (Wed) by <b>iabervon</b> (subscriber, #722)
+       [<a href="https://lwn.net/Articles/351747">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Actually, systems that want that probably really want to mount tmpfs on /tmp. After a system crash, they could be sure that the directory accounts for all of the changes and the exact order of operations, including the contents being wiped out after all of those operations. In your example, there's no need to write the file to disk at all, except to free up RAM.<br>
+<p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351747/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor351872"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 8:58 UTC (Thu) by <b>lysse</b> (guest, #3190)
+       [<a href="https://lwn.net/Articles/351872">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; O_EAT_MY_DATA_SPEED_TOO_IMPORTANT</font><br>
+<p>
+... O_PONYCRAP ?<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351872/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor353231"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 17, 2009 16:04 UTC (Thu) by <b>forthy</b> (guest, #1525)
+       [<a href="https://lwn.net/Articles/353231">Link</a>]
+    </p>
+    <p>O_RACE_HORSE | O_ON_STEROIDS</p>
+
+<p>That's obvious, isn't it?</p>
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353231/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor351951"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 15:04 UTC (Thu) by <b>MisterIO</b> (guest, #36192)
+       [<a href="https://lwn.net/Articles/351951">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I agree with the article. It also seems a bit strange that the kernel developers, who are famous for criticizing the gcc folks for their c-standard-obedient "insane" optimizations, tend then to become "pedantic POSIX-quoting fundamentalists".<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351951/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor351988"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">The question of course is...</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 10, 2009 16:28 UTC (Thu) by <b>ikm</b> (subscriber, #493)
+       [<a href="https://lwn.net/Articles/351988">Link</a>]
+    </p>
+    <div class="FormattedComment">
+How does one get real, live pony?<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351988/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor352092"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX ain't what you think it is....</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 11, 2009 0:48 UTC (Fri) by <b>faramir</b> (subscriber, #2327)
+       [<a href="https://lwn.net/Articles/352092">Link</a>]
+    </p>
+    <div class="FormattedComment">
+The author states that the problem with POSIX is that it codifies errors.  That is probably true, but I believe the author has not accurately relaying what POSIX has codified either.  In particular, the case of making hard links to directories is exaggerated.  I don't have access to the 1988 document at the moment, but the current version treats the issue as follows:<br>
+<p>
+...If path1 names a directory, link() shall fail unless the process has appropriate privileges and the implementation supports using link() on directories...<br>
+</p><p>
+So what does that mean?  It says that IF the process is sufficiently privileged (traditionally running as root) AND the implementation elects to do so THEN it is not an error for a link to actually be created for a directory.  Any program that actually wants to work properly on all POSIX system can NEVER require such an operation to work even if running as root.  That's a pretty lukewarm endorsement of the functionality.<br>
+</p><p>
+You might ask why it's even in there at all.  The original UNIX systems (all version) had no atomic mkdir() system call.  You used mknod() to make a TOTALLY empty directory and then used link() to create the standard . and .. entries in the newly created directory.  The mkdir program was setuid root and if you wanted to create a directory from within a program<br>
+you had to do a fork() and exec() the program.  Specifying link() in this way allowed UNIX versions which had traditionally made directories this way to get POSIX certification while in no way encouraging implementations of this type.  Frankly, I think that was a good decision.  Leniency for historical practice, but encouraging more reasonable implementations in the future.  Users don't run their own programs as root so there was never any danger of people making directory loops to screw up your system.<br>
+</p><p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352092/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor352115"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Directory hard links</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 11, 2009 6:40 UTC (Fri) by <b>salimma</b> (subscriber, #34460)
+       [<a href="https://lwn.net/Articles/352115">Link</a>]
+    </p>
+    <blockquote>... a number of warts revealed themselves over time, not all of which were removed before the interface was codified into the POSIX specification. One example is directory hard links, which permit the creation of a directory cycle - a directory that is a descendant of itself - and its subsequent detachment from the file system hierarchy, resulting in allocated but inaccessible directories and files.</blockquote>
+
+How ironic that Apple chose to implement this feature in HFS+ ...
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352115/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352216"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Directory hard links</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 11, 2009 19:06 UTC (Fri) by <b>foom</b> (subscriber, #14868)
+       [<a href="https://lwn.net/Articles/352216">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Apple did forbid the creation of recursive directory hard links, however.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352216/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor352264"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Directory hard links</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 12, 2009 0:21 UTC (Sat) by <b>cras</b> (guest, #7000)
+       [<a href="https://lwn.net/Articles/352264">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Speaking of HFS+ and hard links.. Last I heard they were implemented in a way that required <br>
+adding a file (or link) to some special hidden directory. Once you had done some thousand hard <br>
+links the performance became more and more horrible until the system was rebooted (the directory <br>
+gets wiped at startup). I wonder if that ever gets fixed.<br>
+<p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352264/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor352266"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">truncate()</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 12, 2009 0:26 UTC (Sat) by <b>cras</b> (guest, #7000)
+       [<a href="https://lwn.net/Articles/352266">Link</a>]
+    </p>
+    <div class="FormattedComment">
+This is actually the first time I consciously noticed the existence of truncate() call. I must have seen <br>
+it before when doing "man ftruncate", but it never registered to my mind. Is it actually used by some <br>
+real programs? In my over 10 years of programming on Linux I've never had a need for it. If <br>
+anything it sounds potentially dangerous to use (TOCTOU race).<br>
+<p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352266/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor352269"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 12, 2009 0:46 UTC (Sat) by <b>spitzak</b> (guest, #4593)
+       [<a href="https://lwn.net/Articles/352269">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Yay! Finally some sense in talking about this. Please everybody understand what this article is saying, and if you disagree realize you are wrong.<br>
+<p>
+I would like to go further and really extend POSIX to get the atomic operations everybody really wants. I would actually redefine the flags sent by creat() (O_CREAT|O_WRONLY|O_TRUNC) to be this "ponies" flag with the following rules:<br>
+</p><p>
+1. If the file already exists, then other programs either see the old file or the contents of the new file when close() was called on it.<br>
+</p><p>
+2. If the file does not already exist then other programs either see no such file or they see the file with the contents when close() was called on it.<br>
+</p><p>
+3. If the program crashes or exits without calling close() then it is exactly like nothing ever happended.<br>
+</p><p>
+3a. It may be useful to add some new call that "forgets" the file, ie it is "closed" in the same way as when the program exits.<br>
+</p><p>
+This will avoid the need to use a temporary file and then rename it to get real atomic writes. And it would not use a new flag, because all programs using the creat() flags are already acting exactly like it works this way.<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352269/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352279"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 12, 2009 3:50 UTC (Sat) by <b>cras</b> (guest, #7000)
+       [<a href="https://lwn.net/Articles/352279">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I don't think close() is the proper checkpoint here. I think it'll already break POSIX guarantees, and <br>
+it's quite likely that it'll break assumptions by some programs. Not all programs close() the file once <br>
+they're done with it. After all, there are less syscalls to do if you want to append a few lines to a file <br>
+you already once wrote.<br>
+<p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352279/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352643"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 14, 2009 18:20 UTC (Mon) by <b>spitzak</b> (guest, #4593)
+       [<a href="https://lwn.net/Articles/352643">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I don't think POSIX guarantees *anything* until close() is called, so anybody relying on seeing what is there is relying on non-POSIX behavior.<br>
+<p>
+That said, I'm fairly certain that any lseek() on the file can be a trigger that this behavior is not wanted and that the partial file should become visible at that point. Of course no guarantee until close() is called...<br>
+</p><p>
+This has no effect on pipes. So at absolute worst, you can write a logfile writer, so instead of "foo &gt; logfile" you write "foo | write-old-style logfile".<br>
+</p><p>
+I very much believe the improvements to atomicity from this so vastly outweigh any incompatibility problems that they are irrelevant.<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352643/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor352464"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 13, 2009 19:40 UTC (Sun) by <b>njs</b> (guest, #40338)
+       [<a href="https://lwn.net/Articles/352464">Link</a>]
+    </p>
+    <div class="FormattedComment">
+IIUC, with your suggestion, running 'long_running_process &gt; logfile' would make it impossible to track progress in the logfile, because the logfile would not become visible until after long_running_process exited. And if your box crashed, then the logfile would be impossible to read, period. (Think of checking /var/log/Xorg.0.log to debug X crashes...)<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352464/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352640"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">POSIX v. reality: A position on O_PONIES</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 14, 2009 18:15 UTC (Mon) by <b>spitzak</b> (guest, #4593)
+       [<a href="https://lwn.net/Articles/352640">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Most such software does "&gt;&gt;" or O_APPEND or otherwise opens the file with different flags, so it would act normally. Otherwise you are correct that something would have to be done, I believe any call to lseek() could indicate that you want the previous behavior, and it would be easy to alter software to do this, or add some syntax to the shell to do this.<br>
+<p>
+Also it is possible that the file will revert to previous behavior after a certain size is achieved.<br>
+</p><p>
+I still feel the benifits outweigh any compatibility problems. By far the majority of programs writing files with creat() act as though it works exactly like I describe.<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352640/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor353175"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Atomicity</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 17, 2009 8:17 UTC (Thu) by <b>Nicolas.Boulay</b> (guest, #59722)
+       [<a href="https://lwn.net/Articles/353175">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Fsync() is a means to declare a kind of full priority against any performance ordering.<br>
+<p>
+rename() is a kind of tricks to minimise the problem of empty file after a power failure.<br>
+</p><p>
+But what an application writer really want is a fast file system that do _atomicity_ : that means he want the previous file states or the new content of the last sys_write() and nothing else.<br>
+</p><p>
+At the time of fsync(), i think we better need a fdone() which should be a kind of "wait on complete transaction" instead of "flush everthing quickly".<br>
+If fdone() is too long, i could use threads. If fdone() take time, it's for bandwith optimisation. One of a great linux optimisation for system without important data is to map fsync() to a void function, then everything fly :)<br>
+</p><p>
+Is it coslty to have the behavior of open()/write()/rename() for a single sys_write() ?<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/353175/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor354256"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Atomicity</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 25, 2009 3:39 UTC (Fri) by <b>xoddam</b> (subscriber, #2322)
+       [<a href="https://lwn.net/Articles/354256">Link</a>]
+    </p>
+    <div class="FormattedComment">
+We already have an API for atomicity in POSIX.  It is called rename().<br>
+<p>
+Rename is *not* a 'kind of trick'.  By specification, it is guaranteed to be atomic in the face of concurrent readers on a working system.  Unfortunately the specification has nothing to say about it with respect to unclean shutdown.<br>
+</p><p>
+Extending the atomicity of rename() so that it still applies in the face of a successful recovery (such as a journal replay) after an unclean shutdown is perfectly logical.<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/354256/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor358628"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Atomicity</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Oct 26, 2009 10:09 UTC (Mon) by <b>Nicolas.Boulay</b> (guest, #59722)
+       [<a href="https://lwn.net/Articles/358628">Link</a>]
+    </p>
+    <div class="FormattedComment">
+You completly forget the case where the file is too big to be copied.<br>
+<p>
+KB is ok, MB is not.<br>
+</p><p>
+It's typical in any data base work. In that case, rename() have no use.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/358628/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor359547"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Atomicity</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Oct 30, 2009 4:30 UTC (Fri) by <b>xoddam</b> (subscriber, #2322)
+       [<a href="https://lwn.net/Articles/359547">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Database implementors have many choices for implementing data stores and any transactional semantics that they need.<br>
+<p>
+Databases traditionally use very large files because their implementors have chosen to re-implement filesystem functionality at the low level for performance reasons.<br>
+</p><p>
+Most often they use their own journalling implementations and fsync().  This is of course legitimate.  But using filesystem-level rename to provide atomicity would also be perfectly reasonable.<br>
+</p><p>
+The size of the renamed and replaced file is an implementation detail only.  Rename doesn't impose a requirement to copy large hunks of data only to throw it away.  The unit of replacement might be a btree node, for example.<br>
+</p><p>
+Nothing forces an implementor to use large files for any particular purpose.<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/359547/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</td> <!-- MC -->
+<td class="RightColumn">
+<div id="azk93271_right_zone"></div>
+</td>
+</tr></tbody></table></td>
+</tr></tbody></table><!-- endpage -->
+
+        <br clear="all">
+        <center>
+        <p>
+        <font size="-2">
+        Copyright © 2009, Eklektix, Inc.<br>
+        
+        Comments and public postings are copyrighted by their creators.<br>
+        Linux  is a registered trademark of Linus Torvalds<br>
+        </font>
+        </p></center>
+        
+        
+        </body></html>
