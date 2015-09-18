@@ -1,0 +1,3262 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><!--
+ Archive processed by SingleFile 
+ url: https://lwn.net/Articles/322823/ 
+ saved date: Thu Sep 17 2015 02:11:56 GMT+0200 (CEST) 
+--><head><title>ext4 and data loss [LWN.net]</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8>
+        <link rel=" icon"="" href="/images/favicon.png" type="image/png">
+        <link rel="alternate" type="application/rss+xml" title="LWN.net headlines" href="http://lwn.net/headlines/newrss">
+<link rel="alternate" type="application/rss+xml" title="Comments posted to this article" href="http://lwn.net/headlines/322823/">
+        <style rel="stylesheet" data-href="https://lwn.net/CSS/lwn">body {color: black;background-color: #ffffff;padding:0px;}h1 {margin:0px 0px 5px 0px;padding:0px;color: black;}h2 {margin:20px 0px 5px 0px;padding:0px;}h3 {margin:0px 0px 5px 0px;padding:0px;}a {text-decoration:none;}a:link { color: Blue;}a:visited {color: DarkBlue;}a:hover {color:Red;}a.name { color: black }a.name:link { color: black }a.name:hover { color: black }TABLE.Page { width: 100% }TD.LeftColumn { background-color: #ffcc99;width: 156px;overflow: hidden;vertical-align: top }TD.MidColumn { background-color: #ffffff;padding: 3px;border-style: none;vertical-align: top;}TD.MCTopBanner { background-color: #ffffff;border-style: none;padding: 0 0 0 4px;}.MCTopBanner CENTER { text-align: left; }TD.RightColumn { border-style: none none none none;border-width: thin;vertical-align: top;text-align: left;border-color: #eeeeee;padding-top: 6em; }DIV.MidColHeader { margin: 0px auto 0px 0px;padding: 0;max-width: 57em; }TABLE.Page TR { vertical-align: top; }TABLE.HeadlineView { }TABLE.HeadlineView TD { vertical-align: top }DIV.PageHeadline { text-align: center;max-width: 75em;margin-top: 1em;margin-bottom: 2em; }DIV.PageHeadline H1 { margin-bottom: 0.2em; }DIV.PageHeadline H2 { margin-top: 0.2em; }P.Cat1HL { background-color: #ffcc99;text-align: center;font-size: 200%;font-weight: bold;padding-top: 3px;padding-bottom: 5px;margin-bottom: 0.2em; }P.Cat2HL { background-color: #ffcc99;font-size: large;font-weight: bold;padding-left: 3px;margin-bottom: 0.3em; }P.Cat3HL { background-color: #ffcc99;font-weight: bold;padding-left: 3px;margin-bottom: 0.3em; }P.SummaryHL { font-weight: bold;font-size: larger;text-decoration: underline;margin-top: 0.4em;margin-bottom: 0.4em; }H2.SummaryHL { font-weight: bold;font-size: larger;text-decoration: underline;margin-top: 0.4em;margin-bottom: 0.4em; }P.SummaryHL A:link { color: black }P.SummaryHL A:visited { color: black }H2.SummaryHL A:link { color: black }H2.SummaryHL A:visited { color: black }P.IndexPrimary A:link { color: black }P.IndexPrimary A:visited { color: black }P.IndexSecondary A:link { color: black }P.IndexSecondary A:visited { color: black }TABLE.Form TH { text-align: left }SPAN { font-style: normal; font-weight: normal;color: darkred; background-color: white }SPAN.SpellingError {  background-color: #eeeeee; color: black }FONT.SpellingError {  background-color: #eeeeee }DIV.ErrorWords  { background-color: #eeeedd;border-style: groove;padding: 3px 3px 2px 3px;margin: 1px 5px 1px 0px; }DIV.BigQuote {font-style: normal; font-weight: normal;color: darkred; background-color: white;margin-left: 1cm; margin-right: 1cm }DIV.BigQuote P {margin-top: 1em; margin-bottom: 0px; }DIV.Headline { background-color: #ffcc99; font-weight: bold;font-size: larger;padding-left: 3px; }DIV.SummaryHeadline { font-weight: bold; font-size: larger;text-decoration: underline;margin-top: 0.4em;margin-bottom: 0.4em; }DIV.Byline { font-size: smaller; text-align: center }DIV.SideBox { margin: 1em 1px 1em 1px; }DIV.SideBox P { text-indent: -1em;margin: 0px 0px 1px 1em; }DIV.SideBox P.Header { font-weight: bold;text-indent: 0px;margin-left: 0px; }DIV.Comment { margin-left: 1em;background-color: inherit; }DIV.CommentSubtree { background-color: inherit; }DIV.OldCommentSubtree { background-color: #cccccc; }DIV.CommentBox, DIV.OldCommentBox {border-style: none none none solid;border-width: thin;max-width: 60em;margin-top: 1em;background-color: inherit;}DIV.CommentBox { border-color: #ffcc99; }DIV.OldCommentBox { border-color: #cccccc; }P.CommentTitle {padding: 2px 2px 2px 4px;margin: 0px;font-weight: bold;}DIV.CommentBox P.CommentTitle { background-color: #ffcc99; }DIV.OldCommentBox P.CommentTitle { background-color: #cccccc; }DIV.CommentBody { padding: 0px 4px 0px 4px;background-color: inherit; }P.CommentPoster { margin-top: 0px; }div.CommentReplyButton { display: none;text-align: right;padding: 4px; }DIV.FormattedComment { }PRE.FormattedComment { font: inherit; }DIV.FormattedComment PRE { font: inherit; }TD.Headline {background-color: #ffcc99 }TABLE.Middle { background-color: #ffffff; padding: 3px;border-style: none; width: 100% }TD.Middle { background-color: #ffffff; vertical-align: top }.Form { background-color: #eeeeee;padding: 3px;border-style: groove;}A.Current { background-color: darkred; color: white }A.Other { }P.NextLink { text-align: right }FONT.SearchItem { font-weight: bold; color: red }FONT.QuotedText { color: #990099 }FONT.Subscription { color: darkgreen }TR.Even { background-color: #eeeeee; }TR.Odd { }table.OddEven {border-spacing: 2px;border-collapse: separate;}table.OddEven tr:nth-child(even) {background-color: #ffffff;}table.OddEven tr:nth-child(odd) {background-color: #eeeeee;}table.OddEven th { background-color: #ffffff; }table.OddEven td { padding: 3px; }.s-nonexistent { background-color: red !important; }.s-withdrawn { background-color: red !important; }.s-in-progress { background-color: white !important; }.s-submitted { background-color: yellow !important; }.s-active { background-color: lightgreen !important; }P.Headlines { margin-bottom: 6px; text-indent: -1em; margin-left: 1em;margin-top: 0px }P.Feature { text-indent: -1em; margin-left: 1em; margin-top: 0px;margin-bottom: 2px}P.ErrorMessage { color: red; margin-left: 1cm;margin-right: 1cm; font-weight: bold;font-size: large }FONT.NonActive { color: red; font-weight: bold }A.NonActive { color: red; font-weight: bold }TABLE.TopNavigation { width: 100%;max-width: 55em;margin-bottom: 0;margin-top: 0px; }TD.NavLink { background-color: #eeeeee; text-align: center; max-width: 15em; }P.IndexPrimary { margin-top: 1em; margin-bottom: 0px; font-weight: bold; }P.IndexSecondary { margin-top: 0px; text-indent: 5mm; margin-bottom: 0px; }P.IndexEntry { text-indent: 1cm; margin-top: 0px; margin-bottom: 0px }DIV.TextAd { width: 150px; border-style: solid;border-width: thin;margin: 0px auto 10px auto;background-color: white;color: black; }P.TextAdHeader { background-color: #419d4a;color: white;margin-top: 0px;margin-bottom: 3px;text-align: center;font-weight: bold; }P.TextAdLink { margin: 2px }P.TextAdBody { margin: 10px 2px 2px 2px }P.TextAdFooter { border-top-style: dotted;border-top-width: thin;text-align: center;background-color: #ffcc99;margin: 2px 0px 0px 0px; }TABLE.tlnav { width: 100%; color: black; padding: 2px }TABLE.tlrw { width: 45%; float: right; background-color: #eeeedd;border-style: groove; margin: 5px; float: right }TABLE.tlr { width: 35%; float: right; background-color: #eeeedd;border-style: groove; margin: 5px; float: right }TABLE.tllw { width: 45%; float: left; background-color: #eeeedd;border-style: groove; margin: 5px }TABLE.tll { width: 35%; float: left; background-color: #eeeedd;border-style: groove; margin: 5px }P.QuoteAttr { text-align: right }DIV.tlrw { width: 45%;float: right;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 0px 1px 5px; }DIV.tlr  { width: 35%;float: right;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 0px 1px 5px; }DIV.tllw { width: 45%;float: left;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 5px 1px 0px; }DIV.tll  { width: 35%;float: left;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 5px 1px 0px; }P.tlqa { text-align: right }UL.spacylist LI { margin-bottom: 0.5em; }OL.spacylist LI { margin-bottom: 0.5em; }P.GuestAuthor { max-width: 15em; float: right; background-color: #eeeeee;border-style: groove; padding: 3px;margin: 6px 0px 2px 5px; float: right }DIV.GAByline { max-width: 15em; float: right; background-color: #eeeeee;border-style: groove; padding: 3px;margin: 6px 0px 2px 5px; float: right; text-align: center; }DIV.GAByline P { margin: 0px; text-align: left; }DIV.GAByline P:first-child {font-weight: bold; text-align: center;margin-bottom: 3px; }DIV.GAByline HR { width: 40% }DIV.FeatureByline { max-width: 20em; float: left; background-color: #eeeeee;border-style: groove; margin: 2px 5px 2px 0px;padding-bottom: 5px;padding-right: 25px;  padding-left: 5px; }DIV.FeatureByline HR { width: 40% }div.survey { margin-left: 1cm }div.sv_mc { margin-left: 10mm; margin-top: 0cm }SPAN.PullQuote { max-width: 30%;float: right;color: black;background-color: #eeeeee;margin: 2px 0px 2px 5px;padding: 5px 2px 5px 0.5em;border-style: none none none solid;border-color: #ffcc99;font-weight: normal;font-size: larger; }SPAN.invisible { display: none; }TABLE.CalM { width: 100%;border-spacing: 0 }TR.CalM { border-left-style: groove }TD.CalMDate { background-color: #eeeeee;font-size: x-large;width: 13%;border-left-style: groove;border-top-style: groove }TD.CalMEvent { font-size: smaller;vertical-align: middle;border-left-style: groove }TD.CalMContinue { font-size: smaller;vertical-align: middle;border-left-style: groove }TD.CalBlank { border-left-style: none }TD.CalMBottom { border-left-style: groove;border-bottom-style: groove }TD.CalMTop { border-left-style: none; border-top-style: groove }TD.CalMCorner { border-left-style: groove; border-top-style: groove }TD.CalMHeader { font-size: larger; font-weight: bold;text-align: center; width: 13%;padding-top: 20px; padding-bottom: 10px }TD.CalMName { font-size: x-large; font-weight: bold;text-align: center;background-color: #eeeeee;margin-bottom: 10px;border-top-style: groove;border-bottom-style: groove }TD.CalMArrow { vertical-align: middle; border-style: groove }DIV.ArticleText { margin:0px 0px 0px 0px;padding:0px 2px 0px 0px;max-width: 75em;}DIV.widepage DIV.ArticleText {max-width: 999em !important;}DIV.Printable { }DIV.Printable DIV.ArticleText { margin:0px 0px 0px 0px;padding:0px;max-width: none; }DIV.BlurbText { margin:0px 0px 0px 0px;padding:0px; }SPAN.UliMath { color: black;font-weight: bold; }SPAN.UliInvSig { color: black;font-weight: bold;text-decoration: overline }DIV.AdMarker { text-align: center;font-size: smaller;color: black;font-weight: bold; }DIV.AdRight { float:right;background-color: #ffffff;border-width: 3px;border-style: solid;border-color: #ffffff;margin-left: 2px;padding: 2px; }DIV.promobox { float: left;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 5px 1px 0px; }UL.NoBullet { list-style-type: none; }DIV.FilteredComment { display: none;background-color: #eeeeee; }DIV.CommHdr { background-color: #eeeeee; }IMG.photo {max-width: 100%;}DIV.BlurbListing {padding-left: 3px;}.comment-title {width: 98%;}.comment-body {width: 98%;}.wide-form {width: 95%;margin: 0.1em 0.5em 0.1em 0.1em;padding: 0.2em;background-color: #eeeeee;border-radius: 0.5em;}.covered {background: #eeeeee;color: #eeeeee;}.covered::-moz-selection {background: #ffffff;color: black;}.covered::selection {background: #ffffff;color: black;}</style>
+<style rel="stylesheet" data-href="https://lwn.net/CSS/nosub">div.MakeALink { display: none }</style>
+
+        
+
+
+
+        <link type="image/x-icon" rel="shortcut icon" href="data:image/x-icon;base64,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"></head>
+        <body bgcolor="#ffffff" link="Blue" vlink="Green" alink="Green">
+        <table class="Page">
+<tbody><tr>
+<td class="LeftColumn">
+
+        <center>
+        <a href="https://undefined/"><img src="data:image/png;base64,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" width="153" height="120" border="0" alt="LWN.net Logo"></a>
+        </center>
+        <p>
+        
+
+</p><p>
+</p><div class="SideBox">
+<p class="Header">Not logged in</p>
+<p><a href="https://lwn.net/login">Log in now</a></p>
+<p><a href="https://lwn.net/newaccount">Create an account</a></p>
+<p><a href="https://lwn.net/subscribe/Info">Subscribe to LWN</a></p></div>
+
+<div class="SideBox">
+<p class="Header">Weekly Edition</p>
+<p><a href="https://lwn.net/Articles/322043">Return to the Kernel page</a></p></div>
+
+<div class="SideBox">
+<p class="Header">Recent Features</p>
+<p><a href="https://lwn.net/Articles/657345">How Debian managed the systemd transition</a></p>
+<p><a href="https://lwn.net/Articles/657269">Python and crypto-strength random numbers by default</a></p>
+<p><a href="https://lwn.net/Articles/657139">The LPC Android microconference, part 2</a></p>
+<p><a href="https://lwn.net/Articles/656672">LWN.net Weekly Edition for September 11, 2015</a></p>
+<p><a href="https://lwn.net/Articles/656898">Easier Python string formatting</a></p></div>
+
+<div class="SideBox">
+<p><a href="https://lwn.net/Articles/322823/?format=printable">Printable page</a></p></div>
+
+</td><!-- LC -->
+
+<td><table><tbody><tr>
+<td class="MidColumn">
+           <table class="TopNavigation">
+
+<!-- First row - content links -->
+<tbody><tr>
+  <td class="NavLink"><a href="https://lwn.net/current">Weekly edition</a></td>
+  <td class="NavLink">
+	<a href="https://lwn.net/Kernel">Kernel</a></td>
+  <td class="NavLink"><a href="https://lwn.net/Security">Security</a></td>
+  <td class="NavLink">
+	<a href="http://lwn.net/Distributions/">Distributions</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/FAQ.lwn#contact">Contact Us</a> </td>
+  <td class="NavLink"><a href="https://lwn.net/Search">Search</a> </td>
+</tr>
+<!-- Second row: navigation links -->
+<tr>
+  <td class="NavLink"><a href="https://lwn.net/Archives">Archives</a></td>
+  <td class="NavLink"><a href="https://lwn.net/Calendar">Calendar</a></td>
+  <td class="NavLink"><a href="https://lwn.net/subscribe/Info">Subscribe</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/AuthorGuide.lwn">Write for LWN</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/FAQ.lwn">LWN.net FAQ</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/Sponsors.lwn">Sponsors</a></td>
+</tr>
+
+</tbody></table>
+</td><td></td></tr>
+<tr><td colspan="2" class="MCTopBanner">
+<div id="azk13321_leaderboard"></div></td></tr><tr><td class="MidColumn">
+<div class="PageHeadline">
+<h1>ext4 and data loss</h1>
+</div>
+<div class="ArticleText">
+<div class="FeatureByline">
+           By <b>Jonathan Corbet</b><br>March 11, 2009
+           </div>
+The ext4 filesystem offers a number of useful features.  It has been
+stabilizing quickly, but that does not mean that it will work perfectly for
+everybody.  Consider this example: 
+Ubuntu's bug tracker contains <a href="https://bugs.edge.launchpad.net/ubuntu/+source/linux/+bug/317781">an
+entry titled "ext4 data loss"</a>, wherein a luckless ext4 user reports:
+<p>
+</p><div class="BigQuote">
+	Today, I was experimenting with some BIOS settings that made the
+	system crash right after loading the desktop. After a clean reboot
+	pretty much any file written to by any application (during the
+	previous boot) was 0 bytes. 
+</div>
+<p>
+Your editor had not intended to write (yet) about this issue, but quite a
+few readers have suggested that we take a look at it.  Since there is
+clearly interest, here is a quick look at what is going on.
+</p><p>
+Early Unix (and Linux) systems were known for losing data on a system
+crash.  The buffering of filesystem writes within the kernel, while being
+very good for performance, causes the buffered data to be lost should the
+system go down unexpectedly.  Users of Unix systems used to be quite aware
+of this possibility; they worried about it, but the performance loss
+associated with synchronous writes was generally not seen to be worth it.
+So application writers took great pains to ensure that any data which
+really needed to be on the physical media got there quickly.
+</p><p>
+More recent Linux users may be forgiven for thinking that this problem has
+been entirely solved; with the ext3 filesystem, system crashes are far less
+likely to result in lost data.  This outcome is almost an accident
+resulting from some decisions made in the design of ext3.  What's happening
+is this:
+</p><p>
+</p><ul>
+<li> By default, ext3 will commit changes to its journal every five 
+     seconds.  What that means is that any filesystem <i>metadata</i>
+     changes will be saved, and will persist even if the system
+     subsequently crashes.
+<p>
+</p></li><li> Ext3 does not (by default) save data written to files in the journal.
+     But, in the (default) <tt>data=ordered</tt> mode, any modified data
+     blocks are forced out to disk before the metadata changes are
+     committed to the journal.  This forcing of data is done to ensure
+     that, should the system crash, a user will not be able to read the
+     previous contents of the affected blocks - it's a security feature.
+<p>
+</p></li><li> The end result is that <tt>data=ordered</tt> pretty much guarantees
+     that data written to files will actually be on disk five seconds
+     later.  So, in general, only five seconds worth of writes might be
+     lost as the result of a crash.
+</li></ul>
+<p>
+In other words, ext3 provides a relatively high level of crash resistance,
+even though the filesystem's authors never guaranteed that behavior, and
+POSIX certainly does not require it.  As Ted put it in <a href="https://bugs.edge.launchpad.net/ubuntu/+source/linux/+bug/317781/comments/45">his
+excruciatingly clear and understandable explanation of the situation</a>:
+</p><p>
+</p><div class="BigQuote">
+	Since ext3 became the dominant filesystem for Linux, application
+	writers and users have started depending on this, and so they
+	become shocked and angry when their system locks up and they lose
+	data --- even though POSIX never really made any such guarantee.
+</div>
+<p>
+Accidental or not, the avoidance data loss in a crash seems like a nice
+feature for a filesystem to have.  So one might well wonder just what would
+have inspired the ext4 developers to take it away.  The answer, of course,
+is performance - and delayed allocation in particular.
+</p><p>
+"Delayed allocation" means that the filesystem tries to delay the
+allocation of physical disk blocks for written data for as long as
+possible.  This policy brings some important performance benefits.  Many
+files are short-lived; delayed allocation can keep the system from writing
+fleeting temporary files to disk at all.  And, for longer-lived files,
+delayed allocation allows the kernel to accumulate more data and to
+allocate the blocks for data contiguously, speeding up both the write and
+any subsequent reads of that data.  It's an important optimization which is
+found in most contemporary filesystems.
+</p><p>
+But, if blocks have not been allocated for a file, there is no need to
+write them quickly as a security measure.  Since the blocks do not yet
+exist, it is not possible to read somebody else's data from them.  So ext4
+will not (cannot) write out unallocated blocks as part of the next journal
+commit cycle.  Those blocks will, instead, wait until the kernel decides to
+flush them out; at that point, physical blocks will be allocated on disk
+and the data will be made persistent.  The kernel doesn't like to let file
+data sit unwritten for too long, but it can still take a minute or so (with
+the default settings) for that data to be flushed -  far longer than
+the five seconds normally seen with ext3.  And that is why a crash can
+cause the loss of quite a bit more data when ext4 is being used.
+</p><p>
+The real solution to this problem is to fix the applications which are
+expecting the filesystem to provide more guarantees than it really is.
+Applications which frequently rewrite numerous small files seem to be
+especially vulnerable to this kind of problem; they should use a smarter
+on-disk format.  Applications which want to be sure that their files have
+been committed to the media can use the <tt>fsync()</tt> or
+<tt>fdatasync()</tt> system calls; indeed, that's exactly what those system
+calls are for.  Bringing the applications back into line with what the
+system is really providing is a better solution than trying to fix things up
+at other levels.
+</p><p>
+That said, it would be nice to improve the robustness of the system while
+we're waiting for application developers to notice that they have some work
+to do.  One possible solution is, of course, to just run ext3.  Another is
+to shorten the system's writeback time, 
+which is stored in a couple of sysctl variables:
+</p><p>
+</p><pre>    /proc/sys/vm/dirty_expire_centisecs
+    /proc/sys/vm/dirty_writeback_centisecs
+</pre>
+<p>
+The first of these variables (<tt>dirty_expire_centiseconds</tt>) controls
+how long written data can sit in the page cache before it's considered
+"expired" and queued to be written to disk; it defaults to
+30&nbsp;seconds.  The value of <tt>dirty_writeback_centiseconds</tt>
+(5&nbsp;seconds, default) controls how often the <tt>pdflush</tt> process wakes
+up to actually flush expired data to disk.  Lowering these values will
+cause the system to flush data to disk more aggressively, with a cost in
+the form of reduced performance.
+</p><p>
+A third, partial solution exists in a set of patches queued for 2.6.30; they add a
+set of heuristics which attempt to protect users from being badly burned in
+certain situations.  They are:
+</p><p>
+</p><ul>
+<li> <a href="http://git.kernel.org/?p=linux/kernel/git/tytso/ext4.git;a=commitdiff;h=3bf3342f394d72ed2ec7e77b5b39e1b50fad8284">A
+     patch</a> adding a new <tt>EXT4_IOC_ALLOC_DA_BLKS</tt>
+     <tt>ioctl()</tt> command.  When issued on a file, it will force ext4
+     to allocate any delayed-allocation blocks for that file.  That will
+     have the effect of getting the file's data to disk relatively quickly
+     while avoiding the full cost of the (heavyweight) <tt>fsync()</tt>
+     call.
+<p>
+</p></li><li> <a href="http://git.kernel.org/?p=linux/kernel/git/tytso/ext4.git;a=commitdiff;h=6645f8c3bc3cdaa7de4aaa3d34d40c2e8e5f09ae">The
+     second patch</a> sets a special flag on any file which has been
+     truncated; when that file is closed, any delayed allocations will be
+     forced.  That should help to prevent the "zero-length
+     files" problem reported at the beginning.
+<p>
+</p></li><li> Finally, <a href="http://git.kernel.org/?p=linux/kernel/git/tytso/ext4.git;a=commitdiff;h=dbc85aa9f11d8c13c15527d43a3def8d7beffdc8">this
+     patch</a> forces block allocation when one file is renamed on top of
+     another.  This, too, is aimed at the problem of frequently-rewritten
+     small files.
+</li></ul>
+<p>
+Together, these patches should mitigate the worst of the data loss problems
+while preserving the performance benefits that come with delayed
+allocation.  They have not been proposed for merging at this late stage in
+the 2.6.29 release cycle, though; they are big enough that they will have
+to wait for 2.6.30.  Distributors shipping earlier kernels can, of course,
+backport the patches, and some may do so.  But they should also note the
+lesson from this whole episode: ext4, despite its apparent stability,
+remains a very young filesystem.  There may yet be a surprise or two
+waiting to be discovered by its early users.</p><hr width="60%" align="left">
+           (<a href="https://lwn.net/login?target=/Articles/322823/">Log in</a> to post comments)
+           <p>
+           
+</p></div> <!-- ArticleText -->
+<p><a name="Comments"></a>
+
+<a name="CommAnchor322844"></a>
+</p><div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 1:24 UTC (Thu) by <b>JoeBuck</b> (subscriber, #2330)
+       [<a href="https://lwn.net/Articles/322844">Link</a>]
+    </p>
+    So, with ext3 we should avoid fsync because it can cause seconds of delay for the whole system (because of data ordering constraints), but with ext4 we should fsync because otherwise data are not saved.  Hmm.
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322844/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor322857"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 2:56 UTC (Thu) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/322857">Link</a>]
+    </p>
+    <div class="FormattedComment">
+That really sucks, doesn't it. I think Ted addressed that with:<br>
+<p>
+<font class="QuotedText">&gt; If you really care about making sure something is on disk, you have to use fsync or fdatasync. If you are about the performance overhead of fsync(), fdatasync() is much less heavyweight, if you can arrange to make sure that the size of the file doesn't change often. You can do that via a binary database, that is grown in chunks, and rarely truncated.</font><br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322857/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor322901"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Linux, meet the Registry</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 13:37 UTC (Thu) by <b>eru</b> (subscriber, #2753)
+       [<a href="https://lwn.net/Articles/322901">Link</a>]
+    </p>
+    <i>You can do that via a binary database, that is grown in chunks, and rarely truncated.</i>
+<p>
+So does this mean the Linux desktops should now start using something like the Windows registry database?
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322901/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323059"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Linux, meet the Registry</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 23:17 UTC (Thu) by <b>rahulsundaram</b> (subscriber, #21946)
+       [<a href="https://lwn.net/Articles/323059">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Ted mentioned in the FOSDEM talk this year (video available online), that many developers ( GNOME and KDE included) tends to use hundreds of small files with very small amounts of data and that isn't really a bright idea compared to a centralized registry. Something to consider.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323059/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323064"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Linux, meet the Registry</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 0:02 UTC (Fri) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323064">Link</a>]
+    </p>
+    <div class="FormattedComment">
+When this central registry gets stuffed, the whole lot is stuffed (see: Windows). Small files that are merged together into a tree are not _that_ stupid. And, you can remove directories that contain them in order to remove parts of the tree - simple.<br>
+<p>
+Maybe the real solution is to not write them out unless absolutely necessary.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323064/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323095"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Linux, meet the Registry</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 2:00 UTC (Fri) by <b>rahulsundaram</b> (subscriber, #21946)
+       [<a href="https://lwn.net/Articles/323095">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Centralized doesn't mean binary. Even assuming it is, Firefox is using sqlite databases instead of inventing their own binary format. Binary is not necessarily evil as people seem to think. I don't see how your solution would work. When you don't write them out, you stand a higher chance of losing that data which is exactly the problem<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323095/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323100"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Linux, meet the Registry</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 2:46 UTC (Fri) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/323100">Link</a>]
+    </p>
+    <div class="FormattedComment">
+The filesystem is already a hierarchical database. Putting a hierarchical database on top of the filesystem is redundant. Fix bugs instead of working around them!<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323100/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor323104"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Linux, meet the Registry</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 3:37 UTC (Fri) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323104">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; Centralized doesn't mean binary.</font><br>
+<p>
+Say you want to fix a corrupt gconf XML file that is 20 lines long. The easy fix is to delete it and recreate the settings using preferences or gconf editor.<br>
+</p><p>
+Say you want to fix a corrupt gconf XML file that is 200,000 lines long. Well, good luck not mucking it up in vi so it still parses.<br>
+</p><p>
+<font class="QuotedText">&gt; Even assuming it is, Firefox is using sqlite databases instead of inventing their own binary format.</font><br>
+</p><p>
+Which, as we've seen, comes with its own set of problems on ext3. And, once again, if the DB file gets screwed, you are completely out of luck - _all_ your settings are gone. Eggs in one basket and all that.<br>
+</p><p>
+<font class="QuotedText">&gt; Binary is not necessarily evil as people seem to think.</font><br>
+</p><p>
+Yeah, tell that to people with corrupt Windows registry.<br>
+</p><p>
+<font class="QuotedText">&gt; I don't see how your solution would work. When you don't write them out, you stand a higher chance of losing that data which is exactly the problem.</font><br>
+</p><p>
+Nobody said anything about not writing them out. The problem is that it appears they are being written out even when _not_ required and in large numbers.<br>
+</p><p>
+When users make changes to configuration, these are localised changes. Users don't normally change 200 settings at once. So, this will touch a very limited number of files that need to be persisted to disk using fsync. The problem is the currently hundreds of files are being persisted to disk often.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323104/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323111"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Linux, meet the Registry</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 5:32 UTC (Fri) by <b>eru</b> (subscriber, #2753)
+       [<a href="https://lwn.net/Articles/323111">Link</a>]
+    </p>
+    <i>&gt; Binary is not necessarily evil as people seem to think.
+</i><p><i>
+Yeah, tell that to people with corrupt Windows registry.</i>
+</p><p>
+The binary/text distinction is rather illusory. Text is simply a binary
+file that uses a subset of byte values to represent data, and
+certain values as delimiters. What really matters is how a file format is
+structured. A binary file can be organized so that recovering data from
+it is possible (what does fsck(8) really do? Fix corruption in a complex
+binary file, with the constraint that the operation must be done
+in-place).
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323111/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323116"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Linux, meet the Registry</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 5:56 UTC (Fri) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323116">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; The binary/text distinction is rather illusory.</font><br>
+<p>
+Yeah. I edit SQLite files in vi all the time ;-)<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323116/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor323163"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Illusory?</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 13:14 UTC (Fri) by <b>man_ls</b> (guest, #15091)
+       [<a href="https://lwn.net/Articles/323163">Link</a>]
+    </p>
+    The binary/text distinction is not illusory; it is a cognitive issue. Limiting file contents to printable characters (not just byte values since you can use multi-byte characters) makes people be able to edit them. Text files do not usually contain just random characters; they contain readable words that can be understood and documented rather easily.
+<p>
+The machine doesn't care, true, but to people there <i>is</i> a big difference between a sequence of random byte values and a sequence of written words. Just as, to me personally, there is a big difference between a text in Spanish and a set of cyrillic Russian words.
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323163/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor324374"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Linux, meet the Registry</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 19, 2009 9:31 UTC (Thu) by <b>renox</b> (subscriber, #23785)
+       [<a href="https://lwn.net/Articles/324374">Link</a>]
+    </p>
+    <div class="FormattedComment">
+[[ The binary/text distinction is rather illusory. ]]<br>
+<p>
+For computers yes, for human this is very different, that's the point!<br>
+</p><p>
+If you have a corrupted binary, it's very, very difficult for an human to fix it (unless there's a tool which fix it "auto-magically"), whereas for a text there is still the possibility for the human to fix it.<br>
+</p><p>
+A FS is a database, fsck is the tool to fix it (up to a point), if you add other databases in a FS this add the possibility of additional errors fixable only by the tools, with structured text files (JSON is nice: easy to read and to parse) you have the best of both worlds.<br>
+</p><p>
+</p><p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/324374/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor351760"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Linux, meet the Registry</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 22:02 UTC (Wed) by <b>BrucePerens</b> (guest, #2510)
+       [<a href="https://lwn.net/Articles/351760">Link</a>]
+    </p>
+    <div class="FormattedComment">
+The Namesys paradigm of file-per-atom is a good idea, it's just that filesystems aren't up to the task. Too bad its creator went on to worse ideas.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351760/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor323021"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 20:04 UTC (Thu) by <b>samroberts</b> (subscriber, #46749)
+       [<a href="https://lwn.net/Articles/323021">Link</a>]
+    </p>
+    <div class="FormattedComment">
+"If you really care to make sure something is on disk".<br>
+<p>
+There is no class of applications that write data to a file and don't <br>
+expect it to be written to disk.<br>
+</p><p>
+For a long time fsync/O_SYNC were essentially no-ops on linux, the <br>
+attitude of the kernel developers being "apps call write(), the kernel <br>
+will put it on disk when its efficient to do so" and "linux is not a <br>
+real-time OS". Now Ted is calling such applications "badly written"? B.S.<br>
+</p><p>
+That said, I sympathize with him about user's whining that data is lost <br>
+when their OS crashes. If your operating sytem crashes, you lose all <br>
+guarantees that it worked. Such is life. Either use an OS that doesn't <br>
+crash, or run filesystems in real-time modes that write data to disk as <br>
+soon as possible after the app does the file write, and live with the <br>
+performance loss.<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323021/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323052"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">It seemed to work fine</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 22:46 UTC (Thu) by <b>man_ls</b> (guest, #15091)
+       [<a href="https://lwn.net/Articles/323052">Link</a>]
+    </p>
+    Or... stay with ext3?
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323052/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323054"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">It seemed to work fine</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 22:54 UTC (Thu) by <b>man_ls</b> (guest, #15091)
+       [<a href="https://lwn.net/Articles/323054">Link</a>]
+    </p>
+    ... which is of course your second option. Sorry, not having enough coffee these days.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323054/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor323180"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 14:45 UTC (Fri) by <b>jbailey</b> (subscriber, #16890)
+       [<a href="https://lwn.net/Articles/323180">Link</a>]
+    </p>
+    <div class="FormattedComment">
+It's not a matter of expect to be written to disk or not, it's the performance tradeoff versus data security should it not be written to disk.  An MTA must make sure that it's committed to disk because it's irretrievable if it's not.  A word processor autosave, not so much.  Non-error log files, same thing.<br>
+<p>
+My machine has certainly been writing things to disk all while I'm reading lwn here (logs, browser cache.  If I were at home, it could be bittorrent, etc).  My life wouldn't be any poorer if the system were to crash right now and none of that were recoverable.<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323180/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor323286"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 22:47 UTC (Fri) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323286">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; There is no class of applications that write data to a file and don't expect it to be written to disk.</font><br>
+<p>
+Any application that uses temporary files is OK with data not hitting the disk.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323286/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor324085"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 17, 2009 21:56 UTC (Tue) by <b>pphaneuf</b> (subscriber, #23480)
+       [<a href="https://lwn.net/Articles/324085">Link</a>]
+    </p>
+    <p>"No class of applications", you say?
+
+</p><p><tt>/var/run</tt> being on a tmpfs makes sense (if we crash, then it's okay, they're not running anymore).
+
+</p><p>Another more practical one is my browser cache. If it got blown away on every reboot, I wouldn't really mind, and I would actually be pretty angry if my browser started doing <tt>fsync</tt> on every little thing (hmm, where have I heard this?).
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/324085/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor322846"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 1:45 UTC (Thu) by <b>jimparis</b> (subscriber, #38647)
+       [<a href="https://lwn.net/Articles/322846">Link</a>]
+    </p>
+    I read the bug discussion but don't fully understand what's going on here.
+Assume the code is<br>
+<pre>  fd = open("file.new",O_TRUNC|O_WRONLY|O_CREAT);
+  write(fd, "hi", 2);
+  close(fd);
+  rename("file.new", "file");
+</pre>
+Are we saying that in ext4, the rename can happen many tens-of-seconds before the data "hi" is actually allocated and written?<br>
+<br>
+That's concerning.  I'd expect that if I do that sequence of commands, the write would happen before the rename, and a crash would lead to:<br>
+  (1) Nothing gets changed (ie. the old contents are still there),
+      if it's been less than 30 seconds<br>
+  (2) The new contents are there, if the crash happens after 30 seconds.<br>
+<br>
+Anything else might be POSIX-correct but that's going to break a lot of assumptions in existing code, I think.
+
+Or am I misunderstanding things here?
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322846/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor322869"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 6:55 UTC (Thu) by <b>jamesh</b> (guest, #1159)
+       [<a href="https://lwn.net/Articles/322869">Link</a>]
+    </p>
+    <div class="FormattedComment">
+The problem only exists when you're journalling metadata but not the actual file metadata.<br>
+<p>
+Due to the behaviour of ext3, to write the metadata changes to disk (creation of "file.new" and rename of "file.new" to "file"), it was necessary for the file's blocks to be written out to disk so the previous contents won't be available.  This is almost but not quite the same as journalling data too (it won't protect against partial writes if you cut power at the wrong time).<br>
+</p><p>
+With ext4's delayed allocation, the metadata changes can be journalled without writing out the blocks.  So in case of a crash, the metadata changes (that were journalled) get replayed, but the data changes don't.<br>
+</p><p>
+If you journal data changes, presumably this won't happen on either ext3 or ext4.  That is likely to give a performance hit though.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322869/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor322877"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 8:49 UTC (Thu) by <b>job</b> (subscriber, #670)
+       [<a href="https://lwn.net/Articles/322877">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Most people (by which I mean me) would probably want metadata changes that hasn't yet had it's corresponding blocks written out yet to be dropped instead of replayed. That is, see the old file rather than empty new one.<br>
+<p>
+When we see these patches instead of the behaviour we expect, we're confused. Is the behaviour hard to implement for some reason, or are we wrong in expecting it?<br>
+</p><p>
+Delayed allocation is fine but I think most people expect metadata to be delayed accordingly.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322877/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor322942"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 16:14 UTC (Thu) by <b>nye</b> (guest, #51576)
+       [<a href="https://lwn.net/Articles/322942">Link</a>]
+    </p>
+    <div class="FormattedComment">
+This seems both very clear, and so obviously wrong that I must have misunderstood.<br>
+<p>
+Are we really saying that ext4 commits metadata changes to disk (potentially a long time) before committing the corresponding data change?<br>
+</p><p>
+That surely can't be right. Why on earth would you write metadata describing something which you know doesn't exist yet - and may never exist? Especially when the existing metadata describes something that does.<br>
+</p><p>
+Perhaps what we're really saying is that ext4 does them in the correct order, but doesn't use barriers by default and hence they sometimes get written by the device in the wrong order? That would make more sense at least.<br>
+</p><p>
+This is really confusing me.<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322942/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323075"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 0:31 UTC (Fri) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/323075">Link</a>]
+    </p>
+    <div class="FormattedComment">
+That's exactly what it does. Patches recently committed to the mainline <br>
+cause the blocks to be aggressively flushed if the file is closed and was <br>
+originally opened via O_TRUNC, or if the file is renamed on top of another <br>
+one.<br>
+<p>
+(I'd prefer it to delay the metadata operation as well, but apparently <br>
+that's really hard. Knowing what a nightmare it is to get rename() right, <br>
+I can understand that doing it lazily might not be anyone's cup of tea.)<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323075/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor324834"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 22, 2009 22:01 UTC (Sun) by <b>muwlgr</b> (guest, #35359)
+       [<a href="https://lwn.net/Articles/324834">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I would not say "aggressively flushed". As I understand, blocks of these files (created/truncated, then closed, or renamed to replace previous file) are just explicitly allocated (triggering all necessary metadata updates to be then written in the correct order).<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/324834/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor322985"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 17:58 UTC (Thu) by <b>cpeterso</b> (guest, #305)
+       [<a href="https://lwn.net/Articles/322985">Link</a>]
+    </p>
+    <blockquote>With ext4's delayed allocation, the metadata changes can be journalled without writing out the blocks. So in case of a crash, the metadata changes (that were journalled) get replayed, but the data changes don't.</blockquote>
+This is so broken. How can anyone think this is a good idea? Or an "upgrade" from ext3?
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322985/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323068"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 0:24 UTC (Fri) by <b>giraffedata</b> (subscriber, #1954)
+       [<a href="https://lwn.net/Articles/323068">Link</a>]
+    </p>
+    <blockquote>
+<blockquote>
+With ext4's delayed allocation, the metadata changes can be journalled without writing out the blocks. So in case of a crash, the metadata changes (that were journalled) get replayed, but the data changes don't.
+</blockquote>
+This is so broken. How can anyone think this is a good idea? Or an "upgrade" from ext3?
+</blockquote>
+<p>
+Because of the speedup.  Since the beginning of Unix, people have sacrificed crash survivability for speed.  An Ext2 filesystem after a crash can be in much worse state than this (because it doesn't journal even the metadata).
+</p><p>
+Even given user-level options to make the choice, the vast majority choose speed.  So if delayed allocation makes access even faster, I can understand someone trading a higher probability of corrupting files.
+</p><p>
+As has been noted, applications that are affected are the ones that already accept a fair amount of corruption risk, so this is just a quantitative increase in risk, not qualitative.
+</p><p>
+The ext3 behavior that some people prefer is just an accident, by the way.  The reason data=ordered is the default with ext3 is security, not crash resistance.  The crash resistance is a by-product.  Had ext3 originally done what ext4 does, people wouldn't have called it wrong.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323068/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323088"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 1:07 UTC (Fri) by <b>dododge</b> (subscriber, #2870)
+       [<a href="https://lwn.net/Articles/323088">Link</a>]
+    </p>
+    <div class="FormattedComment">
+And as noted in Ted's message linked in the article, this potential disconnect between data and metadata has been used by other high-performance filesystems on Linux for years.  ext3 is the odd man out, due to an unintentional quirk in its design.<br>
+<p>
+For example if you shut down an XFS filesystem improperly, when it comes back up it may claim that recent files exist and even have the expected size -- but when you try to read them you might get zero blocks instead of real data.  I believe JFS does the same thing.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323088/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323092"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 1:26 UTC (Fri) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/323092">Link</a>]
+    </p>
+    <blockquote>If you shut down an XFS filesystem improperly, when it comes back up it may claim that recent files exist and even have the expected size -- but when you try to read them you might get zero blocks instead of real data. I believe JFS does the same thing.</blockquote>Is it any wonder, then, that XFS and JFS are seldom used despite their otherwise-wonderful characteristics?
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323092/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323150"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 10:44 UTC (Fri) by <b>rahulsundaram</b> (subscriber, #21946)
+       [<a href="https://lwn.net/Articles/323150">Link</a>]
+    </p>
+    <div class="FormattedComment">
+The real reason why users don't use those filesystems much is because pretty much all the distributions have been sticking to the Ext* codebase as default.  Distributions do that because of lack of cross vendor support for the other filesystems. If you are a vendor, you will want to have in-house filesystem experts before declaring support for a filesystem.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323150/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323166"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 13:26 UTC (Fri) by <b>man_ls</b> (guest, #15091)
+       [<a href="https://lwn.net/Articles/323166">Link</a>]
+    </p>
+    That sounds like a circular argument: distros don't have XFS or JFS experts because nobody cares about them anymore, and nobody cares about them because distros don't have experts. But the code to all these filesystems is open and has been there for a long while; why do distros have ext3 experts to begin with?
+<p>
+The <i>real</i> reason ext3 is popular is (or so I contend) that it is stable and crash-resistant <i>by default</i>. Crash resistance may have been an design accident in the beginning, but it is what got it to be the most popular filesystem for Linux. It would seem that people are not so willing to trade robustness for speed. After all the mission of a filesystem is to keep your data until you ask for it; is it any wonder that people like it when it does just that, no matter what?
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323166/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323484"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 15, 2009 19:32 UTC (Sun) by <b>rahulsundaram</b> (subscriber, #21946)
+       [<a href="https://lwn.net/Articles/323484">Link</a>]
+    </p>
+    <div class="FormattedComment">
+It isn't a circular argument. Ext2 already existed before these other filesystems and Ext3 being the only filesystem backward compatible with it and using a very similar codebase meant that it had a leg up with distributions and users trusting it more and adopting it far more quickly. Also while Ext* has been a cross vendor effort, other filesytems like JFS and XFS were developed by a single company like SGI or IBM and never grew out of it. Btrfs made a deliberate effort to avoid this problem and has succeeded in doing so. <br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323484/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor324088"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 17, 2009 22:01 UTC (Tue) by <b>pphaneuf</b> (subscriber, #23480)
+       [<a href="https://lwn.net/Articles/324088">Link</a>]
+    </p>
+    <p>My favourite characteristic of the extX family of filesystem is the ability to fsck while it being mounted. Often overlooked, but wow, do you ever miss that when you have to work with another filesystem for a period of time...
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/324088/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor324098"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 17, 2009 22:37 UTC (Tue) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/324098">Link</a>]
+    </p>
+    <div class="FormattedComment">
+*Why* do you miss the bizarre and dangerous ability to fsck a mounted <br>
+filesystem, often with umount-or-reboot-pleeze following it? Because your <br>
+early userspace is too deficient to fsck / before mounting it?<br>
+<p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/324098/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor324102"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 17, 2009 22:59 UTC (Tue) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/324102">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I assume he's talking about a read-only fsck. Any decent fsck should refuse to modify a mounted filesystem.<br>
+<p>
+I agree, though, that even a read-only fsck of a filesystem mounted read-write doesn't seem that useful --- the on-disk state of a mounted filesystem is going to be slightly inconsistent anyway: it's likely that not everything has been flushed to disk yet.<br>
+</p><p>
+Now a full (read and fix) fsck of a filesystem mounted read-only may be useful, and tolerably dangerous if followed immediately by a reboot.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/324102/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor324110"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 17, 2009 23:45 UTC (Tue) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/324110">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Indeed fsck.ext[234] is perfectly happy to modify a read-only-mounted /. <br>
+It even has special behaviour (messages and exit codes) to tell you when <br>
+you have to reboot because it just modified a mounted filesystem.<br>
+<p>
+I still think it's a disgusting cheap hack sanctified only because that's <br>
+the only way Unix systems have traditionally been able to fsck /. Now <br>
+Linux has early userspace, there is no excuse for it at all other than <br>
+back-compatibility with people who don't have an initramfs or initrd (how <br>
+many of them are there? Not many, I'd wager).<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/324110/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor323374"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 14, 2009 15:13 UTC (Sat) by <b>jschrod</b> (subscriber, #1646)
+       [<a href="https://lwn.net/Articles/323374">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Well, I don't use XFS exactly for that reason, having been bitten by the "my whole file consists of 0x00" behaviour one time too often. And my argument is as anecdotical [sp?] as yours.<br>
+<p>
+    Joachim<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323374/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor324338"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 19, 2009 1:26 UTC (Thu) by <b>xoddam</b> (subscriber, #2322)
+       [<a href="https://lwn.net/Articles/324338">Link</a>]
+    </p>
+    <div class="FormattedComment">
+anecdotal.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/324338/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor324341"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 19, 2009 1:51 UTC (Thu) by <b>jschrod</b> (subscriber, #1646)
+       [<a href="https://lwn.net/Articles/324341">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Thanks for the info. (I'm not a native English speaker, btw.)<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/324341/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor324344"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">non-native speakers</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 19, 2009 2:23 UTC (Thu) by <b>xoddam</b> (subscriber, #2322)
+       [<a href="https://lwn.net/Articles/324344">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Schon verstanden :-)<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/324344/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor322980"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 18:12 UTC (Thu) by <b>davecb</b> (subscriber, #1574)
+       [<a href="https://lwn.net/Articles/322980">Link</a>]
+    </p>
+    <p>On a system that predates POSIX and/or logging filesystems, you will get the behavior you
+expect: this is exactly the Unix V6 behavior. The 
+data blocks will be written out, then the inode's length field will be updated, then the (atomic) rename will compete and the file will be replaced.
+
+</p><p>POSIX doesn't guarantee that: it allows people experimenting with delaying or reordering for performance reasons to weaken the guarantees.
+
+</p><p>Research filesystems tried both, and found that 
+one could get considerable performance advantages by
+reordering the writes to be in elevator order, and
+delaying them until there was enough data to coalesce adhacent writes.  Some of this is now
+broadly available SCSI's "tag queueing".  
+Alas, if a write failed, the on-disk
+data was now inconsistent, and one could end up with a disk of garbage.
+
+</p><p>A former colleague, then at UofT, found he
+could reorder and coalesce with great benefit, so long as he inserted "barriers" into the sequence where there were correctness-critical orderings.
+Those has to remain, but most of the performance
+could be kept, with a write cache and a delay of
+a few seconds.
+
+</p><p>Now we're working with journaled filesystems,
+which reduce the cost of preserving order even more, but have separated metadata from data updates. This introduced an new opportunity to inadvertently
+order updates that broke the older, but 
+unpublished, correctness criteria.
+
+</p><p>Some journaled filesystems guarantee that
+the sequence you (and I) use is correctness-preserving. ZFS is one of these.  Others, including ext3 and 4, leave a window in which a crash will will render the filesystem inconsistent. Ext3 has a small window, and for 
+unknown reasons, ext4 has one as wide as the
+delay period.  
+
+</p><p>I'm of the opinion both could have arbitrarily small risk periods, and with a persistent write cache or journal, both can avoid all risk.
+However, changing the algorithm to one which
+is correctness-preserving would arguably be a better answer.
+
+</p><p>--dave 
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322980/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor322848"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 1:51 UTC (Thu) by <b>aigarius</b> (subscriber, #7329)
+       [<a href="https://lwn.net/Articles/322848">Link</a>]
+    </p>
+    <div class="FormattedComment">
+POSIX is really irrelevant here. There is an expectation of filesystem crash resistance set by ext3. If ext4 is supposed to be a successor of ext3, then these expectations must be upheld. The current behaviour is a bug in _ext4_.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322848/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor322852"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 2:52 UTC (Thu) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/322852">Link</a>]
+    </p>
+    <div class="FormattedComment">
+But this would then mean that we _should_ write applications that work with extX file system only, instead of POSIX, which is exactly what seem to have (unfortunately) happened. If an extX user changes the filesystem to non-extX (of which there are many), then these apps may break again. I don't think that's a very good deal.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322852/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor322875"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 8:21 UTC (Thu) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/322875">Link</a>]
+    </p>
+    <div class="FormattedComment">
+That's rubbish. How many applications do you use that will work on a bare-bones POSIX system? It's perfectly legitimate to rely on facilities that aren't in POSIX.<br>
+<p>
+POSIX is a set of bare minimum requirements, not a bible for a usable system. It's perfectly legitimate to give guarantees beyond the ones POSIX dictates. A working atomic rename -- file data and all --- is one such constraint that adds to the usefulness and reliability of the system as a whole.<br>
+</p><p>
+Applications that rename() without fsync() are *not* broken. They're merely requesting transaction atomicity without transaction durability, which is a perfectly sane thing to do in many circumstances. Teaching application developers to just fsync() after every rename() is *harmful*, dammit, both to system performance and to their understanding of how the filesystem works.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322875/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor322892"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 11:48 UTC (Thu) by <b>epa</b> (subscriber, #39769)
+       [<a href="https://lwn.net/Articles/322892">Link</a>]
+    </p>
+    <blockquote>POSIX is a set of bare minimum requirements, not a bible for a usable system. It's perfectly legitimate to give guarantees beyond the ones POSIX dictates. A working atomic rename -- file data and all --- is one such constraint that adds to the usefulness and reliability of the system as a whole.</blockquote>That's all very well, but such a guarantee has never in fact been made.  (If you can find something in the ext3 documentation that makes such a promise, I will eat my words.)
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322892/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor322919"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 14:43 UTC (Thu) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/322919">Link</a>]
+    </p>
+    Well first, that's the way it's worked in practice for years, documentation be damned. Second, these semantics are implied by the description of data=ordered.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322919/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor322922"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 15:01 UTC (Thu) by <b>epa</b> (subscriber, #39769)
+       [<a href="https://lwn.net/Articles/322922">Link</a>]
+    </p>
+    <blockquote>Second, these semantics are implied by the description of data=ordered.</blockquote>You could be right: I always thought of data=ordered as promising 'no garbage blocks in files that were enlarged just before a crash' but it could be taken as promising more.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322922/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor323038"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 20:35 UTC (Thu) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323038">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I think emacs programmers may disagree with you on this.<br>
+<p>
+The question still remains the same. If an application that worked on ext3 is placed into an environment that is not ext3, will it still work OK?<br>
+</p><p>
+PS. Apps that rely on the ext3 behaviour can always demand they run only on ext3, of course ;-)<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323038/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323039"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 20:40 UTC (Thu) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/323039">Link</a>]
+    </p>
+    I don't think Emacs is wrong here, actually. In an interactive editor, I want durability <i>and</i> atomicity. I'm simply pointing out that sometimes it's appropriate to want atomicity without durability, and under those circumstances, using <code>rename</code> without <code>fsync</code> is the right thing to do.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323039/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323063"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 0:06 UTC (Fri) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323063">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I was under the impressions that you do get atomicity. The zero length file (i.e. the one that has not been made durable yet, because fsync was not called) gets renamed to the other file just fine. No?<br>
+<p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323063/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323067"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 0:16 UTC (Fri) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/323067">Link</a>]
+    </p>
+    That's from the filesystem's perspective.
+<p>
+From the application's perspective, the entire sequence of "atomically replace the content of file A" failed -- file A was left in an indeterminate state. The application has no way of stating that it wants that replacement to occur in the future, but be atomic, except to use <code>open-write-close-rename</code>. The filesystem should ensure that the entire operation happens atomically, which means flushing the file-to-be-renamed's data blocks before the rename record is written.
+</p><p>
+What the application obviously <i>meant</i> to happen is for the filesystem to commit both the data blocks and the rename as some point in the future, but to always do it in that order. Atomic rename without that guarantee is far less useful, and explicit syncing all the time will kill performance.
+</p><p>
+These semantics are safe and useful! They don't impact performance much because the applications that need the fastest block allocated -- databases and such -- already turn off as much caching as possible and do that work internally.
+</p><p>
+Atomic-in-the-future commits may go beyond a narrow reading of POSIX, but that's not a bad thing. Are you saying that we cannot improve on POSIX?
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323067/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323074"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 0:27 UTC (Fri) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/323074">Link</a>]
+    </p>
+    <div class="FormattedComment">
+what's needed is the ability for the code to insert a barrier, saying 'I want everything before this point done before you do anything after this point'<br>
+<p>
+anything else is guesswork by the OS.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323074/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323080"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 0:46 UTC (Fri) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/323080">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I didn't think POSIX filesystem operations were allowed to be executed out <br>
+of order. I've never read any code, no matter how old, that took any <br>
+measures to allow for this.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323080/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323082"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 0:49 UTC (Fri) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/323082">Link</a>]
+    </p>
+    <div class="FormattedComment">
+They're only out of order from the point of view of a system recovering from a crash. Otherwise, there'd be an even larger furor. :-) I think the way rename is used, it was always intended to have barrier semantics, and sane filesystems should respect that intent.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323082/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323130"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 7:58 UTC (Fri) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/323130">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Strongly seconded. I suppose nothing is ever really *guaranteed* about <br>
+post-crash state, so this is merely a QoI, but an important one.<br>
+<p>
+(Memories of the Algol 68 standard, I think it was, going to some lengths <br>
+to define the behaviour of the system under unspecified circumstances in <br>
+which the power was cut, which were meant to include things like <br>
+earthquakes.)<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323130/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor323076"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 0:47 UTC (Fri) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/323076">Link</a>]
+    </p>
+    I agree. An explicit barrier interface would be nice. Right now, however, rename-onto-an-existing-file almost always expresses the intent to create such a barrier, and the filesystem should respect that intent. In practice, it's nearly always worked that way. UFS with soft-updates guarantees data blocks are flushed before metadata ones. ZFS goes well beyond that and guarantees the relative ordering of every write. And the vast majority of the time, on ext3, an atomic rename without an fsync has the same effect as it does on these other filesystems.
+<p>
+Other filesystems work like ext4 does, yes. Consider XFS, which has a much smaller user base than it should, given its quality. Why is that the case? It has a reputation for data loss --- and for good reason. IMHO, it's ignoring an implied barriers created by atomic renames!
+</p><p>Forcing a commit of data before rename-onto-an-existing-file not only allows applications running today to work correctly, but creating an implied barrier on <code>rename</code> provides a very elegant way to detect the barrier the application developer almost certainly meant to write, but couldn't.
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323076/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323106"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 4:12 UTC (Fri) by <b>flewellyn</b> (subscriber, #5047)
+       [<a href="https://lwn.net/Articles/323106">Link</a>]
+    </p>
+    <div class="FormattedComment">
+POSIX defines an explicit barrier.  It's called fsync().<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323106/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323129"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 7:57 UTC (Fri) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/323129">Link</a>]
+    </p>
+    <div class="FormattedComment">
+And how often have you seen applications that do cross-directory rename()s <br>
+combine it with an fsync() of both the source and target directories, <br>
+without which you are risking data loss?<br>
+<p>
+I've never seen anyone do it. Even coreutils 7.1 doesn't do it.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323129/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323131"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 8:29 UTC (Fri) by <b>flewellyn</b> (subscriber, #5047)
+       [<a href="https://lwn.net/Articles/323131">Link</a>]
+    </p>
+    <div class="FormattedComment">
+If you just rename(), then the file will continue to exist at either the old or the new location, even if there's a crash.  That's guaranteed by rename() semantics.  You can't cross filesystems with it, either, so there's no I/O of the actual data.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323131/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323182"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 14:50 UTC (Fri) by <b>foom</b> (subscriber, #14868)
+       [<a href="https://lwn.net/Articles/323182">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; If you just rename(), then the file will continue to exist at either the old or the new location, even </font><br>
+<font class="QuotedText">&gt; if there's a crash. That's guaranteed by rename() semantics.</font><br>
+<p>
+Is it? If you rename from /A/file to /B/file (both on the same filesystem), what happens if the OS <br>
+decides to write out the new directory metadata for /A immediately, but delay writing /B until an <br>
+hour from now? (for performance, don't-cha-know) And then the machine crashes. So now you're <br>
+left with no file at all.<br>
+</p><p>
+While I admit not having looked, I'll bet three cookies that's perfectly allowed by POSIX.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323182/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323186"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 15:06 UTC (Fri) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/323186">Link</a>]
+    </p>
+    <blockquote>While I admit not having looked, I'll bet three cookies that's perfectly allowed by POSIX.</blockquote>You know what else is also allowed by POSIX?<ul><li>Rejecting filenames longer than 14 characters, or that begin with a hyphen</li><li>Refusing to create more than 8 hard links to a file</li><li>Not having job control</li><li>Copying a process's entire address space on <code>fork</code></li><li>Making all IO synchronous</li></ul>Come on. Adhering to POSIX is no excuse for a poor implementation! Even Windows adheres to POSIX, and you'd have to be loony to claim it's a good Unix. Look: the bare minimum durability requirements that POSIX specifies are just not sufficient for a good and reliable system. <code>rename</code> <b>must</b> introduce a write barrier with respect to the data blocks for the file involved or we <b>will</b> lose. Not only will you not get every programmer and his dog to insert a gratuitous <code>fsync</code> in the write sequence,  but doing so would actually be harmful to system performance.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323186/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323233"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 18:05 UTC (Fri) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/323233">Link</a>]
+    </p>
+    <blockquote>
+rename <b>must</b> introduce a write barrier with respect to the data blocks for the file involved or we <b>will</b> lose.
+</blockquote>
+But this is exactly the behaviour that ext4 isn't currently implementing (although it will be, by default).
+<p>
+Perhaps we're in vociferous agreement, I don't know.
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323233/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor323287"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 22:54 UTC (Fri) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323287">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; Not only will you not get every programmer and his dog to insert a gratuitous fsync in the write sequence, but doing so would actually be harmful to system performance. </font><br>
+<p>
+fsync is not gratuitous. It is the D in ACID. As you mentioned yourself, rename requires only A form ACID - and that is exactly what you get.<br>
+</p><p>
+But, Ted being a pragmatic man, reverted this to the old behaviour, simply because he knows there is a lot of broken software out there.<br>
+</p><p>
+The fact that good applications that never lose data are already using the correct behaviour is case in point that this is how all applications should do it.<br>
+</p><p>
+Performance implications of this approach are different than that of the old approach from ext3. In some cases ext4 will be faster. In others, it won't. But the main performance problem is bad applications that gratuitously write hundreds of small files to the file system. This is what is causing the real performance problem and should be fixed.<br>
+</p><p>
+XFS received a lot of criticism, for what seem to be application problems. I wonder how many people lost files they were editing in emacs on that file system. I would venture a guess, not many.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323287/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323290"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 23:10 UTC (Fri) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/323290">Link</a>]
+    </p>
+    <blockquote>It is the D in ACID. As you mentioned yourself, rename requires only A form ACID - and that is exactly what you get.</blockquote>That's my <b>whole point</b>: sometimes you want atomicity <b>without</b> durability. <code>rename</code> without <code>fsync</code> is how you express that. Except on certain recent filesystems, it's <i>always</i> worked that way. ext4 not putting a write barrier before <code>rename</code> is a regression.
+
+<blockquote>But the main performance problem is bad applications that gratuitously write hundreds of small files to the file system.</blockquote>And why, pray tell, is writing <i>files</i> to a <i>filesystem</i> a bad thing? Writing plenty of small files is a perfectly legitimate use of the filesystem. If a filesystem buckles in that scenario, it's the fault of the filesystem, not the application. Blaming the application is blaming the victim.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323290/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323295"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 23:46 UTC (Fri) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323295">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; That's my whole point: sometimes you want atomicity without durability. rename without fsync is how you express that. Except on certain recent filesystems, it's always worked that way. ext4 not putting a write barrier before rename is a regression.</font><br>
+<p>
+Just because something worked one way in one mode of one file system, doesn't mean it is the only way it can work, nor that applications should rely on it. If you want atomicity without durability, you get it on ext4, even without Ted's most recent patches (i.e. you get the empty file). If you want durability as well, you call fsync.<br>
+</p><p>
+<font class="QuotedText">&gt; And why, pray tell, is writing files to a filesystem a bad thing?</font><br>
+</p><p>
+Writing out files that have _not_ changed is a bad thing. Or are you telling me that KDE changes all of its configuration files every few minutes?<br>
+</p><p>
+BTW, the only reason fsync is slow on ext3, is because it does sync of all files. That's something that must be fixed, because it's nonsense.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323295/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323316"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 14, 2009 1:58 UTC (Sat) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/323316">Link</a>]
+    </p>
+    <blockquote>Just because something worked one way in one mode of one file system...</blockquote>There's plenty of precedent. The original Unix filesystem worked that way. UFS works that way with soft-updates. ZFS works that way. There are plenty of decent filesystems that will provide atomic replace with <code>rename</code>.
+
+<blockquote>...you get it on ext4, even without Ted's most recent patches (i.e. you get the empty file).</blockquote>Not from the perspective of the whole operation you don't. You set out trying to replace the contents of the file called /foo/bar, atomically. If /foo/bar ends up being a zero-length file, the intended operation wasn't atomic. That's like saying you don't need any synchronization for a linked list because the individual pointer modifications are atomic. Atomic replacement of a file without forcing an immediate disk sync <b>is</b> something a decent filesystem should provide. Creating a write barrier on <code>rename</code> is an elegant way to do that.
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323316/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323421"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 15, 2009 6:01 UTC (Sun) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323421">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; Creating a write barrier on rename is an elegant way to do that.</font><br>
+<p>
+Except that rename(s), as specified, never actually guarantees that.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323421/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323423"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 15, 2009 6:04 UTC (Sun) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323423">Link</a>]
+    </p>
+    <div class="FormattedComment">
+That should have been rename(2), of course.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323423/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor323357"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 14, 2009 12:53 UTC (Sat) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/323357">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Sure. Fixing fsync() being sync() on ext3 is easy, as long as you don't <br>
+mind someone else's data showing up in your partially-synced files after <br>
+reboot. Oh, wait, that's a security hole.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323357/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323422"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 15, 2009 6:03 UTC (Sun) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323422">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Actually, in ordered mode it should be made a no-op by default. The fact that it locks the machine up is a major regression.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323422/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor323309"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 14, 2009 1:23 UTC (Sat) by <b>flewellyn</b> (subscriber, #5047)
+       [<a href="https://lwn.net/Articles/323309">Link</a>]
+    </p>
+    <div class="FormattedComment">
+No, because rename() is only changing the metadata.  The data of the file itself has not been changed by that call.<br>
+<p>
+If you were to write new data to the file and THEN call rename, a crash right afterwards might mean that the updates were not saved.  But the only way you could lose the file's original data here is if you opened it with O_TRUNC, which is really stupid if you don't fsync() immediately after closing.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323309/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor323858"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 17, 2009 7:12 UTC (Tue) by <b>jzbiciak</b> (subscriber, #5246)
+       [<a href="https://lwn.net/Articles/323858">Link</a>]
+    </p>
+    <p>That's a bit heavy for a barrier though.  A barrier just needs to ensure ordering, not actually ensure the data is on the disk.  Those <i>are</i> distinct needs.</p>
+<p>For example, if I use<tt> mb()</tt>, I'm assured that other CPUs will see that every memory access before<tt> mb() </tt>completed before every memory access after<tt> mb()</tt>.  That's it.  The call to<tt> mb() </tt>doesn't ensure that the data gets written out of the cache to its final endpoint though.  So, if I'm caching, say, a portion of the video display buffer, there's no guarantee I'll see the writes I made before the call to<tt> mb() </tt>appear on the screen.  Typically, though, all that's needed and desired is a mechanism to guarantee things happen in a particular order so that you move from one consistent state to the next.</p>
+<p>The atomic-replace-by-rename carries this sort of implicit barrier in many peoples' minds, it seems.  Delaying the rename until the data actually gets allocated and committed is all this application requires.  It doesn't actually require the data to be on the disk.</p>
+<p>In other words,<tt> fsync() </tt>is too big a hammer.  It's like flushing the CPU cache to implement<tt> mb()</tt>.</p>
+<p>Is there an existing API that just says "keep these things in this order" without actually also spinning up the hard drive?  With the move to more battery powered machines and media that wears out the more it's written to, it seems like a bad idea to ask developers to force the filesystem to do more writes.</p>
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323858/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor323071"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 0:32 UTC (Fri) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323071">Link</a>]
+    </p>
+    <div class="FormattedComment">
+What I'm trying to say is that there already are file systems out there that work the way ext4 works. And, it seems to me from this bug report that there are applications out there that already figured out the only real way of making things both durable and atomic using POSIX calls.<br>
+<p>
+As for performance, I'm not really sure why an implicit fsync that ext3 does would be faster than an explicit one done from the application, if they end up in exactly the same thing (i.e. both data and metadata being written to permanent storage). Unless this implicit fsync in ext3 is not actually the equivalent of fsync, but instead just something that works most of the time (i.e. is done in 5 second intervals, as per Ted's explanation).<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323071/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323086"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 0:58 UTC (Fri) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/323086">Link</a>]
+    </p>
+    Data-before-rename isn't just an fsync when <code>rename</code> is called. That's one way of implement a barrier, but far from the best. Far better would be to keep track of all outstanding rename requests, and flush the data blocks for the renamed file before the rename record is written out. The actual write can happen far in the future, and these writes can be coalesced.
+<p>
+Say you're updating a few hundred small files. (And before you tell me that's bad design: I disagree. A file system is meant to manage files.) If you were to fsync before renaming each one, the whole operation would proceed slowly. You'd need to wait for the disk to finish writing each file before moving on to the next, creating a very stop-and-go dynamic and slowing everything down.
+</p><p>
+On the other hand, if you write and rename all these files without an fsync, when the commit interval expires, the filesystem can pick up all these pending renames and flush all their data blocks at once. Then it can write all the rename records, at once, much improving the overall running time of the operation.
+</p><p>
+The whole thing is still safe because if the system dies at any point, each of the 200 configuration files will either refer to the complete old file or the complete new file, never some NULL-filled or zero-length strangelet.
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323086/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323089"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 1:16 UTC (Fri) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323089">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; And before you tell me that's bad design: I disagree. A file system is meant to manage files.</font><br>
+<p>
+I don't think that's bad design either. It is very useful to build an XML tree from many small files (e.g. gconf), instead of putting everything into one big one, which, if corrupted, will bring everything down.<br>
+</p><p>
+<font class="QuotedText">&gt; The whole thing is still safe because if the system dies at any point, each of the 200 configuration files will either refer to the complete old file or the complete new file, never some NULL-filled or zero-length strangelet.</font><br>
+</p><p>
+I think that's the bit Ted was complaining about. It is unusual that changes to hundreds of configuration files would have to be done all at once. Users usually change a few things at a time (which would then be OK with fsync), so this must be some kind of automated thing doing it.<br>
+</p><p>
+But, yeah, I understand what you're getting at in terms of performance of many fsync calls in a row.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323089/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor322845"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 2:00 UTC (Thu) by <b>qg6te2</b> (guest, #52587)
+       [<a href="https://lwn.net/Articles/322845">Link</a>]
+    </p>
+    <i>"... POSIX never really made any such guarantee"</i>
+<br>
+<br>
+Perhaps the POSIX standard should be rewritten then. The overall philosophy of Unix is to abstract away mundane things such as how data is stored on disk. The user has a moral right to expect that as little data as possible was wiped out if a machine crashes (especially if caused by an OS fault and not hardware).
+<br>
+<br><i>Applications which want to be sure that their files have been committed to the media can use the fsync() or fdatasync() system calls</i>
+<br>
+<br>
+I vehemently disagree with this. It will simply cause everybody to use fsync() all the time as a blunt but simple solution to the "state of disk" problem. Which in turn will lead to lower performance, until it is taken as "common knowledge" that calls to fsync() are more hints rather than real requests. Which would of course make fsync() useless.
+<br>
+<br>
+<i>
+/proc/sys/vm/dirty_expire_centiseconds
+<br>/proc/sys/vm/dirty_writeback_centiseconds
+</i>
+<br>
+<br>
+Perhaps the above two settings can be managed automatically as a way of going around the fsync() issue. For example, the more data there is waiting to be dumped to disk, the higher the risk of loss, and hence the shorter the disk commit intervals should be.  This will of course reduce the effectiveness of delayed allocation, but performance without safety is not performance at all, especially if the user has to regenerate the lost data. 
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322845/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor322865"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 5:53 UTC (Thu) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/322865">Link</a>]
+    </p>
+    The fundamental problem is that there are two similar but different operations an application developer can request:<ol><li><code>open(A)-write(A,data)-close(A)-rename(A,B)</code>: replace the contents of B with data, atomically. I don't care when or even if you make the change, but whenever you get around to it, make sure either the old or the new version is in place.</li><li><code>open(A)-write(A,data)-fsync(A)-close(A)-rename(A,B)</code>: replace the contents of B with data, and do it <b>now</b>.</li></ol>
+<p>
+In practice, operation 1 has worked as described on ext2, ext3, and UFS with soft-updates, but fails on XFS and unpatched ext4. Operation 1 is perfectly sane: it's asking for atomicity without durability. KDE's configuration is a perfect candiate. Browser history is another. For a mail server or an interactive editor, of course, you'd want operation 2.
+</p><p>
+Some people suggest simply replacing operation 1 with operation 2. That's stupid. While operation 2 satisfies all the constraints of operation 1, it incurs a drastic and unnecessary performance penalty. By claiming operation 1 is simply operation 2 spelled incorrectly, you remove an important word from an application programmer's vocabulary. How else is an he supposed to request atomicity without durability? 
+</p><p>
+(And using a "real database" isn't a good enough answer: then you've just punted the same problem to a far heavier system, and for no good reason.)
+</p><p>
+The last patch mentioned in the article seems to make operation 1 work correctly, and that's good enough for me. Still, people need to realize that the filesystem <b>is</b> a database, albeit not a relational one, and that we can use database terminology to describe it.
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322865/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor323018"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 19:19 UTC (Thu) by <b>SLi</b> (subscriber, #53131)
+       [<a href="https://lwn.net/Articles/323018">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Well, you can always mount your filesystem with the "sync" option if you <br>
+want the behavior you describe.<br>
+<p>
+The problem is, then you cannot talk about performance. Disks are slow, <br>
+slower than you think because your system has been caching for years.<br>
+</p><p>
+While it's in a sense unfortunate that in ext4 this happening is more <br>
+likely than in ext3 (and it's exactly that, it's still very possible in <br>
+ext3), applications relying in that not happening are broken even in <br>
+ext3-land, because it does happen (if your system crashes, which shouldn't <br>
+happen very often - get a UPS and hardware that does not need binary <br>
+drivers).<br>
+</p><p>
+The solution of applications fsync()ing their critical data is not only <br>
+the best solution - it's virtually also the only solution, if you want to <br>
+combine any guarantee about data integrity with any performance that isn't <br>
+from 1995.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323018/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323113"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 5:19 UTC (Fri) by <b>qg6te2</b> (guest, #52587)
+       [<a href="https://lwn.net/Articles/323113">Link</a>]
+    </p>
+    <p>
+</p>
+<i>
+While it's in a sense unfortunate that in ext4 this happening is more
+likely than in ext3 (and it's exactly that, it's still very possible in
+ext3), applications relying in that not happening are broken even in
+ext3-land
+</i>
+<p>
+An appeal can be made to have better written applications, or more practically, an acceptance can be made that in the real world apps are never perfect. A file system needs to deal with that (no matter what is guaranteed by POSIX) and provide a reasonable trade-off between speed and safety.
+</p>
+<p>
+In the case of ext3, whether by side effect or design, this trade-off is at a good point. Mounting with the "sync" option sacrifices too much speed, while in the current version of ext4 the trade-off is too aggressively in the direction of speed. Not everybody can afford a UPS, nor should a UPS be required to have a disk with sane contents after a crash.
+</p>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323113/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323164"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 13:17 UTC (Fri) by <b>jwarnica</b> (guest, #27492)
+       [<a href="https://lwn.net/Articles/323164">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Not everyone can afford a computer, either. List price for the smallest APC UPS that includes software is $59.99. Which is pretty cheep. Given the other benefits of UPSs, providing some surge and brownout protection, not having one is just stupid.<br>
+<p>
+General purpose distros assume that you have what, a gig or two of memory. Not everyone can afford memory, either. And there are special case systems which would never have that kind of memory. So if you have a shitty computer, you run either older versions, or specially targeted distros. And if you are building an embedded system, you make choices appropriately.<br>
+</p><p>
+In 2009, if you choose to have a crippled system that doesn't have a UPS, then choose your filesystem carefully.<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323164/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor323221"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 16:43 UTC (Fri) by <b>SLi</b> (subscriber, #53131)
+       [<a href="https://lwn.net/Articles/323221">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I think ext4's tradeoff is a very sane one. I don't expect my machine to <br>
+crash all the time (in fact I can't remember when it last did, must have <br>
+been in something like 2005). If it gives a speedup measured in tens of <br>
+percents, it's the only sane thing to do.<br>
+<p>
+And for the case when it's not sane, there's f(data)sync().<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323221/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor322878"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 8:46 UTC (Thu) by <b>michaeljt</b> (subscriber, #39183)
+       [<a href="https://lwn.net/Articles/322878">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I'm no filesystem expert, so (disclaimer...) the following suggestion may well just be plain stupid.  Why not just have a journal (metadata and data lumped together) with fixed blocks for data which does not yet have its own blocks?  Certainly performance would be worse than if there were no such journal, but probably still better than having to allocate blocks for short-lived files.  The journal could be moved from time to time if block wear is an issue, although I presume that these days that is nearly always worked around at a lower level.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322878/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor322889"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 11:03 UTC (Thu) by <b>eru</b> (subscriber, #2753)
+       [<a href="https://lwn.net/Articles/322889">Link</a>]
+    </p>
+    <i>Why not just have a journal (metadata and data lumped together) with fixed blocks for data which does not yet have its own blocks?</i>
+<p>
+I believe this is more or less how a log-structured file system works:
+<a href="http://en.wikipedia.org/wiki/Log-structured_file_system">
+http://en.wikipedia.org/wiki/Log-structured_file_system</a>.
+For some reason the idea is not in very common use.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322889/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor322890"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 11:11 UTC (Thu) by <b>michaeljt</b> (subscriber, #39183)
+       [<a href="https://lwn.net/Articles/322890">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Indeed.  Except of course that I was thinking more of a very short-lived log for data which would not otherwise be written back, rather than a full-blown log-structured file system.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322890/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323134"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 8:54 UTC (Fri) by <b>michaeljt</b> (subscriber, #39183)
+       [<a href="https://lwn.net/Articles/323134">Link</a>]
+    </p>
+    <div class="FormattedComment">
+In fact, one could sum up the idea as a mini-log filesystem on top of the normal filesystem, acting as a cache for things that can't immediately be written out to the real filesystem.  Actually, I could imagine something like that existing outside of the actual filesystem code, but handled separately by the kernel, with the log either a pre-allocated file on the filesystem or a set of pre-allocated blocks on a swap device.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323134/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor323070"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 0:23 UTC (Fri) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/323070">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Log-structured filesystems aren't in use for media on which seeks are <br>
+non-zero cost because they lead to fragmentation hell in short order. You <br>
+don't always want to access your files in the same order in which you <br>
+wrote them; they should be clustered differently. LFSes make that <br>
+distinctly nontrivial to do.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323070/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323146"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 10:18 UTC (Fri) by <b>job</b> (subscriber, #670)
+       [<a href="https://lwn.net/Articles/323146">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Perhaps LFSes will make a comeback with the SSDs, then?<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323146/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor322904"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 14:03 UTC (Thu) by <b>ricwheeler</b> (subscriber, #4980)
+       [<a href="https://lwn.net/Articles/322904">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I think that we are overstating the data integrity promises of ext3 to a degree, which makes the ext4 behaviour seem less desirable. No enterprise application I know of is built around the assumption that every 5 seconds or so you will probably survive a power outage.<br>
+<p>
+Applications that needs to insure data integrity should take specific steps, including:<br>
+</p><p>
+* use fsync() when you hit state that you would like to survive a crash<br>
+* when using rename, you need to fsync() both the source and target directories<br>
+* make sure that barriers are enabled if not using a battery backed storage device or disable the write cache on your disk<br>
+</p><p>
+It is pretty trivial to get data loss in any file system if you misconfigure and use sloppy assumptions.<br>
+</p><p>
+If you have a boat load of apps which fail, you can easily configure your box (write cache disabled, nodelalloc for ext4, etc) to take the safe (and slow!) path.<br>
+</p><p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322904/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor322937"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 16:06 UTC (Thu) by <b>JoeBuck</b> (subscriber, #2330)
+       [<a href="https://lwn.net/Articles/322937">Link</a>]
+    </p>
+    Try doing that on an ext3 system, and the performance of your system will go down significantly, to the point where users reject it.  The fsync calls will cost you, big time. Firefox tried doing this and the Linux users nearly killed them.
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322937/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor322986"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 18:05 UTC (Thu) by <b>cpeterso</b> (guest, #305)
+       [<a href="https://lwn.net/Articles/322986">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Why is fsync() on ext3 slower than fsync() on a non-journaled file system? Because fsync() has to update the journal on disk in addition to writing data and metadata?<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322986/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor324343"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext3's slow fsync()</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 19, 2009 2:19 UTC (Thu) by <b>xoddam</b> (subscriber, #2322)
+       [<a href="https://lwn.net/Articles/324343">Link</a>]
+    </p>
+    <div class="FormattedComment">
+In default data=ordered mode, fsync(file) on ext3 is more-or-less equivalent to a sync of the entire filesystem.  It forces all dirty file blocks to be flushed even those belonging to unrelated tasks, and the caller has to wait for the entire operation to complete.  There is no clean way to flush the dirty blocks of only the desired file.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/324343/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor323035"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 20:27 UTC (Thu) by <b>ricwheeler</b> (subscriber, #4980)
+       [<a href="https://lwn.net/Articles/323035">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<p>
+You clearly don't want to blindly call fsync or use SYNC mode for normal operation.<br>
+</p><p>
+Most applications have reasonable points where an fsync would make sense. If I remember correctly, firefox went a bit over the top trying to keep it internal database crash resistant. <br>
+</p><p>
+For apps that really care about performance and data integrity both, you can try to batch operations - just like databases batch multiple transactions into a single commit.<br>
+</p><p>
+File system equivalents would be when writing a bunch of files you can write them all without fsync, then go back and reopen/fsync them as a batch - try it, it will give you close to non-fsynced performance and give you a clear sense of when data is on disk safely.<br>
+</p><p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323035/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor322929"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 16:15 UTC (Thu) by <b>iabervon</b> (subscriber, #722)
+       [<a href="https://lwn.net/Articles/322929">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I think there are plenty of applications that expect that rename() will atomically replace an old file with a new file, so that there is no point at which a system crash and restart will cause another process attempting to access the path to find it missing or with contents other than one or the other. POSIX doesn't specify anything about system crashes, but it does specify that any concurrently-running process can't see anything other than the state where the rename hasn't happened or the state where the rename has happened after the data is written. I'm not sure that POSIX even specifies that fsync() or fdatasync() will be particularly useful in a system crash; it does specify that your data will have been written when the system call returns, but that doesn't mean that the system crash won't completely or even selectively destroy your filesystem.<br>
+<p>
+So the sensible thing to do is to treat rename as dependent on the data write. Now, any program that truncates a file and then writes to it will tend to lead to 0-length files in a system crash, but that also tends to lead to 0-length files in an application crash or in a race with other code, or at least be a case where it's okay and expected to not find any particular file contents. If your desktop software actually erases all of your files and then hopes to be able to write new contents into them before anybody notices, that is an application bug, but using ext3 won't change the fact that it's failure-prone even aside from filesystem robustness.<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322929/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323062"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 0:11 UTC (Fri) by <b>giraffedata</b> (subscriber, #1954)
+       [<a href="https://lwn.net/Articles/323062">Link</a>]
+    </p>
+    <blockquote>
+I'm not sure that POSIX even specifies that fsync() or fdatasync() will be particularly useful in a system crash; it does specify that your data will have been written when the system call returns, but that doesn't mean that the system crash won't completely or even selectively destroy your filesystem.
+</blockquote>
+<p>
+It doesn't talk about system crashes (it wouldn't be practical to specify what a system does when it's broken), but it heavily implies crash-related function.  It also does <em>not</em> specify that data will have been written after fsync -- POSIX is more abstract than that.  The POSIX user doesn't know what a cache is; he doesn't know there's a disk drive holding his files.  In POSIX, write() writes to a file.  It doesn't schedule a write for later, it writes it immediately.  But it allows (by implication) that certain kinds of system failures can cause previously written data to disappear from a file.  It then goes on to introduce the concept of "stable storage" -- fsync() causes previously written data to be stored that way.  fsync() isn't about specific I/O operations; what it does is harden previously written data so that these certain kinds of system failures can't destroy it.
+</p><p>
+POSIX is, incidentally, notoriously silent on just how stable stable is, leaving it up to the designer's imagination which system failures it hardens against.  And there is a great spectrum of stability.  For example, I know of no implementation where fsync hardens data against a disk drive head crash.  I do know of implementations where it <em>doesn't</em> harden it against a data center power outage.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323062/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323094"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 2:14 UTC (Fri) by <b>iabervon</b> (subscriber, #722)
+       [<a href="https://lwn.net/Articles/323094">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Beyond POSIX, I think that users of a modern enterprise-quality *nix OS writing to a good-reliability filesystem expect is that operations which POSIX says are atomic with respect to other processes are usually atomic with respect to processes after a crash (mostly of the unexpected halt variety), and that fsync() forces the other processes to see the operation having happened.<br>
+<p>
+That is, you can think of "stable storage" as a process that reads the filesystem sometimes, and, after a crash, repopulates it with what it read last, and that fsync will only return after one of these reads after when you call it. You don't know what "stable storage" read, and it can have all of the same sorts of race conditions and time skew that any other concurrent process can. If the filesystem matches some such snapshot, it's the user or application's carelessness if anything is lost; if the filesystem doesn't match any such snapshot, it's crash-related filesystem damage.<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323094/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323101"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 2:51 UTC (Fri) by <b>quotemstr</b> (subscriber, #45331)
+       [<a href="https://lwn.net/Articles/323101">Link</a>]
+    </p>
+    <blockquote>Beyond POSIX, I think that users of a modern enterprise-quality *nix OS writing to a good-reliability filesystem expect is that operations which POSIX says are atomic with respect to other processes are usually atomic with respect to processes after a crash (mostly of the unexpected halt variety)</blockquote>In an ideal world, that would be exactly what you'd see: after a cold restart, the system would come up in <i>some</i> state the system was in at a time close to the crash, not some made-up non-existent state the filesystem cobbles together from bits of wreckage. Most filesystems weaken this guarantee somewhat, but leaving NULL-filled and zero-length files that <i>never actually existed on the running system</i> is just unacceptable.
+<p></p><blockquote>fsync() forces the other processes to see the operation having happened</blockquote>Huh? fsync has nothing to do with what other processes see. fsync only forces a write to stable storage; it has no effect on the filesystem as seen from a running system. In your terminology, it just forces the conceptual "filesystem" process to take a snapshot <i>at that instant</i>.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323101/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323185"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 15:26 UTC (Fri) by <b>iabervon</b> (subscriber, #722)
+       [<a href="https://lwn.net/Articles/323185">Link</a>]
+    </p>
+    <blockquote>In an ideal world, that would be exactly what you'd see: after a cold restart, the system would come up in some state the system was in at a time close to the crash, not some made-up non-existent state the filesystem cobbles together from bits of wreckage.</blockquote>
+
+The model works if you include the fact that, in a system crash, unintended things are, by definition, happening. Any failure of the filesystem to make up a possible state afterwards appears as fallout from the crash. Maybe some memory corruption changed your file descriptors, and your successful writes and successful close were some other file (but the subsequent rename found the original names). Maybe something managed to write zeros over your file lengths. It's not a matter of standards how often undefined behavior leads to noticeable problems, but it is a matter of quality.
+
+<blockquote>fsync has nothing to do with what other processes see. fsync only forces a write to stable storage; it has no effect on the filesystem as seen from a running system. In your terminology, it just forces the conceptual "filesystem" process to take a snapshot at that instant.</blockquote>
+
+That's what I meant to say: it makes the "filesystem" process see everything that had already happened. (And, by extension, processes that run after the system restarts, looking at the filesystem recovered from stable storage)
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323185/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor323200"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 16:04 UTC (Fri) by <b>giraffedata</b> (subscriber, #1954)
+       [<a href="https://lwn.net/Articles/323200">Link</a>]
+    </p>
+    <blockquote>
+In an ideal world, that would be exactly what you'd see: after a cold restart, the system would come up in some state the system was in at a time close to the crash, not some made-up non-existent state the filesystem cobbles together from bits of wreckage. Most filesystems weaken this guarantee somewhat, but leaving NULL-filled and zero-length files that never actually existed on the running system is just unacceptable.
+</blockquote>
+<p>
+You mean undesirable.  It's obviously acceptable because you and most your peers accept it every day.  Even ext3 comes back after a crash with the filesystem in a state it was not in at any instant before the crash.  The article points out that it does so to a lesser degree than some other filesystem types because of the 5 second flush interval instead of the more normal 30 (I think) and because two particular kinds of updates are serialized with respect to each other.
+</p><p>
+And since you said "system" instead of "filesystem", you have to admit that gigabytes of state are different after every reboot.  All the processes have lost their stack variables, for instance.  Knowing this, applications write their main memory to files occasionally.  Knowing that even that data isn't perfectly stable, some of them also fsync now and then.  Knowing that even that isn't perfectly stable, some go further and take backups and such.
+</p><p>
+It's all a matter of where you draw the line -- what you're willing to trade.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323200/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor323073"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 and data loss</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 0:25 UTC (Fri) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/323073">Link</a>]
+    </p>
+    <div class="FormattedComment">
+'Enterprise applications' can afford to assume UPSes, and reliable <br>
+hardware. People's desktops, and consumer systems more generally, cannot.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323073/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor322973"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 is the new XFS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 18:19 UTC (Thu) by <b>anton</b> (guest, #25547)
+       [<a href="https://lwn.net/Articles/322973">Link</a>]
+    </p>
+    The problem has nothing to do with delayed allocation, nor with the
+commit interval.  It has to do with the classic <a href="http://www.complang.tuwien.ac.at/anton/sync-metadata-updates.html">mistake
+of writing metadata without writing the corresponding data</a>.  A
+file system can easily delay allocation of file data for a minute and
+still preserve the data during crashes: It just needs to write the
+metadata for the new file after the data; and of course the rename
+metadata and the corresponding deletion of the old file data should be
+written even later.  And of course the file system needs to ensure
+with barriers that this is written in the right order to disk.
+
+<blockquote>
+The real solution to this problem is to fix the applications which are
+expecting the filesystem to provide more guarantees than it really is.
+</blockquote>
+
+Why should it be "the real solution" to change thousands of
+applications to deal with crash-vulnerable file systems?  Even if all
+the application authors all agreed with this idea, how would they know
+that their applications are not expecting more than the file system
+guarantees?
+
+<p>IMO the real solution is to keep the applications the same, and fix
+the file system; we need to fix just one file system, and can relegate
+all the others that don't give the guarantees to special-purpose
+niches where data integrity is unimportant.
+
+</p><p>What guarantee should the file system give?  A good one would be
+this: If the application leaves consistent data if it is terminated
+unexpectedly without a system crash (e.g. with SIGKILL), the data
+should also be consistent in case of a system crash (although possibly
+old without fsync()).  One way to give this guarantee is to implement <a href="http://www.complang.tuwien.ac.at/papers/czezatke%26ertl00/#tth_sEc3.2">in-order
+semantics</a>.
+
+</p><blockquote>
+Bringing the applications back into line with what the system is
+really providing is a better solution than trying to fix things up at
+other levels.
+</blockquote>
+
+That's just wrong.  But more importantly, it won't happen.  So better
+bring the system in line with what the applications are expecting; for
+now, ext3 looks like the good-enough solution (despite Linux doing the
+wrong thing (no barriers) by default), and hopefully we will have file
+systems that actually give data consistency guarantees in the future.
+
+<p>I would welcome an article about the consistency guarantees that
+Btrfs gives (maybe in a comparison with other file systems).  Judging from the lack of
+documentation of the guarantees (at least in prominent places), there
+seems to be little interest from file system developers in this area
+yet, but an article focusing on that topic may improve that state of
+affairs.
+
+</p><p>Concerning the subject of my comment: Whenever someone mentions XFS, someone else
+reports a story about data loss, and that's why he's no longer using
+XFS.  It seems that ext4 aspires to the same ideals as XFS: high
+performance, large data handling capabilities, and it does not care
+much for the user's data in the case of a crash.  I guess ext4 will
+then play a similar role among Linux users as XFS has.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/322973/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323036"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 is the new XFS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 12, 2009 20:27 UTC (Thu) by <b>droundy</b> (subscriber, #4559)
+       [<a href="https://lwn.net/Articles/323036">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Absolutely.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323036/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor323098"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 is the new XFS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 3:31 UTC (Fri) by <b>dgc</b> (subscriber, #6611)
+       [<a href="https://lwn.net/Articles/323098">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Concerning XFS - most of the "data not written" (not "data loss") problems<br>
+in this scenario have been fixed. XFS is now much more careful to<br>
+correctly order data and metadata updates and so the "XFS ate my files"<br>
+problems have pretty much disappeared.<br>
+<p>
+Indeed, the tricks being played to close the reported holes in ext4<br>
+would appear to be copied from XFS. e.g. the flush-after-truncate<br>
+trick went into XFS back in June 2006:<br>
+</p><p>
+<a href="http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=commit;h=7d4fb40ad7efe4586d1341d4731377fb4530836f">http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-...</a><br>
+</p><p>
+Concerning the subject title, ext4 has been replicating XFS features<br>
+without paying attention to the fixes that had been made to those<br>
+features in the past couple of years. Hence ext4 introduced the bugs<br>
+that everyone (incorrectly) continues to flame XFS for. Now ext4 is<br>
+replicating the XFS fixes to said bugs. ext4 is still going to be<br>
+playing catchup for some time.... ;)<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323098/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323590"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">ext4 is the new XFS</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 16, 2009 11:01 UTC (Mon) by <b>nye</b> (guest, #51576)
+       [<a href="https://lwn.net/Articles/323590">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt;Concerning XFS - most of the "data not written" (not "data loss") problems</font><br>
+<font class="QuotedText">&gt;in this scenario have been fixed. XFS is now much more careful to</font><br>
+<font class="QuotedText">&gt;correctly order data and metadata updates and so the "XFS ate my files"</font><br>
+<font class="QuotedText">&gt;problems have pretty much disappeared.</font><br>
+<p>
+Don't forget the "files not modified in months are now inexplicably filled with nulls" problems that it had :P.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323590/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor323102"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">An interesting link</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 2:52 UTC (Fri) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323102">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Trying to find out if F-11 is going to have Ted's patches, I was pointed here:<br>
+<p>
+<a href="http://flamingspork.com/talks/2007/06/eat_my_data.odp">http://flamingspork.com/talks/2007/06/eat_my_data.odp</a><br>
+</p><p>
+Interesting.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323102/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323115"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">An interesting link</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 5:46 UTC (Fri) by <b>qg6te2</b> (guest, #52587)
+       [<a href="https://lwn.net/Articles/323115">Link</a>]
+    </p>
+    On slide 84 the following idealistic assertion is made:
+<i>
+<ul>
+<li>data=ordered mode on ext3</li>
+<ul>
+<li>writes data before metadata</li>
+<li>other file systems are different</li>
+</ul>
+<li>ext3 ordered mode is an exception, not the rule
+<ul><li>applications relying on this are not portable and depend on file system behaviour. the applications are buggy.</li></ul>
+</li>
+</ul>
+</i>
+Perhaps the applications are buggy to people living in ivory towers. The ext3 ordered mode should be the rule as how filesystem should behave, not the exception. Practicality suggests that fixing the underlying filesystem is more time and cost efficient than fixing 100,000 apps.
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323115/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323117"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">An interesting link</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 6:08 UTC (Fri) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323117">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; The ext3 ordered mode should be the rule as how filesystem should behave, not the exception.</font><br>
+<p>
+It's not even the rule for ext3. You can easily switch to writeback and get:<br>
+</p><p>
+<font class="QuotedText">&gt; Data ordering is not preserved - data may be written into the main file system after its metadata has been committed to the journal. This is rumoured to be the  highest-throughput  option. It  guarantees internal file system integrity, however it can allow old  data  to  appear  in files after a crash and journal recovery.</font><br>
+</p><p>
+There must be dozens of other file systems in all sorts of POSIX compatible OSes that don't behave that way (i.e. data=ordered). So, fixing one file system isn't going to be good enough solution, I think.<br>
+</p><p>
+What's wrong with applying correct idioms in applications, the way emacs (and vim?) do?<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323117/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323126"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">An interesting link</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 6:57 UTC (Fri) by <b>qg6te2</b> (guest, #52587)
+       [<a href="https://lwn.net/Articles/323126">Link</a>]
+    </p>
+    <i>What's wrong with applying correct idioms in applications, the way emacs (and vim?) do?</i>
+<p>
+A simple "write data to disk" operation would have unnecessary complexity, as the slides show (a collection #ifdefs and run-time ifs). This is insane. The operating system (and hence by extension, the underlying filesystem) is supposed to abstract things away, not make things harder.
+</p>
+<p>A sane filesystem should have the previous version of a file available intact, no matter when the crash occurred. To put it another way, why replicate the "safe save" functionality in each app when it can be done once in the filesystem ?</p>
+<p></p>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323126/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323148"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">An interesting link</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 13, 2009 10:41 UTC (Fri) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/323148">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; A simple "write data to disk" operation would have unnecessary complexity, as the slides show (a collection #ifdefs and run-time ifs). This is insane. The operating system (and hence by extension, the underlying filesystem) is supposed to abstract things away, not make things harder.</font><br>
+<p>
+Unfortunately, that's the status of POSIX right now. And the complexity can be put into a library for everyone to share.<br>
+</p><p>
+<font class="QuotedText">&gt; A sane filesystem should have the previous version of a file available intact, no matter when the crash occurred. To put it another way, why replicate the "safe save" functionality in each app when it can be done once in the filesystem ?</font><br>
+</p><p>
+Because the reality is that right now POSIX doesn't demand it, so your app is bound to bump into a file system here and there that requires exactly that. An app written safely will work with both types of file system semantics. The opposite is not true.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323148/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323460"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">An interesting link</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 15, 2009 13:53 UTC (Sun) by <b>kleptog</b> (subscriber, #1183)
+       [<a href="https://lwn.net/Articles/323460">Link</a>]
+    </p>
+    <div class="FormattedComment">
+ISTM that the choice for the application writer is straightforward:<br>
+<p>
+1. I care that my application works correctly in the face of crashes on Linux on the default filesystem, in which case the above fixes will do it.<br>
+</p><p>
+2. I care that my application works correctly in the face of crashes on any POSIX compliant OS, in which case you need to fix the app.<br>
+</p><p>
+Unfortunately I come across a lot of code where the writer didn't even consider the problem, leaving bogus state even if you just kill the application at the wrong moment. I sincerely hope this brouhaha will at least cause more people to pay attention to the issue.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323460/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323479"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">An interesting link</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 15, 2009 18:08 UTC (Sun) by <b>skybrian</b> (subscriber, #365)
+       [<a href="https://lwn.net/Articles/323479">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Agreed that carefully written, standards-compliant apps that go the extra mile to avoid data loss regardless of operating system will have a portability advantage over most. But unless there are lots of users out there running on filesystems with weaker semantics than ext3, the advantage isn't that big.<br>
+<p>
+Also, what the most carefully written apps do isn't particularly relevant to what the filesystem should do. The choice for filesystem writers is:<br>
+</p><p>
+a) implement just the bare standards, and most people won't use your filesystem because their apps lose data, even if it's faster.<br>
+</p><p>
+b) implement nicer semantics so that people will actually prefer your filesystem over others. Decreased data loss after a system crash, even for poorly written apps, is such a feature.<br>
+</p><p>
+It's the same tradeoff that exists for people who write web browsers. When the standards are too weak to achieve compatibility with most apps, you have to go beyond them. You need both good performance and good compatibility.<br>
+</p><p>
+Without this patch, ext4 would not be competitive with ext3.<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323479/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor323580"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Name of sysctl paths</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 16, 2009 9:30 UTC (Mon) by <b>tarvin</b> (subscriber, #4412)
+       [<a href="https://lwn.net/Articles/323580">Link</a>]
+    </p>
+    <div class="FormattedComment">
+On my Fedora 10 system, the involved sysctl paths are:<br>
+<p>
+   /proc/sys/vm/dirty_writeback_centisecs<br>
+and<br>
+   /proc/sys/vm/dirty_expire_centisecs<br>
+</p><p>
+I suppose there is a slight error in the article. Or is Fedora 10 nonstandard regarding this?<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323580/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor323615"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Name of sysctl paths</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Mar 16, 2009 13:55 UTC (Mon) by <b>corbet</b> (editor, #1)
+       [<a href="https://lwn.net/Articles/323615">Link</a>]
+    </p>
+    There was a slight error in the article, yes.  Sorry for any confusion...
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/323615/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor351763"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Why wait, if the disk is idle?</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 9, 2009 22:30 UTC (Wed) by <b>Richard_J_Neill</b> (subscriber, #23093)
+       [<a href="https://lwn.net/Articles/351763">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I understand why the optimisations are a good idea on very heavily loaded system. Likewise on a laptop-mode machine which spins down the HDD.<br>
+<p>
+But in all other cases, if the disk is idle, surely the OS should flush as soon as it possibly can? What benefit occurs from waiting 30 seconds (to have more efficient writes) if the disk isn't running flat-out at this instant?<br>
+</p><p>
+ <br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/351763/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor352170"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Why wait, if the disk is idle?</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 11, 2009 15:48 UTC (Fri) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/352170">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Even some non-laptop systems (e.g. WD GreenPower drives) can spin <br>
+themselves down a bit to save power.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/352170/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</td> <!-- MC -->
+<td class="RightColumn">
+<div id="azk93271_right_zone"></div>
+</td>
+</tr></tbody></table></td>
+</tr></tbody></table><!-- endpage -->
+
+        <br clear="all">
+        <center>
+        <p>
+        <font size="-2">
+        Copyright © 2009, Eklektix, Inc.<br>
+        This article may be redistributed under the terms of the
+              <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+              Commons CC BY-SA 4.0</a> license<br>
+        Comments and public postings are copyrighted by their creators.<br>
+        Linux  is a registered trademark of Linus Torvalds<br>
+        </font>
+        </p></center>
+        
+        
+        </body></html>
