@@ -12,7 +12,7 @@ Project is "under construction". Design documentation is the main focus right no
 
 - [Mission statement](documentation/mission.pdf) (7 pages)
 - [Questions and Answers](documentation/responses.pdf) (3 pages)
-- [Ideas and Observations](documentation/ideas.pdf) (8 pages)
+- [Ideas and Observations](documentation/ideas.pdf) (11 pages)
 
 If you want to help, read these and post a review.
 
