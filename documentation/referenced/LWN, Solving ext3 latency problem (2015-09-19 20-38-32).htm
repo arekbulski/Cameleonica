@@ -1,0 +1,1681 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><!--
+ Archive processed by SingleFile 
+ url: https://lwn.net/Articles/328363/ 
+ saved date: Sat Sep 19 2015 20:38:31 GMT+0200 (CEST) 
+--><head><title>Solving the ext3 latency problem [LWN.net]</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8>
+        <link rel=" icon"="" href="/images/favicon.png" type="image/png">
+        <link rel="alternate" type="application/rss+xml" title="LWN.net headlines" href="http://lwn.net/headlines/newrss">
+<link rel="alternate" type="application/rss+xml" title="Comments posted to this article" href="http://lwn.net/headlines/328363/">
+        <style rel="stylesheet" data-href="https://lwn.net/CSS/lwn">body {color: black;background-color: #ffffff;padding:0px;}h1 {margin:0px 0px 5px 0px;padding:0px;color: black;}h2 {margin:20px 0px 5px 0px;padding:0px;}h3 {margin:0px 0px 5px 0px;padding:0px;}a {text-decoration:none;}a:link { color: Blue;}a:visited {color: DarkBlue;}a:hover {color:Red;}a.name { color: black }a.name:link { color: black }a.name:hover { color: black }TABLE.Page { width: 100% }TD.LeftColumn { background-color: #ffcc99;width: 156px;overflow: hidden;vertical-align: top }TD.MidColumn { background-color: #ffffff;padding: 3px;border-style: none;vertical-align: top;}TD.MCTopBanner { background-color: #ffffff;border-style: none;padding: 0 0 0 4px;}.MCTopBanner CENTER { text-align: left; }TD.RightColumn { border-style: none none none none;border-width: thin;vertical-align: top;text-align: left;border-color: #eeeeee;padding-top: 6em; }DIV.MidColHeader { margin: 0px auto 0px 0px;padding: 0;max-width: 57em; }TABLE.Page TR { vertical-align: top; }TABLE.HeadlineView { }TABLE.HeadlineView TD { vertical-align: top }DIV.PageHeadline { text-align: center;max-width: 75em;margin-top: 1em;margin-bottom: 2em; }DIV.PageHeadline H1 { margin-bottom: 0.2em; }DIV.PageHeadline H2 { margin-top: 0.2em; }P.Cat1HL { background-color: #ffcc99;text-align: center;font-size: 200%;font-weight: bold;padding-top: 3px;padding-bottom: 5px;margin-bottom: 0.2em; }P.Cat2HL { background-color: #ffcc99;font-size: large;font-weight: bold;padding-left: 3px;margin-bottom: 0.3em; }P.Cat3HL { background-color: #ffcc99;font-weight: bold;padding-left: 3px;margin-bottom: 0.3em; }P.SummaryHL { font-weight: bold;font-size: larger;text-decoration: underline;margin-top: 0.4em;margin-bottom: 0.4em; }H2.SummaryHL { font-weight: bold;font-size: larger;text-decoration: underline;margin-top: 0.4em;margin-bottom: 0.4em; }P.SummaryHL A:link { color: black }P.SummaryHL A:visited { color: black }H2.SummaryHL A:link { color: black }H2.SummaryHL A:visited { color: black }P.IndexPrimary A:link { color: black }P.IndexPrimary A:visited { color: black }P.IndexSecondary A:link { color: black }P.IndexSecondary A:visited { color: black }TABLE.Form TH { text-align: left }SPAN { font-style: normal; font-weight: normal;color: darkred; background-color: white }SPAN.SpellingError {  background-color: #eeeeee; color: black }FONT.SpellingError {  background-color: #eeeeee }DIV.ErrorWords  { background-color: #eeeedd;border-style: groove;padding: 3px 3px 2px 3px;margin: 1px 5px 1px 0px; }DIV.BigQuote {font-style: normal; font-weight: normal;color: darkred; background-color: white;margin-left: 1cm; margin-right: 1cm }DIV.BigQuote P {margin-top: 1em; margin-bottom: 0px; }DIV.Headline { background-color: #ffcc99; font-weight: bold;font-size: larger;padding-left: 3px; }DIV.SummaryHeadline { font-weight: bold; font-size: larger;text-decoration: underline;margin-top: 0.4em;margin-bottom: 0.4em; }DIV.Byline { font-size: smaller; text-align: center }DIV.SideBox { margin: 1em 1px 1em 1px; }DIV.SideBox P { text-indent: -1em;margin: 0px 0px 1px 1em; }DIV.SideBox P.Header { font-weight: bold;text-indent: 0px;margin-left: 0px; }DIV.Comment { margin-left: 1em;background-color: inherit; }DIV.CommentSubtree { background-color: inherit; }DIV.OldCommentSubtree { background-color: #cccccc; }DIV.CommentBox, DIV.OldCommentBox {border-style: none none none solid;border-width: thin;max-width: 60em;margin-top: 1em;background-color: inherit;}DIV.CommentBox { border-color: #ffcc99; }DIV.OldCommentBox { border-color: #cccccc; }P.CommentTitle {padding: 2px 2px 2px 4px;margin: 0px;font-weight: bold;}DIV.CommentBox P.CommentTitle { background-color: #ffcc99; }DIV.OldCommentBox P.CommentTitle { background-color: #cccccc; }DIV.CommentBody { padding: 0px 4px 0px 4px;background-color: inherit; }P.CommentPoster { margin-top: 0px; }div.CommentReplyButton { display: none;text-align: right;padding: 4px; }DIV.FormattedComment { }PRE.FormattedComment { font: inherit; }DIV.FormattedComment PRE { font: inherit; }TD.Headline {background-color: #ffcc99 }TABLE.Middle { background-color: #ffffff; padding: 3px;border-style: none; width: 100% }TD.Middle { background-color: #ffffff; vertical-align: top }.Form { background-color: #eeeeee;padding: 3px;border-style: groove;}A.Current { background-color: darkred; color: white }A.Other { }P.NextLink { text-align: right }FONT.SearchItem { font-weight: bold; color: red }FONT.QuotedText { color: #990099 }FONT.Subscription { color: darkgreen }TR.Even { background-color: #eeeeee; }TR.Odd { }table.OddEven {border-spacing: 2px;border-collapse: separate;}table.OddEven tr:nth-child(even) {background-color: #ffffff;}table.OddEven tr:nth-child(odd) {background-color: #eeeeee;}table.OddEven th { background-color: #ffffff; }table.OddEven td { padding: 3px; }.s-nonexistent { background-color: red !important; }.s-withdrawn { background-color: red !important; }.s-in-progress { background-color: white !important; }.s-submitted { background-color: yellow !important; }.s-active { background-color: lightgreen !important; }P.Headlines { margin-bottom: 6px; text-indent: -1em; margin-left: 1em;margin-top: 0px }P.Feature { text-indent: -1em; margin-left: 1em; margin-top: 0px;margin-bottom: 2px}P.ErrorMessage { color: red; margin-left: 1cm;margin-right: 1cm; font-weight: bold;font-size: large }FONT.NonActive { color: red; font-weight: bold }A.NonActive { color: red; font-weight: bold }TABLE.TopNavigation { width: 100%;max-width: 55em;margin-bottom: 0;margin-top: 0px; }TD.NavLink { background-color: #eeeeee; text-align: center; max-width: 15em; }P.IndexPrimary { margin-top: 1em; margin-bottom: 0px; font-weight: bold; }P.IndexSecondary { margin-top: 0px; text-indent: 5mm; margin-bottom: 0px; }P.IndexEntry { text-indent: 1cm; margin-top: 0px; margin-bottom: 0px }DIV.TextAd { width: 150px; border-style: solid;border-width: thin;margin: 0px auto 10px auto;background-color: white;color: black; }P.TextAdHeader { background-color: #419d4a;color: white;margin-top: 0px;margin-bottom: 3px;text-align: center;font-weight: bold; }P.TextAdLink { margin: 2px }P.TextAdBody { margin: 10px 2px 2px 2px }P.TextAdFooter { border-top-style: dotted;border-top-width: thin;text-align: center;background-color: #ffcc99;margin: 2px 0px 0px 0px; }TABLE.tlnav { width: 100%; color: black; padding: 2px }TABLE.tlrw { width: 45%; float: right; background-color: #eeeedd;border-style: groove; margin: 5px; float: right }TABLE.tlr { width: 35%; float: right; background-color: #eeeedd;border-style: groove; margin: 5px; float: right }TABLE.tllw { width: 45%; float: left; background-color: #eeeedd;border-style: groove; margin: 5px }TABLE.tll { width: 35%; float: left; background-color: #eeeedd;border-style: groove; margin: 5px }P.QuoteAttr { text-align: right }DIV.tlrw { width: 45%;float: right;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 0px 1px 5px; }DIV.tlr  { width: 35%;float: right;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 0px 1px 5px; }DIV.tllw { width: 45%;float: left;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 5px 1px 0px; }DIV.tll  { width: 35%;float: left;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 5px 1px 0px; }P.tlqa { text-align: right }UL.spacylist LI { margin-bottom: 0.5em; }OL.spacylist LI { margin-bottom: 0.5em; }P.GuestAuthor { max-width: 15em; float: right; background-color: #eeeeee;border-style: groove; padding: 3px;margin: 6px 0px 2px 5px; float: right }DIV.GAByline { max-width: 15em; float: right; background-color: #eeeeee;border-style: groove; padding: 3px;margin: 6px 0px 2px 5px; float: right; text-align: center; }DIV.GAByline P { margin: 0px; text-align: left; }DIV.GAByline P:first-child {font-weight: bold; text-align: center;margin-bottom: 3px; }DIV.GAByline HR { width: 40% }DIV.FeatureByline { max-width: 20em; float: left; background-color: #eeeeee;border-style: groove; margin: 2px 5px 2px 0px;padding-bottom: 5px;padding-right: 25px;  padding-left: 5px; }DIV.FeatureByline HR { width: 40% }div.survey { margin-left: 1cm }div.sv_mc { margin-left: 10mm; margin-top: 0cm }SPAN.PullQuote { max-width: 30%;float: right;color: black;background-color: #eeeeee;margin: 2px 0px 2px 5px;padding: 5px 2px 5px 0.5em;border-style: none none none solid;border-color: #ffcc99;font-weight: normal;font-size: larger; }SPAN.invisible { display: none; }TABLE.CalM { width: 100%;border-spacing: 0 }TR.CalM { border-left-style: groove }TD.CalMDate { background-color: #eeeeee;font-size: x-large;width: 13%;border-left-style: groove;border-top-style: groove }TD.CalMEvent { font-size: smaller;vertical-align: middle;border-left-style: groove }TD.CalMContinue { font-size: smaller;vertical-align: middle;border-left-style: groove }TD.CalBlank { border-left-style: none }TD.CalMBottom { border-left-style: groove;border-bottom-style: groove }TD.CalMTop { border-left-style: none; border-top-style: groove }TD.CalMCorner { border-left-style: groove; border-top-style: groove }TD.CalMHeader { font-size: larger; font-weight: bold;text-align: center; width: 13%;padding-top: 20px; padding-bottom: 10px }TD.CalMName { font-size: x-large; font-weight: bold;text-align: center;background-color: #eeeeee;margin-bottom: 10px;border-top-style: groove;border-bottom-style: groove }TD.CalMArrow { vertical-align: middle; border-style: groove }DIV.ArticleText { margin:0px 0px 0px 0px;padding:0px 2px 0px 0px;max-width: 75em;}DIV.widepage DIV.ArticleText {max-width: 999em !important;}DIV.Printable { }DIV.Printable DIV.ArticleText { margin:0px 0px 0px 0px;padding:0px;max-width: none; }DIV.BlurbText { margin:0px 0px 0px 0px;padding:0px; }SPAN.UliMath { color: black;font-weight: bold; }SPAN.UliInvSig { color: black;font-weight: bold;text-decoration: overline }DIV.AdMarker { text-align: center;font-size: smaller;color: black;font-weight: bold; }DIV.AdRight { float:right;background-color: #ffffff;border-width: 3px;border-style: solid;border-color: #ffffff;margin-left: 2px;padding: 2px; }DIV.promobox { float: left;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 5px 1px 0px; }UL.NoBullet { list-style-type: none; }DIV.FilteredComment { display: none;background-color: #eeeeee; }DIV.CommHdr { background-color: #eeeeee; }IMG.photo {max-width: 100%;}DIV.BlurbListing {padding-left: 3px;}.comment-title {width: 98%;}.comment-body {width: 98%;}.wide-form {width: 95%;margin: 0.1em 0.5em 0.1em 0.1em;padding: 0.2em;background-color: #eeeeee;border-radius: 0.5em;}.covered {background: #eeeeee;color: #eeeeee;}.covered::-moz-selection {background: #ffffff;color: black;}.covered::selection {background: #ffffff;color: black;}</style>
+<style rel="stylesheet" data-href="https://lwn.net/CSS/nosub">div.MakeALink { display: none }</style>
+
+        
+
+
+
+        <link type="image/x-icon" rel="shortcut icon" href="data:image/x-icon;base64,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"></head>
+        <body bgcolor="#ffffff" link="Blue" vlink="Green" alink="Green">
+        <table class="Page">
+<tbody><tr>
+<td class="LeftColumn">
+
+        <center>
+        <a href="https://undefined/"><img src="data:image/png;base64,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" width="153" height="120" border="0" alt="LWN.net Logo"></a>
+        </center>
+        <p>
+        
+
+</p><p>
+</p><div class="SideBox">
+<p class="Header">Not logged in</p>
+<p><a href="https://lwn.net/login">Log in now</a></p>
+<p><a href="https://lwn.net/newaccount">Create an account</a></p>
+<p><a href="https://lwn.net/subscribe/Info">Subscribe to LWN</a></p></div>
+
+<div class="SideBox">
+<p class="Header">Weekly Edition</p>
+<p><a href="https://lwn.net/Articles/327941">Return to the Kernel page</a></p></div>
+
+<div class="SideBox">
+<p class="Header">Recent Features</p>
+<p><a href="https://lwn.net/Articles/657111">LWN.net Weekly Edition for September 17, 2015</a></p>
+<p><a href="https://lwn.net/Articles/657345">How Debian managed the systemd transition</a></p>
+<p><a href="https://lwn.net/Articles/657269">Python and crypto-strength random numbers by default</a></p>
+<p><a href="https://lwn.net/Articles/657139">The LPC Android microconference, part 2</a></p>
+<p><a href="https://lwn.net/Articles/656672">LWN.net Weekly Edition for September 11, 2015</a></p></div>
+
+<div class="SideBox">
+<p><a href="https://lwn.net/Articles/328363/?format=printable">Printable page</a></p></div>
+
+</td><!-- LC -->
+
+<td><table><tbody><tr>
+<td class="MidColumn">
+           <table class="TopNavigation">
+
+<!-- First row - content links -->
+<tbody><tr>
+  <td class="NavLink"><a href="https://lwn.net/current">Weekly edition</a></td>
+  <td class="NavLink">
+	<a href="https://lwn.net/Kernel">Kernel</a></td>
+  <td class="NavLink"><a href="https://lwn.net/Security">Security</a></td>
+  <td class="NavLink">
+	<a href="http://lwn.net/Distributions/">Distributions</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/FAQ.lwn#contact">Contact Us</a> </td>
+  <td class="NavLink"><a href="https://lwn.net/Search">Search</a> </td>
+</tr>
+<!-- Second row: navigation links -->
+<tr>
+  <td class="NavLink"><a href="https://lwn.net/Archives">Archives</a></td>
+  <td class="NavLink"><a href="https://lwn.net/Calendar">Calendar</a></td>
+  <td class="NavLink"><a href="https://lwn.net/subscribe/Info">Subscribe</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/AuthorGuide.lwn">Write for LWN</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/FAQ.lwn">LWN.net FAQ</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/Sponsors.lwn">Sponsors</a></td>
+</tr>
+
+</tbody></table>
+</td><td></td></tr>
+<tr><td colspan="2" class="MCTopBanner">
+<div id="azk13321_leaderboard"></div></td></tr><tr><td class="MidColumn">
+<div class="PageHeadline">
+<h1>Solving the ext3 latency problem</h1>
+</div>
+<div class="ArticleText">
+<div class="FeatureByline">
+           By <b>Jonathan Corbet</b><br>April 14, 2009
+           </div>
+One might think that the ext3 filesystem, by virtue of being standard on
+almost all installed Linux systems for some years now, would be reasonably
+well tuned for performance.  Recent events have shown, though, that some
+performance problems remain in ext3, especially in places where the
+<tt>fsync()</tt> system call is used.  It's impressive what can happen when
+attention is drawn to a problem; the 2.6.30 kernel will contain
+fixes which seemingly eliminate many of the latencies experienced by ext3
+users.  This article will look at the changes that were made, including a
+surprising change to the default journaling mode made just before the
+2.6.30-rc1 release. 
+<p>
+
+The problem, in short, is this: the ext3 filesystem, when running in the
+default <tt>data=ordered</tt> mode, can exhibit lengthy stalls when some
+process calls <tt>fsync()</tt> to flush data to disk.  This issue most
+famously manifested itself as the much-lamented Firefox system-freeze problem, but it goes
+beyond just Firefox.  Anytime there is reasonably heavy I/O going on, an
+<tt>fsync()</tt> call can bring everything to a halt for several seconds.
+Some stalls on the order of minutes have been reported.  This behavior has
+tended to discourage the use of <tt>fsync()</tt> in applications and it
+makes the Linux desktop less fun to use.  It's clearly worth fixing - but
+nobody did that for years. 
+</p><p>
+
+When Ted Ts'o looked into the problem, he noticed an obvious problem: data
+sent to the disk via <tt>fsync()</tt> is put at the back of the I/O
+scheduler's queue, behind all other outstanding requests.  If processes on
+the system are 
+writing a lot of data, that queue could be quite long.  So it takes a long
+time for <tt>fsync()</tt> to complete.  While that is happening, other
+parts of the filesystem can stall, eventually bringing much of the system
+to a halt.
+</p><p>
+
+The first fix was to mark I/O requests generated by <tt>fsync()</tt> with the
+<tt>WRITE_SYNC</tt> operation bit, marking them as synchronous requests.
+The CFQ I/O scheduler tries to run synchronous requests (which generally
+have a process waiting for the results) ahead of asynchronous ones (where
+nobody is waiting).  Normally, reads are considered to be synchronous,
+while writes are not.  Once the <tt>fsync()</tt>-related requests were made
+synchronous, they were able to jump ahead of normal I/O.  That
+makes <tt>fsync()</tt> much faster, at the expense of slowing down the
+I/O-intensive tasks in the system.  This is considered to be a good
+tradeoff by just about everybody involved.  (It's amusing to note that this
+change is conceptually similar to the <a href="http://lwn.net/Articles/301467/">I/O priority  patch</a> posted by
+Arjan van de Ven some time ago; some ideas take a while to reach
+acceptance). 
+
+</p><p>
+
+Block subsystem maintainer Jens Axboe <a href="https://lwn.net/Articles/328368">disliked
+the change</a>, though, stating that it would cause severe performance
+regressions for some workloads.  Linus <a href="https://lwn.net/Articles/328370">made it
+clear</a>, though, that the patch was probably going to go in, and that, if
+the CFQ I/O scheduler couldn't handle it, there would soon be a change to a
+different default scheduler.  Jens probably would have looked further in
+any case, but the extra motivation supplied by Linus is unlikely to have
+slowed this process down.
+</p><p>
+
+The problem, as it turns out, is that <tt>WRITE_SYNC</tt> actually does two
+things: putting the request onto the higher-priority synchronous queue, and
+unplugging the queue.  "Plugging" is the technique used by the block layer
+to issue requests to the underlying disk driver in bursts.  Between bursts,
+the queue is "plugged," causing requests to accumulate there.  This
+accumulation gives the I/O scheduler an opportunity to merge adjacent
+requests and issue them in some sort of reasonable order.  Judicious use of
+plugging improves block subsystem performance significantly.
+</p><p>
+Unplugging the
+queue for a synchronous request can make sense in some situations; if
+somebody is waiting for the the operation, chances are they will not be
+adding any adjacent requests to the queue, so there is no point in waiting
+any longer.
+
+As it happens, though, <tt>fsync()</tt> is not one of those situations.
+Instead, a call to <tt>fsync()</tt> will usually generate a whole series of
+synchronous requests, and the chances of those requests being adjacent to
+each other is fairly good.  So unplugging the queue after each synchronous
+request is likely to make performance worse.  Upon identifying this
+problem, Jens posted <a href="http://lwn.net/Articles/327502/">a series of
+patches</a> to fix it.  One of them adds a new <tt>WRITE_SYNC_PLUG</tt>
+operation which queues a synchronous write without unplugging the queue.
+This allows operations like <tt>fsync()</tt> to create a series of
+operations, then unplug the queue once at the end.
+</p><p>
+While he was at it, Jens fixed a couple of related issues.  One was that
+the block subsystem can still sometimes run synchronous requests behind
+asynchronous requests in some situations.  The code here is a bit tricky,
+since it may be desirable to let a few asynchronous requests through occasionally to
+prevent them from being starved entirely.  Jens changed the balance to
+ensure that synchronous requests get through in a timely manner.
+</p><p>
+Beyond that, the CFQ scheduler
+uses "anticipatory" logic with synchronous requests; upon executing one
+such request, it will stall the queue to see if an adjacent request shows
+up.  The idea is that the disk head will be ideally positioned to satisfy
+that request, so the best performance is obtained by not moving it away
+immediately. 
+This logic can work well for synchronous reads, but it's not helpful
+when dealing with write operations generated by <tt>fsync()</tt>.  So now there's a
+new internal flag that prevents anticipation when <tt>WRITE_SYNC_PLUG</tt>
+operations are executed.
+</p><p>
+Linus <a href="https://lwn.net/Articles/328373">liked the changes</a>:
+</p><p>
+</p><div class="BigQuote">
+	Goodie. Let's just do this. After all, right now we would otherwise
+	have to revert the other changes as being a regression, and I
+	absolutely _love_ the fact that we're actually finally getting
+	somewhere on this fsync latency issue that has been with us for so
+	long.
+</div>
+<p>
+It turns out that <a href="https://lwn.net/Articles/328381">there's a little more</a>,
+though.  Linus noticed that he was still getting stalls, even if they were
+much shorter than before, and he wondered why:
+</p><p>
+</p><div class="BigQuote">
+	One thing that I find intriguing is how the fsync time seems so
+	_consistent_ across a wild variety of drives. It's interesting how
+	you see delays that are roughly the same order of magnitude, even
+	though you are using an old SATA drive, and I'm using the Intel
+	SSD.
+</div>
+<p>
+The obvious conclusion is that there was still something else going on.
+Linus's hypothesis was that the volume of requests pending to the drive was
+large enough to cause stalls even when the synchronous requests go to the
+front of the queue.  With a default configuration, requests can contain up
+to 512KB of data; stack up a couple dozen or so of those, and it's going to
+take the drive a little while to work through them.  Linus experimented
+with setting the maximum size (controlled by
+<tt>/sys/block/<i>drive</i>/queue/max_sectors_kb</tt>) to 64KB, and reports
+that things worked a lot better.  As of this writing, though, the default
+has not been changed; Linus suggested that it might make sense to cap the
+maximum amount of outstanding data, rather than the size of any individual
+request.  More experimentation is called for.
+</p><p>
+There is one other important change needed to get a truly quick
+<tt>fsync()</tt> with ext3, though: the filesystem must be mounted in
+<tt>data=writeback</tt> mode.  This mode eliminates the requirement that
+data blocks be flushed to disk ahead of metadata; in <tt>data=ordered</tt>
+mode, instead, the amount of data to be written guarantees that
+<tt>fsync()</tt> will always be slower.  Switching to
+<tt>data=writeback</tt> eliminates those writes, but, in the process, it
+also turns off the feature which made ext3 seem more robust than ext4.
+Ted Ts'o has mitigated that problem somewhat, though, by adding in the same
+safeguards he put into ext4.  In some situations (such as when a new file
+is renamed on top of an existing file), data will be forced out ahead of
+metadata.  As a result, data loss resulting from a system crash should be less of a
+problem.
+</p><p>
+</p><div class="tlrw">
+<h3>Sidebar: data=guarded</h3>
+<p>
+Another alternative to data=ordered may be the <a href="http://lwn.net/Articles/328406/">data=guarded mode</a> proposed by
+Chris Mason.  This mode would delay size updates to prevent information
+disclosure problems.  It is a very new patch, though, which won't be ready
+for 2.6.30.
+</p></div>
+
+The other potential problem with <tt>data=writeback</tt> is that, in some
+situations, a crash can leave a file with blocks allocated to it which have
+not yet been written.  Those blocks may contain somebody else's old data,
+which is a potential security problem.  Security is a smaller issue than it
+once was, for the simple reason that multiuser Linux systems are relatively
+scarce in 2009.  In a world where most systems are dedicated to a single
+user, the potential for information disclosure in the event of a crash
+seems vanishingly small.  In other words, it's not clear
+that the extra security provided by <tt>data=ordered</tt> is worth the
+associated performance costs anymore.
+
+<p>
+So Ted <a href="https://lwn.net/Articles/328382">suggested</a> that, maybe,
+<tt>data=writeback</tt> should be made the default.  There was some
+resistance to this idea; not everybody thinks that ext3, at this stage of
+its life, should see a big option change like that.  Linus, however, <a href="https://lwn.net/Articles/328383">was unswayed</a> by the arguments.  He merged a
+patch which creates a configuration option for the default ext3 data mode,
+and set it to "writeback."  That will cause ext3 mounts to silently switch
+to <tt>data=writeback</tt> mode with 2.6.30 kernels.  Says Linus:
+</p><p>
+</p><div class="BigQuote">
+	I'm expecting that within a few months, most modern distributions
+	will have (almost by mistake) gotten a new set of saner defaults,
+	and anybody who keeps their machine up-to-date will see a smoother
+	experience without ever even realizing _why_.
+</div>
+<p>
+It's worth noting that this default will not change anything if
+(1)&nbsp;the data mode is explicitly specified when the filesystem is
+mounted, or (2)&nbsp;a different mode has been wired into the filesystem
+with <tt>tune2fs</tt>.  It will also be ineffective if distributors change
+it back to "ordered" when configuring their kernels.  Some distributors, at
+least, may well decide that they do not wish to push that kind of change to
+their users.  We will not see the answer to that question for some months
+yet.</p><hr width="60%" align="left">
+           (<a href="https://lwn.net/login?target=/Articles/328363/">Log in</a> to post comments)
+           <p>
+           
+</p></div> <!-- ArticleText -->
+<p><a name="Comments"></a>
+
+<a name="CommAnchor328440"></a>
+</p><div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 16:50 UTC (Tue) by <b>PO8</b> (guest, #41661)
+       [<a href="https://lwn.net/Articles/328440">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I will be forcing my ext3 filesystems to stay data=ordered until Chris Mason's cool data=guarded patch is working.<br>
+<p>
+The argument that "it's a single-user system, so who cares" seems to me to be crazy talk?  Like many Linux users I run Apache + database instances that allow anonymous users anywhere on the net to access some of my dynamically-updated files.  I may be mistaken, but it looks to me like the current data=writeback mode gives an increased opportunity to disclose things like my database's (foolishly) unencrypted password or my personal email to the whole web after a crash.  Not OK, regardless of the shorter sync times.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328440/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor328441"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 16:56 UTC (Tue) by <b>nye</b> (guest, #51576)
+       [<a href="https://lwn.net/Articles/328441">Link</a>]
+    </p>
+    <div class="FormattedComment">
+data=guarded sounds rather interesting, but I'm not sure I understand how it differs from data=ordered. In what situations could the result be different? The special-casing for rename means that renames should have the same behaviour, and data=guarded appears to mean that resizes have the same behaviour (or does it mean that both data and metadata can now be further delayed than data=ordered?).<br>
+<p>
+IIUC, I suppose there could be things like *new* files being created with zero size after a crash, rather than not being created at all, which doesn't seem like the end of the world. I admit I haven't actually thought this through very much at all yet, so that could be nonsense for both behaviours. :P<br>
+</p><p>
+What other reliability/data integrity implications would this have?<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328441/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328462"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 18:09 UTC (Tue) by <b>corbet</b> (editor, #1)
+       [<a href="https://lwn.net/Articles/328462">Link</a>]
+    </p>
+    <blockquote><i>
+data=guarded sounds rather interesting, but I'm not sure I understand how it differs from data=ordered. In what situations could the result be different?</i></blockquote>
+<p>
+data=ordered forces all data to go out before the metadata is written; in practice, that forces data to be written within five seconds.  data=guarded, as I understand it, delays the writing of certain metadata (the file size in particular) until the data has been written.  The timing is looser, but it still keeps random junk from showing up within a file after a crash.
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328462/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328468"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 18:51 UTC (Tue) by <b>masoncl</b> (subscriber, #47138)
+       [<a href="https://lwn.net/Articles/328468">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Right, data=guarded delays pushing the new file size down to disk until the data is there first.<br>
+<p>
+It still does the old style data=ordered in cases where the file size isn't enough protection (like filling holes).<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328468/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor328706"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 16, 2009 15:28 UTC (Thu) by <b>sandeen</b> (guest, #42852)
+       [<a href="https://lwn.net/Articles/328706">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Also, in practice (and as evidenced by my testing), data=guarded will leave you with smaller file sizes (potentially 0-length) when you crash.  But that is better than having garbage (potentially other people's data) in those files.<br>
+<p>
+The rename &amp; truncate hacks will help flush some data, but if you, say, untar a kernel tree and crash, those hacks don't come into play.<br>
+</p><p>
+data=writeback would wind up garbage in the files, data=guarded would wind up with 0-length or shortened files with no garbage, and data=ordered would likely have more files intact due to the journal transaction commits causing more flushing along the way... and no garbage.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328706/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor328450"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 17:14 UTC (Tue) by <b>MisterIO</b> (guest, #36192)
+       [<a href="https://lwn.net/Articles/328450">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Is this simply a way to say : "Just update the fs to ext4!"? After this what reason will we have to go on using ext3 instead of ext4?<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328450/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328485"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 20:46 UTC (Tue) by <b>elanthis</b> (guest, #6227)
+       [<a href="https://lwn.net/Articles/328485">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Stability and safety.  Production environments are going to be more comfortable with a small incremental change to their existing FS than they are in switching and potentially being bitten by one of the many major changes in ext4.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328485/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328749"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 16, 2009 19:35 UTC (Thu) by <b>jordanb</b> (guest, #45668)
+       [<a href="https://lwn.net/Articles/328749">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I think the idea is that ext3 is being made less reliable so that it will no longer be more reliable than ext4, to try to remove that argument against "upgrading."<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328749/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor328452"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 17:25 UTC (Tue) by <b>bronson</b> (subscriber, #4806)
+       [<a href="https://lwn.net/Articles/328452">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Great article!  It's nice to see that all this discussion is coming to a sane conclusion.<br>
+<p>
+It's a little disturbing to see data=writeback becoming the default.  Is the performance gain really so great that it's worth being less secure by default?<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328452/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328524"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 15, 2009 9:34 UTC (Wed) by <b>edschofield</b> (guest, #39993)
+       [<a href="https://lwn.net/Articles/328524">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Yes, great article. The lkml discussion was also fascinating.<br>
+<p>
+We have _severe_ latency issues with ext3 and our RAID arrays, sometimes causing our servers to appear to freeze for tens of seconds during disk writes. A safer 'writeback' mode that eliminates these latencies will be a huge win for us.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328524/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor328454"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 17:25 UTC (Tue) by <b>spot</b> (subscriber, #15640)
+       [<a href="https://lwn.net/Articles/328454">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Worth noting that Fedora has decided to go with data=ordered as the default in Rawhide, given the serious concerns around data=writeback.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328454/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor328455"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 17:27 UTC (Tue) by <b>yusufg</b> (guest, #407)
+       [<a href="https://lwn.net/Articles/328455">Link</a>]
+    </p>
+    <div class="FormattedComment">
+So what's the default mode for ext4 and are they any similar gotchas one has to be aware of ?<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328455/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor328460"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 17:55 UTC (Tue) by <b>mgb</b> (guest, #3226)
+       [<a href="https://lwn.net/Articles/328460">Link</a>]
+    </p>
+    <div class="FormattedComment">
+"multiuser Linux systems are relatively scarce in 2009"<br>
+<p>
+We run a bunch of Linux mail servers, and we ain't the only ones.<br>
+</p><p>
+Maybe somebody should tell Linus how Linux is being used.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328460/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328463"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 18:11 UTC (Tue) by <b>malor</b> (subscriber, #2973)
+       [<a href="https://lwn.net/Articles/328463">Link</a>]
+    </p>
+    <div class="FormattedComment">
+It can be argued that most servers that provide more than one service are 'multiuser' machines.<br>
+<p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328463/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328479"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 20:10 UTC (Tue) by <b>drag</b> (subscriber, #31333)
+       [<a href="https://lwn.net/Articles/328479">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Personally I would think that multiuser actually means having multiple people with users using the computer at the same time. <br>
+<p>
+That is they are logged onto the machine and are doing something on them.. programming, editing, web browsing, etc. <br>
+</p><p>
+So your dealing with computers with multiple monitors with multiple users logged in at once, or LTSP, or people that still sell shell accounts. All of which are fairly rare compared to personal desktops, embedded systems, or most server systems. <br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328479/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328498"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 23:24 UTC (Tue) by <b>ktanzer</b> (guest, #6073)
+       [<a href="https://lwn.net/Articles/328498">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Multi-user systems may be relatively rare, but as someone who was responsible for multiple LTSP deployments, I shudder at the thought that security in such cases would be cast aside or relegated to an afterthought.  LTSP is a great way to use old hardware.  For that matter, any home machine used by the whole family would also be multi-user (assuming people set up their own logins).<br>
+<p>
+On a more general note, Linux has inherited rich multi-user capabilities from Unix, and I hate to see that atrophy over time.  As one example, it is very easy to find information on how to configure popular programs such as Firefox, KDE, OpenOffice, etc. for a single user, but often maddeningly hard to determine how to configure on a system-wide basis.  The fact that FF can't run multiple instances from a single profile is not technically a multi-user issue, but also drives me up the wall...<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328498/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328501"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 15, 2009 1:25 UTC (Wed) by <b>drag</b> (subscriber, #31333)
+       [<a href="https://lwn.net/Articles/328501">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Well I can agree with that. <br>
+<p>
+I don't know exactly why, but I have a feeling that multiuser systems will become increasingly important in the future. <br>
+</p><p>
+Something will come along... like the acceptance of IPv6 and the decline of the "Personal Computer"-ing inflicted client-server relationship and the internet will return to it's P2P roots. (for reasons of scalability, robustness, expense).  If something like that were to happen and people realized that having mobile computers could become essentially disposible if they turned into little more then terminals for the 'big' computer at home or clusters at work... Then multiuser systems could become common place again.<br>
+</p><p>
+Weirder things have happenned.  <br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328501/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor328513"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 15, 2009 4:35 UTC (Wed) by <b>malor</b> (subscriber, #2973)
+       [<a href="https://lwn.net/Articles/328513">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Typically, different services run under different user accounts, and rely on the system's security features to keep the two separate.  <br>
+<p>
+It would be bad if a bug in the mail server gave access to, say, deleted .htaccess files, or part of a SQL database. <br>
+</p><p>
+All Unix systems are inherently multiuser, and sabotaging inter-account security features is deliberately cutting away one layer of the net that can catch you if a bug exposes an attack vector.<br>
+</p><p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328513/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor328516"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 15, 2009 5:55 UTC (Wed) by <b>hawk</b> (subscriber, #3195)
+       [<a href="https://lwn.net/Articles/328516">Link</a>]
+    </p>
+    <div class="FormattedComment">
+It may not be "multi-user" by that definition but the exact definition of "multi-user" isn't really that interesting for the actual argument, is it?<br>
+<p>
+Isn't the point that as soon as soon as there are multiple users (no matter if they are logged in using a system account or accessing the system through some other means, eg HTTP, authenticated in some way or even anonymously), there would be a chance that one user's data (or data "belonging to the system") could leak into a file which will be accessible by another user.<br>
+</p><p>
+So in the case of the the system crashing, a file publicly available on the web, or some logged in user(s), might end up containing anything that has previously been deallocated if that file was being modified, be it by the site administrator, or by a random user on a site where you can for instance upload an image to include in your content.<br>
+</p><p>
+</p><p>
+I would think this definitely falls within the "common usage"-realm for Linux systems and that whoever made the argument may not have really thought it through.<br>
+</p><p>
+(Or I'm just not understanding in what scenarios something like this could actually happen.)<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328516/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor328466"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 18:16 UTC (Tue) by <b>smoogen</b> (subscriber, #97)
+       [<a href="https://lwn.net/Articles/328466">Link</a>]
+    </p>
+    <div class="FormattedComment">
+You may run such a server (I do too... ) but nowadays it is a blip in the data compared to routers, switches, music boxes, GPS systems, laptops, desktops, workstations that run Linux. In those cases, worrying about data from some other user is less likely.<br>
+<p>
+Also I think it was the editor not Linus who said that.<br>
+</p><p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328466/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328898"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 17, 2009 18:21 UTC (Fri) by <b>giraffedata</b> (subscriber, #1954)
+       [<a href="https://lwn.net/Articles/328898">Link</a>]
+    </p>
+    <blockquote>
+nowadays it is a blip in the data compared to routers, switches, music boxes, GPS systems, laptops, desktops, workstations that run Linux. 
+</blockquote>
+<p>
+I was going to say the opposite.  I think you're making a statement about the number of Linux kernel images running, but I don't think that's a useful measure of prevalence as it relates to the cost of assuming a system is single-user.
+</p><p>
+On the contrary, I believe the great majority of Linux is multiuser servers and the personal computers and appliances you mention are a blip.  I'm looking at the amount of filesystem access that happens.
+</p><p>
+When I say "multiuser" I'm considering a user to be a person, not a uid.
+</p><p>
+Incidentally, routers and switches (from your list) are multiuser systems.  Consequently, there is a security issue in sending data to the wrong user.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328898/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor328514"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Multiuser quite important still: remote users on Windows PC:s</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 15, 2009 3:53 UTC (Wed) by <b>eru</b> (subscriber, #2753)
+       [<a href="https://lwn.net/Articles/328514">Link</a>]
+    </p>
+    <p>The big company I'm working for actually has most of its interactive Linux users on multi-user servers: This is because everyone is "of course" supplied with a Windows PC, but Linux is preferred for software development for several products, so the developers access Linux servers with X11 emulator or VNC running on the PC. This also makes it easier to maintain a consistent development environment for the users. Some people do have Linux workstations, but these are a minority.
+</p><p>I don't know how typical this kind of use is, but I suspect it common in technology companies needing a Linux development environment for some users but not wanting or being able to go all the way to Linux desktops.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328514/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328549"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Multiuser quite important still: remote users on Windows PC:s</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 15, 2009 16:05 UTC (Wed) by <b>chema</b> (subscriber, #32636)
+       [<a href="https://lwn.net/Articles/328549">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Same here. <br>
+<p>
+Our development environment is a mixture of Windows desktop PCs (running some development tools + "corporate" applications) and Linux servers (providing: ssh + X11 fwd + http + samba + ...). <br>
+</p><p>
+It used to be HP-UX/Solaris &lt;-&gt; Windows but we happily migrated to linux a year ago.<br>
+</p><p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328549/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor328609"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Multiuser quite important still: remote users on Windows PC:s</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 15, 2009 20:18 UTC (Wed) by <b>PhracturedBlue</b> (subscriber, #4193)
+       [<a href="https://lwn.net/Articles/328609">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Yes, but are you using EXT3 as the filesystem on those machines?  In many (most?) multi-user systems, you're likely to have a big fileserver serving files via NFS or equivalent to various servers.  I don't know if your company is set up that way, but I'd think it would be common for large corporations with many users.<br>
+<p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328609/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328612"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Multiuser quite important still: remote users on Windows PC:s</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 15, 2009 20:29 UTC (Wed) by <b>mgb</b> (guest, #3226)
+       [<a href="https://lwn.net/Articles/328612">Link</a>]
+    </p>
+    <div class="FormattedComment">
+We used NFS like that back around '95 or '97 but it's way too slow for general use these days although there are undoubtedly still specialized applications where it's useful.<br>
+<p>
+So yes, we use ext3 for mail servers and web servers etc.  All of which are multi-remote-user.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328612/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor328637"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Multiuser quite important still: remote users on Windows PC:s</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 16, 2009 4:29 UTC (Thu) by <b>eru</b> (subscriber, #2753)
+       [<a href="https://lwn.net/Articles/328637">Link</a>]
+    </p>
+    <i>Yes, but are you using EXT3 as the filesystem on those machines? In many (most?) multi-user systems, you're likely to have a big fileserver serving files via NFS or equivalent to various servers.</i>
+<p>
+Yes and no: The home directories of the users are normally mounted via NFS (the NFS servers are not always Linux: NetApps and and Solaris boxes are also used), but the Linux servers (usually RHEL) to which people log in use ext3. Because of the various local shared directories, multiuser issues in ext3 are still relevant.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328637/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor328627"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 16, 2009 0:46 UTC (Thu) by <b>hazelsct</b> (guest, #3659)
+       [<a href="https://lwn.net/Articles/328627">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Indeed.<br>
+<p>
+Another "multi-user" use case on my "single-user" laptop is having a separate account for downloaded software (government contracts sometimes require such things), for which I don't want to take the risk of polluting the rest of my system.  I install in wine in this separate account, and share (minimal) data as necessary.  Security matters.<br>
+</p><p>
+[OT: it's astounding to me how well wine runs a *lot* of Windoze software these days!!]<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328627/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor328467"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 18:40 UTC (Tue) by <b>mrshiny</b> (subscriber, #4266)
+       [<a href="https://lwn.net/Articles/328467">Link</a>]
+    </p>
+    I don't understand this:
+<blockquote>There is one other important change needed to get a truly quick fsync() with ext3, though: the filesystem must be mounted in data=writeback mode. </blockquote>
+Is this because the changes to fsync are disabled in data=ordered, or just because the performance gains are small compared to the overhead of data=ordered?<br>
+<br>
+I'm curious because if fsync is slow application developers won't use it, even if on some systems it's fast.  It will be years before application developers start using it "properly" again.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328467/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328486"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 14, 2009 20:48 UTC (Tue) by <b>elanthis</b> (guest, #6227)
+       [<a href="https://lwn.net/Articles/328486">Link</a>]
+    </p>
+    <div class="FormattedComment">
+data=ordered is the existing slow behavior.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328486/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor328635"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 16, 2009 5:22 UTC (Thu) by <b>butlerm</b> (subscriber, #13312)
+       [<a href="https://lwn.net/Articles/328635">Link</a>]
+    </p>
+    <div class="FormattedComment">
+"data=ordered" provides nearly ideal recovery semantics, but it is stronger <br>
+than necessary to provide reasonable recovery behavior in most cases. A <br>
+strict interpretation of data=ordered means committing dirty data to disk <br>
+before any meta data updates.  That means that calling fsync on any file <br>
+with dirty buffers is equivalent in cost to calling fsync on every file <br>
+with dirty buffers in the filesystem.  <br>
+<p>
+Since data=ordered tends to interfere with getting real work done without <br>
+stalling the question is what kinds of relaxations can be made without <br>
+imperiling the integrity of your filesystem. "data=writeback" is the no <br>
+holds barred assume your system is never going to crash tough luck for any <br>
+recently touched files but you probably won't have to spend hours waiting <br>
+for fsck sort of preference.<br>
+</p><p>
+Fortunately, there is a lot of room for reasonable, safer relaxations <br>
+between data=ordered and data=writeback.  data=guarded is one such option <br>
+that allows preliminary meta data commits for unrelated files to proceed <br>
+with a smaller file size corresponding to the file data that has actually <br>
+been written to disk.  That works really well as long as you are not trying <br>
+to replace an existing file.  If you are doing rename replacements the same <br>
+problem comes back to haunt you in a way that data=guarded doesn't solve.  <br>
+(Rename undo would...)<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328635/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328658"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 16, 2009 9:42 UTC (Thu) by <b>nye</b> (guest, #51576)
+       [<a href="https://lwn.net/Articles/328658">Link</a>]
+    </p>
+    <div class="FormattedComment">
+However, in the case of file replacement via rename or truncate, ext3 (and ext4) will now flush the data to disk before the associated metadata anyway, even using data=writeback, so data=guarded does indeed solve that problem.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328658/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor328831"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 17, 2009 14:03 UTC (Fri) by <b>anton</b> (guest, #25547)
+       [<a href="https://lwn.net/Articles/328831">Link</a>]
+    </p>
+    <blockquote> A strict interpretation of data=ordered means committing
+dirty data to disk before any meta data updates. </blockquote>
+
+I'm not sure I agree, but anyway, if it behaves that way, that's fine
+with me.  I like my data not only on disk, but also internally
+consistent.
+
+<blockquote>"data=writeback" is the no holds barred assume your
+system is never going to crash [...] sort of preference.</blockquote>
+
+But if I assume my system is never going to crash, why would I be
+using fsync()?  And why should a file system that works based on that assumption do anything when the
+application calls fsync()?
+
+<blockquote>Fortunately, there is a lot of room for reasonable, safer
+relaxations between data=ordered and data=writeback.</blockquote>
+
+I would actually prefer to see something stricter than data=ordered.
+Something that gives me the guarantee that the state after a crash
+corresponds to some logical state of the file system before the crash.
+
+<p>Until I get that, I'll just go for data=ordered and hope that the
+Linux developers don't break it like they did with data=journal.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328831/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor361220"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Nov 10, 2009 12:00 UTC (Tue) by <b>schabi</b> (guest, #14079)
+       [<a href="https://lwn.net/Articles/361220">Link</a>]
+    </p>
+    <blockquote>I would actually prefer to see something stricter than data=ordered. Something that gives me the guarantee that the state after a crash corresponds to some logical state of the file system before the crash.</blockquote>
+
+You always have the option to mount with "data=journal" - this is the safest and slowest mode with ext3.
+
+And don't forget that RAID5 / RAID6 will break all barrier / journal semantics for all filesystems.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/361220/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor328702"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 16, 2009 15:18 UTC (Thu) by <b>sandeen</b> (guest, #42852)
+       [<a href="https://lwn.net/Articles/328702">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt;&gt; Some distributors, at least, may well decide that they do not wish to</font><br>
+<font class="QuotedText">&gt;&gt; push that kind of change to their users. We will not see the answer to</font><br>
+<font class="QuotedText">&gt;&gt; that question for some months yet.</font><br>
+<p>
+Actually, you won't have to wait that long for some.  As long as data=writeback introduces a security hole by exposing other people's data on a crash[1], Fedora will not be shipping this way.  Rawhide has already turned<br>
+</p><p>
+CONFIG_EXT3_DEFAULTS_TO_ORDERED=y<br>
+</p><p>
+on.  Shipping any other default would be irresponsible.<br>
+</p><p>
+[1] <a href="http://lkml.org/lkml/2009/4/8/802">http://lkml.org/lkml/2009/4/8/802</a><br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328702/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328746"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 16, 2009 19:15 UTC (Thu) by <b>chad.netzer</b> (guest, #4257)
+       [<a href="https://lwn.net/Articles/328746">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Doesn't Fedora use ext4 now, by default, which uses data=writeback and thus has the security issues after a crash that ext3 data=ordered helped prevent?  So while it won't regress existing ext3 users, new adopters of Redhat will default to the "insecure" behavior of ext4.  Does ext4 even support data=ordered?<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328746/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328766"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 16, 2009 21:15 UTC (Thu) by <b>dtlin</b> (<b>✭ supporter ✭</b>, #36537)
+       [<a href="https://lwn.net/Articles/328766">Link</a>]
+    </p>
+    <div class="FormattedComment">
+ext4's data=writeback mode does not suffer from the security problems that <br>
+ext3's does.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328766/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328772"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 16, 2009 22:23 UTC (Thu) by <b>chad.netzer</b> (guest, #4257)
+       [<a href="https://lwn.net/Articles/328772">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Is there a quick explanation as to why? (Or a link? I'll google for it in any case)<br>
+<p>
+BTW, Documentation/filesystems/ext4.txt in current linux repo seems to contradict your statement.  I can understand how delayed allocation can affect the situation (since certain data need never be written to the disk at all, even if metadata changes), but for allocated data, how does the ext4 situation differ from ext3 writeback mode?<br>
+</p><p>
+<a href="http://lwn.net/Articles/203915/">http://lwn.net/Articles/203915/</a><br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328772/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328807"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 17, 2009 6:52 UTC (Fri) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/328807">Link</a>]
+    </p>
+    <p>Yeah, confusing isn't it. Relevant part of the docs, diffed:</p>
+
+<pre> * writeback mode
+-In data=writeback mode, ext3 does not journal data at all.  This mode provides
++In data=writeback mode, ext4 does not journal data at all.  This mode provides
+ a similar level of journaling as that of XFS, JFS, and ReiserFS in its default
+ mode - metadata journaling.  A crash+recovery can cause incorrect data to
+ appear in files which were written shortly before the crash.  This mode will
+-typically provide the best ext3 performance.
++typically provide the best ext4 performance.
+</pre>
+
+<p>It would be really good if Ted could comment if the above was simply copied from ext3 docs or if it is really still true for ext4 in writeback mode as well.</p>
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328807/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor328968"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 18, 2009 16:14 UTC (Sat) by <b>sbergman27</b> (guest, #10767)
+       [<a href="https://lwn.net/Articles/328968">Link</a>]
+    </p>
+    <div class="FormattedComment">
+From Ted, in a relatively recent interview, speaking on *ext4* performance tips:<br>
+<p>
+"If you dont need the security guarantees of what happens after a crash that are provided by data=ordered, try using the data=writeback mount option."<br>
+</p><p>
+<a href="http://www.linux-mag.com/id/7272/2/">http://www.linux-mag.com/id/7272/2/</a><br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328968/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328982"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 18, 2009 23:22 UTC (Sat) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/328982">Link</a>]
+    </p>
+    <p>Compare that to this comment:</p>
+
+<blockquote><i>
+Fundamentally, the problem is caused by data=ordered mode.  This problem can be avoided by mounting the filesystem using data=writeback or by using a filesystem that supports delayed allocation  such as ext4.  This is because if you have a small sqllite database which you are fsync(), and in another process you are writing a large 2 megabyte file, the 2 megabyte file wont be be allocated right away, and so the fsync operation will not force the dirty blocks of that 2 megabyte file to disk; since the blocks havent been allocated yet, there is no security issue to worry about with the previous contents of newly allocated blocks if the system were to crash at that point.
+</i></blockquote>
+
+<p>Contradictory, isn't it?</p>
+
+<a href="http://thunk.org/tytso/blog/2009/03/12/delayed-allocation-and-the-zero-length-file-problem/">http://thunk.org/tytso/blog/2009/03/12/delayed-allocation-and-the-zero-length-file-problem/</a>
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328982/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor328991"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 19, 2009 0:59 UTC (Sun) by <b>sbergman27</b> (guest, #10767)
+       [<a href="https://lwn.net/Articles/328991">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I guess.<br>
+<p>
+On a related note, if he thinks that writeback is good enough for ext3 because, after all, nobody runs Linux with multiple users... then is writeback also destined to be the default for ext4?  Or is the idea to destabilize the thus far rock solid ext3 enough to make ext4 look better by comparison?<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/328991/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor329001"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 19, 2009 2:56 UTC (Sun) by <b>sitaram</b> (subscriber, #5959)
+       [<a href="https://lwn.net/Articles/329001">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Actually, maybe not.  This is not about security; as far as security goes ext4 is the same.  What he is saying (or what I understand him to be saying) is that in ext4, due to delayed allocation, the performance issue with data=ordered is alleviated.<br>
+<p>
+So I'd see this as "delayed allocation makes ordered almost as efficient as writeback", not "...makes writeback as secure as ordered"<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/329001/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor329008"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 19, 2009 4:27 UTC (Sun) by <b>tytso</b> (subscriber, #9993)
+       [<a href="https://lwn.net/Articles/329008">Link</a>]
+    </p>
+    <div class="FormattedComment">
+OK, so there are multiple issues when people talk about "safety" and data=writeback.   First of all, for ext3.   In the security dimension, with data=writeback, if after a crash where the filesystem was not cleanly unmounted, files that were written right before the crash might contain unitialized data.   This data could be from another user, although on a single-user system, this is obviously not very likely.   How severely you consider this really depends on how paranoid you are.  Even on a single-user system, this data might contain information that you don't want to send out publically, and if you don't notice that a file contained something other than what you thought before you send it out to someone else, there is a potential for a security exposure.  Obviously, though on a single user system this is much less of an issue than on timesharing system.<br>
+<p>
+In the data loss department, if you have an application that didn't use fsync(), and the system crashes, with data=writeback there is the chance for dataloss.   In 2.6.30, Linus accepted patches which will cause an implied flush operation when a hueristic detects an application trying to replace an existing file via the replace-via-truncate and replace-via-rename cases patterns.  This largely reduces the problems for non-fsync-using applications.   It doesn't solve the problem for a freshly written file, but the system could have easily crashed five seconds earlier.<br>
+</p><p>
+OK, so how does ext4 change things.  By default ext4 on modern kernels (ignoring the technology preview on RHEL 5 and Fedora 10) performs delayed allocation.  This means that the data blocks are not allocated right away when you write the file, but only when they are forced out, either explicitly via fsync(), or via the page writeback algorithms in the VM, which will tend to push things out after 30-45 seconds (ignoring laptop mode) and perhaps sooner if the system is short on memory.<br>
+</p><p>
+In the security dimension, what this means is that even in data=writeback mode, in general on a crash the file will be truncated or zero-length instead of containing uninitialized data. In ext4 with delayed allocation and data=writeback, there *is* a very tiny race condition where if a transaction closes right between when the pdflush daemon allocates the filesystem block and before it has a chance to trigger the page writeback, that you might end up with uninitialized garbage.  This chance is very small, but it is non-zero.   In this case, ext4 data=ordered will force the write to disk, so it is technically safer in the security dimension, although this race is very hard to exploit, and very rare that it gets hit in practice.  (This is also why the overhead of data=ordered and data=writeback is much less for ext4, thanks to delayed allocation --- the difference between the two is not the same, however!)<br>
+</p><p>
+In the safety against applications that don't use fsync department, as of 2.6.30, ext4 will always do an implied allocation and flush for data=ordered and data=writeback.   So there is no real difference here between data=ordered and data=writeback.<br>
+</p><p>
+The bottom line is that while there is some performance benefit in going with data=writeback with ext4, the differences between data=ordered and data=writeback are much smaller with ext4, in both the cost and benefit dimensions.<br>
+</p><p>
+Chris Mason is also working on a data=guarded mode, which will cause files to be truncated (much like delayed allocation) on a crash with ext3.  I will look into porting this mode into ext4, if it proves to be enough of a performance advantage for ext4 over data=ordered, and yet providing a tiny bit more safety than data=writeback.  It's not clear to me that it will be worth it for ext4, however.<br>
+</p><p>
+I hope this helps answers the questions between ext3 and ext4, and data=ordered versus data=writeback.<br>
+</p><p>
+Regards,<br>
+</p><p>
+Ted.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/329008/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor329014"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 19, 2009 8:07 UTC (Sun) by <b>sitaram</b> (subscriber, #5959)
+       [<a href="https://lwn.net/Articles/329014">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Thank you...<br>
+<p>
+I'm one of those people for whom the security aspect is far more important (*) than data loss -- data loss can happen for so many other reasons that one should have a good, reliable, backup regime anyway, so one more reason doesn't bother me.<br>
+</p><p>
+So ext3: people with my mindset should stick with data=ordered.  (I don't see guarded as being too useful for ext3 -- we'll probably have switched to ext4 by the time guarded becomes mainstream).<br>
+</p><p>
+Ext4: I think I'll stick with ordered here too.  If the overhead has been much reduced by delayed alloc, it correspondingly reduces the main advantage of writeback too :-)  I'd rather err on the side of security when the difference is minor.<br>
+</p><p>
+Although collectively we like choice, and we *need* choice, when it comes to actual usage, we have to rationally reduce the many choices available into one and say "*this* is what we will use"!<br>
+</p><p>
+Thanks once again for jumping in and helping with that!<br>
+</p><p>
+Sitaram<br>
+</p><p>
+(*) My home desktop is used by my kids also, for instance -- so it *is* a multi-user machine in the old traditional sense.  The work machine runs email and office apps as one user, and my web browser and IRC as another user (simultaneously), so -- while both users are still me -- it too is multi user in the sense of wanting to keep two disparate sets of files separate.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/329014/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor329070"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 19, 2009 22:35 UTC (Sun) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/329070">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Thank you kindly for you detailed reply.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/329070/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor329072"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 19, 2009 22:50 UTC (Sun) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/329072">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; Chris Mason is also working on a data=guarded mode, which will cause files to be truncated (much like delayed allocation) on a crash with ext3. I will look into porting this mode into ext4, if it proves to be enough of a performance advantage for ext4 over data=ordered, and yet providing a tiny bit more safety than data=writeback. It's not clear to me that it will be worth it for ext4, however.</font><br>
+<p>
+Unless there is a significant performance penalty by updating metadata only after the data has been written, instead of having another mode, this is probably how writeback mode should work.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/329072/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor329077"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 20, 2009 0:29 UTC (Mon) by <b>tytso</b> (subscriber, #9993)
+       [<a href="https://lwn.net/Articles/329077">Link</a>]
+    </p>
+    <p><i>Unless there is a significant performance penalty by updating metadata only after the data has been written, instead of having another mode, this is probably how writeback mode should work.</i></p>
+
+<p>(Note that data=guarded is only deferring the update of i_size, and not any other form of metadata.)</p>
+
+<p>We'll have to benchmark it and see.   It does mean that i_size gets updated more, and so that means that the inode has to get updated as blocks are staged out to disk, so that means some extra writes to the journal and inode table.  I don't <i>think</i> it should be noticeable, at least for most workloads, since it should be lost in the noise of the data block I/O, but it is extra seeks and extra writes.</p>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/329077/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor329087"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 20, 2009 3:43 UTC (Mon) by <b>bojan</b> (subscriber, #14302)
+       [<a href="https://lwn.net/Articles/329087">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Thanks for the explanation.<br>
+<p>
+I guess if i_size could be updated just once, when all the blocks are pushed out, then this would be even less of a problem. But, then again, I have no idea how this actually works inside the code, so this suggestion is probably naive.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/329087/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor345282"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 5, 2009 1:08 UTC (Wed) by <b>mdkul</b> (guest, #35333)
+       [<a href="https://lwn.net/Articles/345282">Link</a>]
+    </p>
+    <div class="FormattedComment">
+How do i find out what mode my ext3 partition is running in? (data=ordered or data=writeback?)<br>
+<p>
+my tune2fs /dev/sda1 -l says <br>
+</p><p>
+Default mount options : (none) So what does it default to if it is none?<br>
+</p><p>
+i *don't* have CONFIG_EXT3_DEFAULTS_TO_ORDERED = y set and my documentation for 2.6.31-rc4 says (Documentation/filesystems/ext3.txt says data=ordered is default. <br>
+</p><p>
+Thanks in advance.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/345282/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor345355"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 5, 2009 14:16 UTC (Wed) by <b>ABCD</b> (subscriber, #53650)
+       [<a href="https://lwn.net/Articles/345355">Link</a>]
+    </p>
+    <div class="FormattedComment">
+You might be able to find out by reading /proc/self/mountinfo, which contains, among other things, the effective mount options for every mount the current process can see.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/345355/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor345396"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Solving the ext3 latency problem</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 5, 2009 16:52 UTC (Wed) by <b>mdkul</b> (guest, #35333)
+       [<a href="https://lwn.net/Articles/345396">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Thanks that helped.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/345396/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor330125"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Changing ext3's default data= mode</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 25, 2009 10:31 UTC (Sat) by <b>engla</b> (guest, #47454)
+       [<a href="https://lwn.net/Articles/330125">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Was Ted's suggestion to change the default data= mode of ext3 a "political" move? It suits him very well, given all the mud he has been throwing on data=ordered<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/330125/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor330217"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Changing ext3's default data= mode</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Apr 26, 2009 7:11 UTC (Sun) by <b>dpotapov</b> (guest, #46495)
+       [<a href="https://lwn.net/Articles/330217">Link</a>]
+    </p>
+    <div class="FormattedComment">
+It is changed because data=ordered stutters *horribly*.<br>
+<p>
+<a rel="nofollow" href="http://article.gmane.org/gmane.linux.kernel/818261">http://article.gmane.org/gmane.linux.kernel/818261</a><br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/330217/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</td> <!-- MC -->
+<td class="RightColumn">
+<div id="azk93271_right_zone"></div>
+</td>
+</tr></tbody></table></td>
+</tr></tbody></table><!-- endpage -->
+
+        <br clear="all">
+        <center>
+        <p>
+        <font size="-2">
+        Copyright © 2009, Eklektix, Inc.<br>
+        This article may be redistributed under the terms of the
+              <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+              Commons CC BY-SA 4.0</a> license<br>
+        Comments and public postings are copyrighted by their creators.<br>
+        Linux  is a registered trademark of Linus Torvalds<br>
+        </font>
+        </p></center>
+        
+        
+        </body></html>

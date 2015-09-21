@@ -1,0 +1,2158 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><!--
+ Archive processed by SingleFile 
+ url: https://lwn.net/Articles/283161/ 
+ saved date: Sun Sep 20 2015 05:07:31 GMT+0200 (CEST) 
+--><head><title>Barriers and journaling filesystems [LWN.net]</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8>
+        <link rel=" icon"="" href="/images/favicon.png" type="image/png">
+        <link rel="alternate" type="application/rss+xml" title="LWN.net headlines" href="http://lwn.net/headlines/newrss">
+<link rel="alternate" type="application/rss+xml" title="Comments posted to this article" href="http://lwn.net/headlines/283161/">
+        <style rel="stylesheet" data-href="https://lwn.net/CSS/lwn">body {color: black;background-color: #ffffff;padding:0px;}h1 {margin:0px 0px 5px 0px;padding:0px;color: black;}h2 {margin:20px 0px 5px 0px;padding:0px;}h3 {margin:0px 0px 5px 0px;padding:0px;}a {text-decoration:none;}a:link { color: Blue;}a:visited {color: DarkBlue;}a:hover {color:Red;}a.name { color: black }a.name:link { color: black }a.name:hover { color: black }TABLE.Page { width: 100% }TD.LeftColumn { background-color: #ffcc99;width: 156px;overflow: hidden;vertical-align: top }TD.MidColumn { background-color: #ffffff;padding: 3px;border-style: none;vertical-align: top;}TD.MCTopBanner { background-color: #ffffff;border-style: none;padding: 0 0 0 4px;}.MCTopBanner CENTER { text-align: left; }TD.RightColumn { border-style: none none none none;border-width: thin;vertical-align: top;text-align: left;border-color: #eeeeee;padding-top: 6em; }DIV.MidColHeader { margin: 0px auto 0px 0px;padding: 0;max-width: 57em; }TABLE.Page TR { vertical-align: top; }TABLE.HeadlineView { }TABLE.HeadlineView TD { vertical-align: top }DIV.PageHeadline { text-align: center;max-width: 75em;margin-top: 1em;margin-bottom: 2em; }DIV.PageHeadline H1 { margin-bottom: 0.2em; }DIV.PageHeadline H2 { margin-top: 0.2em; }P.Cat1HL { background-color: #ffcc99;text-align: center;font-size: 200%;font-weight: bold;padding-top: 3px;padding-bottom: 5px;margin-bottom: 0.2em; }P.Cat2HL { background-color: #ffcc99;font-size: large;font-weight: bold;padding-left: 3px;margin-bottom: 0.3em; }P.Cat3HL { background-color: #ffcc99;font-weight: bold;padding-left: 3px;margin-bottom: 0.3em; }P.SummaryHL { font-weight: bold;font-size: larger;text-decoration: underline;margin-top: 0.4em;margin-bottom: 0.4em; }H2.SummaryHL { font-weight: bold;font-size: larger;text-decoration: underline;margin-top: 0.4em;margin-bottom: 0.4em; }P.SummaryHL A:link { color: black }P.SummaryHL A:visited { color: black }H2.SummaryHL A:link { color: black }H2.SummaryHL A:visited { color: black }P.IndexPrimary A:link { color: black }P.IndexPrimary A:visited { color: black }P.IndexSecondary A:link { color: black }P.IndexSecondary A:visited { color: black }TABLE.Form TH { text-align: left }SPAN { font-style: normal; font-weight: normal;color: darkred; background-color: white }SPAN.SpellingError {  background-color: #eeeeee; color: black }FONT.SpellingError {  background-color: #eeeeee }DIV.ErrorWords  { background-color: #eeeedd;border-style: groove;padding: 3px 3px 2px 3px;margin: 1px 5px 1px 0px; }DIV.BigQuote {font-style: normal; font-weight: normal;color: darkred; background-color: white;margin-left: 1cm; margin-right: 1cm }DIV.BigQuote P {margin-top: 1em; margin-bottom: 0px; }DIV.Headline { background-color: #ffcc99; font-weight: bold;font-size: larger;padding-left: 3px; }DIV.SummaryHeadline { font-weight: bold; font-size: larger;text-decoration: underline;margin-top: 0.4em;margin-bottom: 0.4em; }DIV.Byline { font-size: smaller; text-align: center }DIV.SideBox { margin: 1em 1px 1em 1px; }DIV.SideBox P { text-indent: -1em;margin: 0px 0px 1px 1em; }DIV.SideBox P.Header { font-weight: bold;text-indent: 0px;margin-left: 0px; }DIV.Comment { margin-left: 1em;background-color: inherit; }DIV.CommentSubtree { background-color: inherit; }DIV.OldCommentSubtree { background-color: #cccccc; }DIV.CommentBox, DIV.OldCommentBox {border-style: none none none solid;border-width: thin;max-width: 60em;margin-top: 1em;background-color: inherit;}DIV.CommentBox { border-color: #ffcc99; }DIV.OldCommentBox { border-color: #cccccc; }P.CommentTitle {padding: 2px 2px 2px 4px;margin: 0px;font-weight: bold;}DIV.CommentBox P.CommentTitle { background-color: #ffcc99; }DIV.OldCommentBox P.CommentTitle { background-color: #cccccc; }DIV.CommentBody { padding: 0px 4px 0px 4px;background-color: inherit; }P.CommentPoster { margin-top: 0px; }div.CommentReplyButton { display: none;text-align: right;padding: 4px; }DIV.FormattedComment { }PRE.FormattedComment { font: inherit; }DIV.FormattedComment PRE { font: inherit; }TD.Headline {background-color: #ffcc99 }TABLE.Middle { background-color: #ffffff; padding: 3px;border-style: none; width: 100% }TD.Middle { background-color: #ffffff; vertical-align: top }.Form { background-color: #eeeeee;padding: 3px;border-style: groove;}A.Current { background-color: darkred; color: white }A.Other { }P.NextLink { text-align: right }FONT.SearchItem { font-weight: bold; color: red }FONT.QuotedText { color: #990099 }FONT.Subscription { color: darkgreen }TR.Even { background-color: #eeeeee; }TR.Odd { }table.OddEven {border-spacing: 2px;border-collapse: separate;}table.OddEven tr:nth-child(even) {background-color: #ffffff;}table.OddEven tr:nth-child(odd) {background-color: #eeeeee;}table.OddEven th { background-color: #ffffff; }table.OddEven td { padding: 3px; }.s-nonexistent { background-color: red !important; }.s-withdrawn { background-color: red !important; }.s-in-progress { background-color: white !important; }.s-submitted { background-color: yellow !important; }.s-active { background-color: lightgreen !important; }P.Headlines { margin-bottom: 6px; text-indent: -1em; margin-left: 1em;margin-top: 0px }P.Feature { text-indent: -1em; margin-left: 1em; margin-top: 0px;margin-bottom: 2px}P.ErrorMessage { color: red; margin-left: 1cm;margin-right: 1cm; font-weight: bold;font-size: large }FONT.NonActive { color: red; font-weight: bold }A.NonActive { color: red; font-weight: bold }TABLE.TopNavigation { width: 100%;max-width: 55em;margin-bottom: 0;margin-top: 0px; }TD.NavLink { background-color: #eeeeee; text-align: center; max-width: 15em; }P.IndexPrimary { margin-top: 1em; margin-bottom: 0px; font-weight: bold; }P.IndexSecondary { margin-top: 0px; text-indent: 5mm; margin-bottom: 0px; }P.IndexEntry { text-indent: 1cm; margin-top: 0px; margin-bottom: 0px }DIV.TextAd { width: 150px; border-style: solid;border-width: thin;margin: 0px auto 10px auto;background-color: white;color: black; }P.TextAdHeader { background-color: #419d4a;color: white;margin-top: 0px;margin-bottom: 3px;text-align: center;font-weight: bold; }P.TextAdLink { margin: 2px }P.TextAdBody { margin: 10px 2px 2px 2px }P.TextAdFooter { border-top-style: dotted;border-top-width: thin;text-align: center;background-color: #ffcc99;margin: 2px 0px 0px 0px; }TABLE.tlnav { width: 100%; color: black; padding: 2px }TABLE.tlrw { width: 45%; float: right; background-color: #eeeedd;border-style: groove; margin: 5px; float: right }TABLE.tlr { width: 35%; float: right; background-color: #eeeedd;border-style: groove; margin: 5px; float: right }TABLE.tllw { width: 45%; float: left; background-color: #eeeedd;border-style: groove; margin: 5px }TABLE.tll { width: 35%; float: left; background-color: #eeeedd;border-style: groove; margin: 5px }P.QuoteAttr { text-align: right }DIV.tlrw { width: 45%;float: right;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 0px 1px 5px; }DIV.tlr  { width: 35%;float: right;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 0px 1px 5px; }DIV.tllw { width: 45%;float: left;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 5px 1px 0px; }DIV.tll  { width: 35%;float: left;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 5px 1px 0px; }P.tlqa { text-align: right }UL.spacylist LI { margin-bottom: 0.5em; }OL.spacylist LI { margin-bottom: 0.5em; }P.GuestAuthor { max-width: 15em; float: right; background-color: #eeeeee;border-style: groove; padding: 3px;margin: 6px 0px 2px 5px; float: right }DIV.GAByline { max-width: 15em; float: right; background-color: #eeeeee;border-style: groove; padding: 3px;margin: 6px 0px 2px 5px; float: right; text-align: center; }DIV.GAByline P { margin: 0px; text-align: left; }DIV.GAByline P:first-child {font-weight: bold; text-align: center;margin-bottom: 3px; }DIV.GAByline HR { width: 40% }DIV.FeatureByline { max-width: 20em; float: left; background-color: #eeeeee;border-style: groove; margin: 2px 5px 2px 0px;padding-bottom: 5px;padding-right: 25px;  padding-left: 5px; }DIV.FeatureByline HR { width: 40% }div.survey { margin-left: 1cm }div.sv_mc { margin-left: 10mm; margin-top: 0cm }SPAN.PullQuote { max-width: 30%;float: right;color: black;background-color: #eeeeee;margin: 2px 0px 2px 5px;padding: 5px 2px 5px 0.5em;border-style: none none none solid;border-color: #ffcc99;font-weight: normal;font-size: larger; }SPAN.invisible { display: none; }TABLE.CalM { width: 100%;border-spacing: 0 }TR.CalM { border-left-style: groove }TD.CalMDate { background-color: #eeeeee;font-size: x-large;width: 13%;border-left-style: groove;border-top-style: groove }TD.CalMEvent { font-size: smaller;vertical-align: middle;border-left-style: groove }TD.CalMContinue { font-size: smaller;vertical-align: middle;border-left-style: groove }TD.CalBlank { border-left-style: none }TD.CalMBottom { border-left-style: groove;border-bottom-style: groove }TD.CalMTop { border-left-style: none; border-top-style: groove }TD.CalMCorner { border-left-style: groove; border-top-style: groove }TD.CalMHeader { font-size: larger; font-weight: bold;text-align: center; width: 13%;padding-top: 20px; padding-bottom: 10px }TD.CalMName { font-size: x-large; font-weight: bold;text-align: center;background-color: #eeeeee;margin-bottom: 10px;border-top-style: groove;border-bottom-style: groove }TD.CalMArrow { vertical-align: middle; border-style: groove }DIV.ArticleText { margin:0px 0px 0px 0px;padding:0px 2px 0px 0px;max-width: 75em;}DIV.widepage DIV.ArticleText {max-width: 999em !important;}DIV.Printable { }DIV.Printable DIV.ArticleText { margin:0px 0px 0px 0px;padding:0px;max-width: none; }DIV.BlurbText { margin:0px 0px 0px 0px;padding:0px; }SPAN.UliMath { color: black;font-weight: bold; }SPAN.UliInvSig { color: black;font-weight: bold;text-decoration: overline }DIV.AdMarker { text-align: center;font-size: smaller;color: black;font-weight: bold; }DIV.AdRight { float:right;background-color: #ffffff;border-width: 3px;border-style: solid;border-color: #ffffff;margin-left: 2px;padding: 2px; }DIV.promobox { float: left;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 5px 1px 0px; }UL.NoBullet { list-style-type: none; }DIV.FilteredComment { display: none;background-color: #eeeeee; }DIV.CommHdr { background-color: #eeeeee; }IMG.photo {max-width: 100%;}DIV.BlurbListing {padding-left: 3px;}.comment-title {width: 98%;}.comment-body {width: 98%;}.wide-form {width: 95%;margin: 0.1em 0.5em 0.1em 0.1em;padding: 0.2em;background-color: #eeeeee;border-radius: 0.5em;}.covered {background: #eeeeee;color: #eeeeee;}.covered::-moz-selection {background: #ffffff;color: black;}.covered::selection {background: #ffffff;color: black;}</style>
+<style rel="stylesheet" data-href="https://lwn.net/CSS/nosub">div.MakeALink { display: none }</style>
+
+        
+
+
+
+        <link type="image/x-icon" rel="shortcut icon" href="data:image/x-icon;base64,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"></head>
+        <body bgcolor="#ffffff" link="Blue" vlink="Green" alink="Green">
+        <table class="Page">
+<tbody><tr>
+<td class="LeftColumn">
+
+        <center>
+        <a href="https://undefined/"><img src="data:image/png;base64,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" width="153" height="120" border="0" alt="LWN.net Logo"></a>
+        </center>
+        <p>
+        
+
+</p><p>
+</p><div class="SideBox">
+<p class="Header">Not logged in</p>
+<p><a href="https://lwn.net/login">Log in now</a></p>
+<p><a href="https://lwn.net/newaccount">Create an account</a></p>
+<p><a href="https://lwn.net/subscribe/Info">Subscribe to LWN</a></p></div>
+
+<div class="SideBox">
+<p class="Header">Weekly Edition</p>
+<p><a href="https://lwn.net/Articles/282506">Return to the Kernel page</a></p></div>
+
+<div class="SideBox">
+<p class="Header">Recent Features</p>
+<p><a href="https://lwn.net/Articles/657111">LWN.net Weekly Edition for September 17, 2015</a></p>
+<p><a href="https://lwn.net/Articles/657345">How Debian managed the systemd transition</a></p>
+<p><a href="https://lwn.net/Articles/657269">Python and crypto-strength random numbers by default</a></p>
+<p><a href="https://lwn.net/Articles/657139">The LPC Android microconference, part 2</a></p>
+<p><a href="https://lwn.net/Articles/656672">LWN.net Weekly Edition for September 11, 2015</a></p></div>
+
+<div class="SideBox">
+<p><a href="https://lwn.net/Articles/283161/?format=printable">Printable page</a></p></div>
+
+</td><!-- LC -->
+
+<td><table><tbody><tr>
+<td class="MidColumn">
+           <table class="TopNavigation">
+
+<!-- First row - content links -->
+<tbody><tr>
+  <td class="NavLink"><a href="https://lwn.net/current">Weekly edition</a></td>
+  <td class="NavLink">
+	<a href="https://lwn.net/Kernel">Kernel</a></td>
+  <td class="NavLink"><a href="https://lwn.net/Security">Security</a></td>
+  <td class="NavLink">
+	<a href="http://lwn.net/Distributions/">Distributions</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/FAQ.lwn#contact">Contact Us</a> </td>
+  <td class="NavLink"><a href="https://lwn.net/Search">Search</a> </td>
+</tr>
+<!-- Second row: navigation links -->
+<tr>
+  <td class="NavLink"><a href="https://lwn.net/Archives">Archives</a></td>
+  <td class="NavLink"><a href="https://lwn.net/Calendar">Calendar</a></td>
+  <td class="NavLink"><a href="https://lwn.net/subscribe/Info">Subscribe</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/AuthorGuide.lwn">Write for LWN</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/FAQ.lwn">LWN.net FAQ</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/Sponsors.lwn">Sponsors</a></td>
+</tr>
+
+</tbody></table>
+</td><td></td></tr>
+<tr><td colspan="2" class="MCTopBanner">
+<div id="azk13321_leaderboard"></div></td></tr><tr><td class="MidColumn">
+<div class="PageHeadline">
+<h1>Barriers and journaling filesystems</h1>
+</div>
+<div class="ArticleText">
+<div class="FeatureByline">
+           By <b>Jonathan Corbet</b><br>May 21, 2008
+           </div>
+Journaling filesystems come with a big promise: they free system
+administrators from the need to worry about disk corruption resulting from
+system crashes.  It is, in fact, not even necessary to run a filesystem
+integrity checker in such situations.  The real world, of course, is a
+little messier than that.  As a recent discussion shows, it may be even
+messier than many of us thought, with the integrity promises of
+journaling filesystems being traded off against performance.
+<p>
+
+A filesystem like ext3 works by maintaining a journal on a dedicated
+portion of the disk.  Whenever a set of filesystem metadata changes are to
+be made, they are first written to the journal - without changing the rest
+of the filesystem.  Once all of those changes have been journaled, a
+"commit record" is added to the journal to indicate that everything else
+there is valid.  Only after the journal transaction has been committed in
+this fashion can the kernel  do the real metadata writes at its leisure;
+should the system crash in the middle, the information needed to safely
+finish the job can be found in the journal.  There will be no filesystem
+corruption caused by a partial metadata update.  </p><p>
+
+There is a hitch, though: the filesystem code must, before writing the
+commit record, be absolutely sure that all of the transaction's information
+has made it to the journal.  Just doing the writes in the proper order is
+insufficient; contemporary drives maintain large internal caches and will
+reorder operations for better performance.  So the filesystem must
+explicitly instruct the disk to get all of the journal data onto the media
+before writing the commit record; if the commit record gets written first,
+the journal may be corrupted.  The kernel's block I/O subsystem makes this
+capability available through the use of barriers; in essence, a barrier forbids the
+writing of any blocks after the barrier until all blocks written before the
+barrier are committed to the media.  By using barriers, filesystems can
+make sure that their on-disk structures remain consistent at all times.
+</p><p>
+
+There is another hitch: the ext3 and ext4 filesystems, by default, do not
+use barriers.  The option is there, but, unless the administrator has
+explicitly requested the use of barriers, these filesystems operate
+without them - though some distributions (notably SUSE) change that default.
+Eric Sandeen recently decided that this was not the best situation, so he
+<a href="http://lwn.net/Articles/282958/">submitted a patch</a> changing
+the default for ext3 and ext4.  That's when the discussion started.
+</p><p>
+Andrew Morton's <a href="https://lwn.net/Articles/283164">response</a> tells a lot about
+why this default is set the way it is:
+</p><p>
+</p><div class="BigQuote">
+	Last time this came up lots of workloads slowed down by 30% so I
+	dropped the patches in horror.  I just don't think we can quietly
+	go and slow everyone's machines down by this much...
+	<p>
+	There are no happy solutions here, and I'm inclined to let this dog
+	remain asleep and continue to leave it up to distributors to decide
+	what their default should be.
+</p></div>
+<p>
+So barriers are disabled by default because they have a serious impact on
+performance.  And, beyond that, the fact is that people get away with
+running their filesystems without using barriers.  Reports of ext3
+filesystem corruption are few and far between.
+</p><p>
+It turns out that the "getting away with it" factor is not just luck.  Ted
+Ts'o <a href="https://lwn.net/Articles/283168">explains</a> what's going on: the journal
+on ext3/ext4 filesystems is normally contiguous on the physical media.  The
+filesystem code tries to create it that way, and, since the journal is
+normally created at the same time as the filesystem itself, contiguous
+space is easy to come by.  Keeping the journal together will be good for
+performance, but it also helps to prevent reordering.  In normal usage, the
+commit record will land on the block just after the rest of the journal
+data, so there is no reason for the drive to reorder things.  The commit
+record will naturally be written just after all of the other journal log
+data has made it to the media.
+</p><p>
+That said, nobody is foolish enough to claim that things will always happen
+that way.  Disk drives have a certain well-documented tendency to stop
+cooperating at inopportune times.  Beyond that, the journal is essentially
+a circular buffer; when a transaction wraps off the end, the commit record
+may be on an earlier block than some of the journal data.  And so on.  So
+the potential for corruption is always there; in fact, Chris Mason <a href="https://lwn.net/Articles/283169">has a torture-test program</a> which can make it happen
+fairly reliably.  There can be no doubt that running without barriers is
+less safe than using them.
+</p><p>
+
+Anybody can turn on barriers if they are willing to take the performance
+hit.  Unless, of course, their filesystem is based on an LVM volume (as
+certain distributions do by default); it turns out that the device mapper
+code does not pass through or honor barriers.  But, for everybody else, it
+would be nice if that 
+performance cost could be reduced somewhat.  And it seems that might be
+possible.
+</p><p>
+
+The current ext3 code - when barriers are enabled - performs a sequence of
+operations like this for each transaction:
+</p><p>
+</p><ol>
+<li> The log blocks are written to the journal.
+</li><li> A barrier operation is performed.
+</li><li> The commit record is written.
+</li><li> Another barrier is executed.
+</li><li> Metadata writes begin at some later point.
+</li></ol>
+<p>
+
+On ext4, the first barrier (step 2) can be omitted because the ext4
+filesystem supports checksums on the journal.  If the journal log data and
+the commit record are reordered, and if the operation is interrupted by a
+crash, the journal's checksum will not match the one stored in the commit
+record and the transaction will be discarded.  Chris Mason <a href="https://lwn.net/Articles/283171">suggests</a> that it would be "mostly safe" to
+omit that barrier with ext3 as well, with a possible exception when the
+journal wraps around.
+</p><p>
+
+Another idea for making things faster is to defer barrier operations when
+possible.  If there is no pressing need to flush things out, a few
+transactions can be built up in the journal and all shoved out with a
+single barrier.  There is also some potential for improvement by carefully
+ordering operations so that barriers (which are normally implemented as
+"flush all outstanding operations to media" requests) do not force the
+writing of blocks which do not have specific ordering requirements.
+</p><p>
+
+In summary: it looks like the time has come to figure out how to make the
+cost of barriers palatable.  Ted Ts'o <a href="https://lwn.net/Articles/283288">seems to
+feel that way</a>:
+</p><p>
+</p><div class="BigQuote">
+	I think we have to enable barriers for ext3/4, and then work to
+	improve the overhead in ext4/jbd2.  It's probably true that the
+	vast majority of systems don't run under conditions similar to what
+	Chris used to demonstrate the problem, but the default has to be
+	filesystem safety.
+</div>
+<p>
+Your editor's sense is that this particular
+dog is now wide awake and is likely to bark for some time.  That may
+disturb some of the neighbors, but it's better than letting somebody get
+bitten later on.</p><hr width="60%" align="left">
+           (<a href="https://lwn.net/login?target=/Articles/283161/">Log in</a> to post comments)
+           <p>
+           
+</p></div> <!-- ArticleText -->
+<p><a name="Comments"></a>
+
+<a name="CommAnchor283306"></a>
+</p><div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 17:32 UTC (Wed) by <b>allesfresser</b> (<b>✭ supporter ✭</b>, #216)
+       [<a href="https://lwn.net/Articles/283306">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>So, for those that wish to enable them, barriers apparently are turned on by giving
+"barrier=1" as an option to the mount(8) command, either on the command line or in /etc/fstab:
+
+mount -t ext3 -o barrier=1 &lt;device&gt; &lt;mount point&gt;
+
+(along with whatever other options you desire)
+
+If this is in error, please feel free to correct.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283306/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283318"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Enabling barriers</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 17:45 UTC (Wed) by <b>corbet</b> (editor, #1)
+       [<a href="https://lwn.net/Articles/283318">Link</a>]
+    </p>
+    Sigh.  I actually meant to put that into the article, but it slipped my mind in the Wednesday haze.  Sorry.  Yes, "-o&nbsp;barrier=1" is what you want.  The mount(8) man page, it seems, is a little out of date...
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283318/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283390"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Enabling barriers</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 20:13 UTC (Wed) by <b>pr1268</b> (subscriber, #24648)
+       [<a href="https://lwn.net/Articles/283390">Link</a>]
+    </p>
+    <p>Since which Kernel release has <font face="monospace">-o barrier=1</font> been an available option for <font face="monospace">mount(8)</font>?  Although I'm certain the kernel I'm running now (vanilla 2.6.25.4) would support barriers, I'm just a little curious how long this has been available.  Thanks!</p>
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283390/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283393"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Enabling barriers</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 20:17 UTC (Wed) by <b>corbet</b> (editor, #1)
+       [<a href="https://lwn.net/Articles/283393">Link</a>]
+    </p>
+    Some quick grepping on my kernel tree disk suggests that ext3 got the barrier option in 2.6.9.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283393/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283394"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Enabling barriers since 2.6.9 and hdparm question</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 20:36 UTC (Wed) by <b>pr1268</b> (subscriber, #24648)
+       [<a href="https://lwn.net/Articles/283394">Link</a>]
+    </p>
+    <p>Ahhh. The "big" one (kernel release, that is).  Thank you for the swift reply (gee, that was quick!). :-)</p>
+
+<p>Now another question for anyone:  What is the effect of toggling the disk drive's write-caching feature with <font face="monospace">hdparm -W {0,1} /dev/devicename</font>?  The man page for <font face="monospace">hdparm(8)</font> doesn't say anything about that, and just now querying my four disks (two IDEs and two SATAs) shows this enabled for all four.  I've never fiddled with this setting, but I'm convinced it runs automatically based on vendor/drive/capability (all four are late-model Seagate drives FWIW). Thanks again!</p>
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283394/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283457"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Enabling barriers since 2.6.9 and hdparm question</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 11:33 UTC (Thu) by <b>zmi</b> (guest, #4829)
+       [<a href="https://lwn.net/Articles/283457">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre><font class="QuotedText">&gt; What is the effect of toggling the disk drive's write-caching feature</font>
+
+Turning off write caches of disks and the RAID controller slows writing 
+badly. Examples of a recent HP ML350 server with 3x 146GB 10k SAS disks:
+- disk cache and RAID write cache OFF: 65MB/s
+- disk cache and RAID write cache ON: 145MB/s
+and that is on _sequential_ writes. We didn't measure _random_ writes, but 
+the system felt like an old 386 then. Really unusable.
+
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283457/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283467"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Enabling barriers since 2.6.9 and hdparm question</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 13:40 UTC (Thu) by <b>NAR</b> (subscriber, #1313)
+       [<a href="https://lwn.net/Articles/283467">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Interestingly we've had different experience - turning off the write cache actually improved
+performance. I'm not sure why, but the whole system was somewhat complicated and we had data
+loss. Turning off the write cache solved the data loss problem and had this surprising
+side-effect too.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283467/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor283320"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">What about LVM?</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 18:05 UTC (Wed) by <b>robertlemmen</b> (guest, #12997)
+       [<a href="https://lwn.net/Articles/283320">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>so is there any work going on towards making the barriers work on lvm volumes? 
+
+regards  robert
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283320/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283416"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">What about LVM?</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 2:49 UTC (Thu) by <b>snitm</b> (guest, #4031)
+       [<a href="https://lwn.net/Articles/283416">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Yes, but only single disk DM targets (e.g. linear), see: <a href="http://lkml.org/lkml/2008/2/15/125">http://lkml.org/lkml/2008/2/15/125</a>
+
+Unfortunately, this patch hasn't been pushed upstream and the DM maintainer (agk) hasn't
+really commented on when it might.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283416/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283972"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">What about LVM?</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 27, 2008 18:06 UTC (Tue) by <b>shapr</b> (guest, #9077)
+       [<a href="https://lwn.net/Articles/283972">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Sad, I now want to rip out my LVM setup and go back to straight-up ext3.
+
+I've had some random unexplained file corruption at power-loss, even with safety-first
+features of ext3 enabled. I wonder ext3 on LVM would explain it.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283972/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283996"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">What about LVM?</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 27, 2008 19:32 UTC (Tue) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/283996">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>LVM without snapshots only uses the linear target.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283996/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor283319"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 18:17 UTC (Wed) by <b>raven667</b> (subscriber, #5198)
+       [<a href="https://lwn.net/Articles/283319">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>This is all well and good but it would be I think most effective if drives had their own
+battery 
+backed write-back cache which can be pinned by the OS to the journal.  If the feature can be
+made 
+persistent, by committing the data to flash or something on drive shutdown, then the data
+doesn't 
+even need to be committed to the disk.  It seems to me that this kind of design could remove 
+inherent penalties associated with journaling using proper write barriers.  This kind of
+technology 
+could use used for transactional databases as well by making the transaction record work at 
+memory and interface speed rather than be limited by the rotational speed of the drives.  This
+
+should reduce contention on the platters by removing one of the more constant sources of
+activity.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283319/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283356"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 18:42 UTC (Wed) by <b>jwb</b> (guest, #15467)
+       [<a href="https://lwn.net/Articles/283356">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Or you could just use a CF device for your journal.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283356/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283424"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 5:05 UTC (Thu) by <b>jzbiciak</b> (subscriber, #5246)
+       [<a href="https://lwn.net/Articles/283424">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Except that flash has a limited number of rewrites before it's toast?
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283424/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283443"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 9:39 UTC (Thu) by <b>ekj</b> (guest, #1524)
+       [<a href="https://lwn.net/Articles/283443">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Would you please stop whipping this long-dead horse ?
+
+Typical flash-memory today is rated for 1M writes. There are internal wear-leveling that
+ensures that this is that number of writes to the ENTIRE module. (i.e. it is impossible to
+wear out flash faster by writing repeatedly to the same location)
+
+So, even a SMALL 1GB flash-memory requires the writing of a minimum of 1000TB worth of data
+before it'll start failing. (or another order of magnitude if it's a 1M flash-module)
+
+To put this in perspective, if you are writing 24x365 to the module at a constant speed of
+1MB/s, then you'll wear it out in 31 years. If you write constantly at 10MB/s, you wear it out
+in 3 years.
+
+For most uses, this simply isn't a concern. Most computers, even file-servers, don't write
+constantly to disk 24x365, and even those that do; the journal is metadata-only by default, so
+only writes that changes the filesystem-structure generate load on the journal at ALL.
+
+For those extremely rare servers that DO a gargantuan amount of writes that changes the
+filesystem-structure, there's a simple cure: Buy a sligthly LARGER flash-module. 
+
+Because of the wear-leveling a flash-module that is 4 times the size will sustain 4 times the
+amount (measured in GB) of data written before the cells start reaching their limit.
+
+A server that -MUST- journal more than a PETABYTE of data before the end of its lifespan can
+also afford to buy 16GB or 64GB of flash-storage rather than a paultry 1GB.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283443/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283458"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 11:51 UTC (Thu) by <b>SimonKagstrom</b> (subscriber, #49801)
+       [<a href="https://lwn.net/Articles/283458">Link</a>]
+    </p>
+    <p>You are right, but it's also important to lookup the specs of the CompactFlash card before buying it. How they actually do wear-levelling differs, and I've heard of brands which perform wear-levelling only within regions of the disk - not over the entire disk.</p>
+
+<p>In such cases, you can still wear out the flash in "reasonable" times. There are also some brands (I know of SiliconSystems) which allow reading CF-internal wear-levelling data (spare blocks, number of erases etc), although I'm not sure if there is any non-proprietary software to actually use this.</p>
+
+// Simon
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283458/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor283461"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 12:44 UTC (Thu) by <b>joern</b> (subscriber, #22392)
+       [<a href="https://lwn.net/Articles/283461">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre><font class="QuotedText">&gt; Typical flash-memory today is rated for 1M writes. There are internal wear-leveling that
+ensures that this is that number of writes to the ENTIRE module. (i.e. it is impossible to
+wear out flash faster by writing repeatedly to the same location)</font>
+
+This happens to be wrong on both accounts.  Typical flash-memory today is rated at either 10k
+or 100k - the lower number being for MLC flashes, which are cheaper and therefore can be
+expected in your average cheap medium from Fry's.
+
+Far worse, the normal wear leveling scheme does _not_ cover the complete device.  It covers
+some part of it, typically 16M or so.  The next part is also wear-leveled in itself, but not
+wrt. any other part of the device.  Therefore having a really hot area like a 32M journal is
+comparable to disabling the wear leveling for the device completely.  After 10k journal wraps
+you're depending on pure luck.
+
+The horse may be locked away in a broken shed, but it's still kicking.
+
+[ To be fair, some expensive devices are far far better.  Some expensive devices are just that
+- more expensive.  So do your own QA to be sure. ]
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283461/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283477"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 15:13 UTC (Thu) by <b>drag</b> (subscriber, #31333)
+       [<a href="https://lwn.net/Articles/283477">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre><font class="QuotedText">&gt; This happens to be wrong on both accounts.  Typical flash-memory today is rated at either
+10k or 100k - the lower number being for MLC flashes, which are cheaper and therefore can be
+expected in your average cheap medium from Fry's.</font>
+
+
+Well you wouldn't buy the cheapest thing you can find when you go want to use it in a server,
+right? So you make sure you get the 'high endurance' versions of the drives with SLC NAND
+chips and make sure that you go through a cycle of swapping it out every year or so.
+
+The thing is is that people are actually using flash to help speed up disk access in their
+datacenters.  This isn't the first time I've heard of people doing this sort of thing.
+
+Personally I work with a lot of flash media. The cheaper stuff. I haven't been here long, but
+I've talked to people that have been working here for 20 years. (of course they haven't been
+using CF cards that long). Nobody has yet to see any sort of flash media failing that they can
+remember. The actual physical connections (the plastic holes for the pins get malformed) get
+all screwed up before the any actual data ever gets corrupted. 
+
+
+Were do you get your numbers for the 16M wear leveling? Typically your dealing with media that
+is at least 512 megs and soon you'll have a hard time finding new stuff that is under 2 gigs.
+I am doubtful that only 16megs out of 2gigs is going to be wear leveled.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283477/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283488"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 15:24 UTC (Thu) by <b>joern</b> (subscriber, #22392)
+       [<a href="https://lwn.net/Articles/283488">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre><font class="QuotedText">&gt; Personally I work with a lot of flash media. The cheaper stuff. I haven't been here long,
+but I've talked to people that have been working here for 20 years. (of course they haven't
+been using CF cards that long). Nobody has yet to see any sort of flash media failing that
+they can remember. The actual physical connections (the plastic holes for the pins get
+malformed) get all screwed up before the any actual data ever gets corrupted.</font>
+
+I know of reports.  Ext3 on CF seems to be fairly good at corrupting stuff, particularly data
+that is stored close to the journal.  Whether the cards in question used SLC or MLC I don't
+know.  The pesky thing about them is that vendors hardly ever publish information at all.
+
+<font class="QuotedText">&gt; Were do you get your numbers for the 16M wear leveling? Typically your dealing with media
+that is at least 512 megs and soon you'll have a hard time finding new stuff that is under 2
+gigs. I am doubtful that only 16megs out of 2gigs is going to be wear leveled.</font>
+
+<a href="http://www.linuxconf.eu/2007/papers/Engel.pdf">http://www.linuxconf.eu/2007/papers/Engel.pdf</a>
+Mainly based on the smartmedia spec and some reverse engineering.  I didn't do the latter
+myself, though.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283488/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283590"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 23, 2008 2:21 UTC (Fri) by <b>drag</b> (subscriber, #31333)
+       [<a href="https://lwn.net/Articles/283590">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre><font class="QuotedText">&gt; Whether the cards in question used SLC or MLC I don't know.  The pesky thing about them is
+that vendors hardly ever publish information at all.</font>
+
+
+Ya. There is only a handful of people that actually make flash media. Maybe four companies in
+total, I forget. 
+
+Everybody that sells that flash media to end users uses a hodgepodge of different sources for
+different products. Cheaper folks will mix in different flashes for different  production runs
+on the same product... We ran into this problem with Kingston shipping devices that had any
+sizes from 470megs on up for their 512 meg products.
+
+So I'd stay far away from vendors that don't publish details about their products for anything
+serious. 
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283590/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor285869"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Jun 12, 2008 14:42 UTC (Thu) by <b>salimma</b> (subscriber, #34460)
+       [<a href="https://lwn.net/Articles/285869">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Not commenting on whether the 16MB information is correct or not, but grandparent's point is
+not that only 16MB gets write-leveled; it's that for the purpose of write-leveling, the drive
+is treated as a series of 16MB blocks, each of them are write-leveling within themselves.
+
+(The write-leveling circuitry would then be much simpler -- imagine a parallel series of, say,
+8-bit adders, compared to a 64-bit adders made up of 8-bit adders)
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/285869/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor283570"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 22:30 UTC (Thu) by <b>brouhaha</b> (subscriber, #1698)
+       [<a href="https://lwn.net/Articles/283570">Link</a>]
+    </p>
+    <blockquote>
+i.e. it is impossible to wear out flash faster by writing repeatedly to the same location)
+</blockquote>
+
+Actually that's not true.  Many (possibly most) large flash memory cards have the wear leveling done in sections, so it's possible to wear out one section before the others.
+<p>
+The vendors tend to be fairly secretive about the details of their wear-leveling algorithms.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283570/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283591"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 23, 2008 2:29 UTC (Fri) by <b>drag</b> (subscriber, #31333)
+       [<a href="https://lwn.net/Articles/283591">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>What would be great would be to get flash manufacturers to, optionally, allow the OS to access
+the flash media more directly as a MTD, which reflects the true nature of flash media.
+
+This way Linux folks can take advantage of MTD-specific file systems that can handle wear
+leveling in a very effective and open manner. (and probably get better performance, to boot)
+
+(runnning MTD file systems on top of Block-to-MTD emulation in software on top of MTD-to-Block
+emulation in hardware on top of MTD flash seems self-defeating..)
+
+This way for the 'industrial' flash people using the flash for performance reasons on Unix
+systems can get the most benefit while their Windows-using counterparts can continue to use
+that stuff to speed up swap file access and application pre-caching in Vista using the block
+emulation hardware.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283591/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor283592"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">wearing out Flash memory</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 23, 2008 3:07 UTC (Fri) by <b>sbishop</b> (guest, #33061)
+       [<a href="https://lwn.net/Articles/283592">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Part of the trouble is that people confuse Flash memory with devices implemented using Flash.
+A location within a Flash memory chip, for example, will certainly wear out faster if it's
+written to repeatedly.  The chips themselves do absolutely no wear leveling.  But, of course,
+it would be insane to build a Flash-based device without built-in wear-leveling logic and CRC
+checks, which may have been the reason for the "it is impossible to wear out flash faster by
+writing repeatedly" comment.
+
+By the way, I work for a memory manufacturer, and it's my job to do reliability testing on
+this stuff.  My co-workers and I have all come to hate Flash.  It is expected that the chips
+will wear out, and transient failures are okay.  The controllers are expected to deal with
+these issues; it's the nature of the beast.  So what does "working" mean?!  Oh, and the state
+machine of each one of these *#$%!@ things are different.  I miss DRAM...
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283592/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor284415"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 29, 2008 18:22 UTC (Thu) by <b>mcortese</b> (guest, #52099)
+       [<a href="https://lwn.net/Articles/284415">Link</a>]
+    </p>
+    <blockquote>
+Or you could just use a CF device for your journal.
+</blockquote>
+
+But then how do you guarantee the synchronization between the data written to the HD and the journal witten to the flash?
+The whole issue here is to avoid any reordering that would spoil the journaling strategy.
+
+You are merely moving the problem from <em>flushing</em> within a device, to <em>syncing</em> two devices!
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/284415/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor283392"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 20:15 UTC (Wed) by <b>evgeny</b> (guest, #774)
+       [<a href="https://lwn.net/Articles/283392">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre><font class="QuotedText">&gt; it would be I think most effective if drives had their own battery backed write-back cache</font>
+
+This would be as controversial as using battery modules for some RAID controllers. Many folks
+don't like this idea - if we talk reliability, a UPS is a must. Then an extra battery could
+only be a source of extra trouble.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283392/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283407"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 22:28 UTC (Wed) by <b>iabervon</b> (subscriber, #722)
+       [<a href="https://lwn.net/Articles/283407">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Having a UPS is great until the cat turns it off or the battery ages to the point where power
+fluctuations cause it to reset or somebody turns off the computer's power switch or the power
+supply burns out. Even if the outside power situation is well-protected, there's value to
+having the drive store enough power to finish with its buffers and spin down carefully and
+such.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283407/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283527"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 18:42 UTC (Thu) by <b>amikins</b> (guest, #451)
+       [<a href="https://lwn.net/Articles/283527">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre><font class="QuotedText">&gt; Having a UPS is great until the cat turns it off</font>
+
+I'm NOT the only one that's been plagued by this? I've since learned to make cat-proof covers
+for my UPS buttons...
+
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283527/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor283556"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 20:03 UTC (Thu) by <b>v13</b> (subscriber, #42355)
+       [<a href="https://lwn.net/Articles/283556">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Why would anyone not like the battery backed cache?
+
+Have you ever considered the effects of not having to do a disk write 
+when doing synchronous disk operations? Journals and databases perform a 
+*lot* faster on BB controllers. (based on my experience).
+
+Consider no having to do any safety-related writes to disk for safety. 
+Even barriers have zero overhead.
+
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283556/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor283361"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 18:54 UTC (Wed) by <b>magila</b> (subscriber, #49627)
+       [<a href="https://lwn.net/Articles/283361">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre><font class="QuotedText">&gt; There is also some potential for improvement by carefully ordering operations so that
+barriers (which are normally implemented as "flush all outstanding operations to media"
+requests) do not force the writing of blocks which do not have specific ordering requirements.</font>
+
+SCSI actually provides a convenient mechanism for doing this. You can declare a command as
+being "Ordered" which will prevent it from being reordered relative to any other commands
+which have also been declared as such. Unfortunately AFAIK ATA provides no such niceties. I
+also don't know how widely supported this feature is by the various SCSI HBA drivers (I
+suspect not very) but it is an option to explore.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283361/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor606195"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Jul 22, 2014 22:44 UTC (Tue) by <b>zlynx</b> (subscriber, #2285)
+       [<a href="https://lwn.net/Articles/606195">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Some SATA devices support FUA (Force Unit Access).<br>
+<p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/606195/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor283362"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 19:50 UTC (Wed) by <b>jengelh</b> (guest, #33263)
+       [<a href="https://lwn.net/Articles/283362">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>XFS has barriers enabled by default since 2.6.17, and it still seems to perform well (on the
+last server where I put it on without disabling barriers).
+
+^1 <a href="http://lkml.org/lkml/2006/5/22/278">http://lkml.org/lkml/2006/5/22/278</a>
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283362/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283397"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">XFS / LVM</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 20:29 UTC (Wed) by <b>tarvin</b> (subscriber, #4412)
+       [<a href="https://lwn.net/Articles/283397">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Do XFS' barriers work if the file system is created on an LVM2 logical volume?
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283397/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283400"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">XFS / LVM</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 20:47 UTC (Wed) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/283400">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>device-mapper doesn't pass the barriers down, so no. (Actually it asserts 
+that it doesn't support barriers, which is safer: the fs can take that 
+into account rather than firing off barriers which are just ignored).
+
+(Maybe this has changed recently, but this was the state of affairs a 
+month or so back.)
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283400/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283403"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">XFS / LVM</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 21:10 UTC (Wed) by <b>jengelh</b> (guest, #33263)
+       [<a href="https://lwn.net/Articles/283403">Link</a>]
+    </p>
+    <p>Correct.</p>
+<p><code>[   51.404922] Filesystem "dm-0": Disabling barriers, not supported by the underlying device<br>
+[27138.731115] Filesystem "dm-1": Disabling barriers, not supported by the underlying device</code></p>
+<p>Even though I know from before my time of using dm-crypt that only one of sda or sdb does not support barriers at the hardware level.</p>
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283403/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor283561"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 20:29 UTC (Thu) by <b>mikachu</b> (guest, #5333)
+       [<a href="https://lwn.net/Articles/283561">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Disabling barriers on xfs increases performance very very much in some situations, especially
+when deleting a directory tree with many small files, eg the linux-2.6 tree. With barriers it
+takes something like 2-3 minutes and without barriers around 20 seconds. (These numbers are
+from my memory).
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283561/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor283382"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Battery backed caches / 'hdparm -W 0'</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 19:58 UTC (Wed) by <b>tarvin</b> (subscriber, #4412)
+       [<a href="https://lwn.net/Articles/283382">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>On a system with ext3 filesystems and barrier=0 (because of LVM usage), am I at risk in the
+following situations?
+
+a. The system's storage controller has a battery
+   backed cache.
+
+b. The system uses plain local disks, but 
+   'hdparm -W 0 &lt;device&gt;'
+   is run at boot time.
+
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283382/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283460"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Battery backed caches / 'hdparm -W 0'</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 12:34 UTC (Thu) by <b>i3839</b> (guest, #31386)
+       [<a href="https://lwn.net/Articles/283460">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Disabling the write cache avoids this whole barrier problem, because writes can't be reordened
+then. Performace will be much worse too, so better to enable the write cache and enable
+barriers. (because writing with write cache enabled is faster the chance you'll lose data
+while writing is also smaller. ;-)
+
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283460/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283528"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">'hdparm -W 0'</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 19:10 UTC (Thu) by <b>tarvin</b> (subscriber, #4412)
+       [<a href="https://lwn.net/Articles/283528">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>I'm glad to hear that turning off the write cache helps. I've done that for years on hosts
+which house data which are important to me, if the hosts don't have battery-backed cache.
+
+No doubt, I'm probably loosing performance, but I've never found it unacceptable.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283528/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283702"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">'hdparm -W 0'</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 24, 2008 20:13 UTC (Sat) by <b>giraffedata</b> (subscriber, #1954)
+       [<a href="https://lwn.net/Articles/283702">Link</a>]
+    </p>
+    <p>
+To be precise: ordering of write commands, ordering of hardening to disk, and write caching (in the drive) are all separate things.  With write caching turned off, the drive can still reorder the write commands and write the data to the platters in random order.  But Linux will always know when the data has hit the platter and won't initiate the commit record until the journal data it covers is on the platter.
+
+</p><p>Linux can have multiple writes in progress at the disk drive (sent to the drive but the drive hasn't responded) at the same time, independent of write caching.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283702/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor283389"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 20:04 UTC (Wed) by <b>nix</b> (subscriber, #2304)
+       [<a href="https://lwn.net/Articles/283389">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Of course, md also doesn't support barriers for raid5/raid6, which means 
+that using RAID actually *reduces* reliability in some respects. This is 
+somewhat irritating, but also hard to fix: barriering all the constituent 
+devices when a barrier comes in from the higher level isn't good enough on 
+raid5, because if one drive loses power before the other you still have 
+data corruption.
+
+(In practice this too is rare enough that it takes explicit torture tests 
+to trip it unless you're very unlucky.)
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283389/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283680"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 24, 2008 9:10 UTC (Sat) by <b>Xman</b> (guest, #10620)
+       [<a href="https://lwn.net/Articles/283680">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>I don't see the problem with the power failure scenario. If you encounter a barrier at an MD
+device, I'd think you would essentially not submit IO to the underlying devices until such
+time as all I/O's prior to the barrier had completed. In that scenario, at the first sign of a
+power failure effecting *any* of the drives, I'd start reporting I/O errors and be free of any
+guarantees whatsoever.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283680/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor283396"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 20:37 UTC (Wed) by <b>hpp</b> (guest, #4756)
+       [<a href="https://lwn.net/Articles/283396">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>I manage transactional systems for a living (first IBM MQ, now relational databases including
+Sybase, DB2 and Oracle).  I am sorry to say the current filesystem approach is still somewhat
+optimistic, even in the presence of barriers; and that commercial transational systems do
+additional work that ext3/ext4 do not yet do, but that can be required for some disk failures.
+Sadly, implementing this correctly may make the filesystems even slower.
+
+One issue has to do with disk failures (say on a power failure) and a partial write.  If
+transaction A is committed and uses a partial disk block, then transaction B cannot safely be
+written to the same disk block - a power failure could lead to the block being partially
+written and losing the data from committed transaction B.  On the other hand, always using a
+new disk block or each transaction would eat up log space really quickly.  One solution is to
+use ping-pong blocks (three are required of transactions can span a block).
+
+Another issue has to do with when transactions are written to disk.  As the article indicates,
+delaying writes may help if multiple concurrent and independent transactions can be written to
+disk at the same time; but waiting to write data to disk is bad if one application is doing
+most of the writes, as it would not run as quickly as possible.  Some databases allow this to
+be tuned on the fly (e.g. mincommit in DB2), but that is not desirable for a filesystem; the
+kernel should use heuristics to figure this out as a workload is running.
+
+Next, you want to carefully tune: the size of the log buffer in memory and the  total size of
+the transaction log on disk (i.e. when do we wrap round).  In databases you also care about
+how much log space a single transaction can use and how much other concurrent log activity
+(from other transactions) may occur between activity and commit, but until we expose
+filesystem transactions to userspace we can safely ignore this.
+
+Summary: filesystem implementors ought to talk to database implementors. I'm sure both groups
+can teach each other a lot, but in this area databases are still quote a bit ahead of
+ext3/ext4.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283396/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283445"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 10:06 UTC (Thu) by <b>Fats</b> (subscriber, #14882)
+       [<a href="https://lwn.net/Articles/283445">Link</a>]
+    </p>
+    <i>"Summary: filesystem implementors ought to talk to database implementors. I'm sure both groups
+can teach each other a lot, but in this area databases are still quote a bit ahead of
+ext3/ext4."</i>
+<br><br>
+The purpose of a journal is not to be sure that everything is written to disk when you do a write. It's to be sure that the file system is always in a consistent state so you don't need a very expensive fsck and risk loosing other data then what was being written.
+If you need to be sure that something is written to disk you have to use the fsync function in your code.
+<br><br>
+greets,<br>
+Staf.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283445/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283681"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 24, 2008 9:14 UTC (Sat) by <b>Xman</b> (guest, #10620)
+       [<a href="https://lwn.net/Articles/283681">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>fsync *still* isn't going to help you much if I/O reordering is allowed.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283681/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283683"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 24, 2008 9:30 UTC (Sat) by <b>Fats</b> (subscriber, #14882)
+       [<a href="https://lwn.net/Articles/283683">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>AFAIK fsync explicitly tells the hard drive to perform all outstanding IOs and then returns.
+So, of course, if your hard drive lies to you, you are screwed.
+Don't know if LVM is broken here also.
+
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283683/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283697"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 24, 2008 18:00 UTC (Sat) by <b>Xman</b> (guest, #10620)
+       [<a href="https://lwn.net/Articles/283697">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>fsync will block until the outstanding requests have been sync'd do disk, but it doesn't
+guarantee that subsequent I/O's to the same fd won't potentially also get completed, and
+potentially ahead of the I/O's submitted prior to the fsync. In fact it can't make such
+guarantees without functioning barriers.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283697/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283700"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 24, 2008 19:48 UTC (Sat) by <b>Fats</b> (subscriber, #14882)
+       [<a href="https://lwn.net/Articles/283700">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Sure, my comment was in response to hpp and what I wanted to say is that user land code has to
+take care of transactions as defined in relation databases and that fsync is the tool to use
+for this.
+A journaled file system only takes care that the file system stays in a consistent state so no
+expensive fsck is needed with possible loss of data. Open write files may lose some of the
+last writen data if no fsync was performed. To keep the file system consistency barriers are
+used to guarantee a certain order of the writes. This limited guarantee allows file system to
+be faster the relational databases.
+
+greets,
+Staf.
+
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283700/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor283646"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 23, 2008 17:05 UTC (Fri) by <b>jlokier</b> (guest, #52227)
+       [<a href="https://lwn.net/Articles/283646">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Journalling commit is more like "asynchronous delayed commit" from a database point of view,
+when fsync() isn't used.  They protect the integrity of filesystem structure itself, and are
+not used for application-level transactional changes.  Sometimes that weaker kind of commit is
+fine, and the performance gain is large.
+
+fsync() makes it more like a standard database commit, where the data is supposed to be secure
+before the call returns.
+
+This is one area where traditional databases can learn from filesystems.  There are some
+things where you don't actually need a database to commit quickly - that can take as long as
+it needs to batch and optimise I/O.  All you need then is consistent rollback.  For example,
+databases which hold cached calculations are like this.
+
+Your point about partial writes on power failure and not using overlapping blocks (will
+sectors do?) is valid, and I would like to know more about what the database professionals
+have discovered about what exactly is and isn't safe.  For example, can failure to write
+sector N+1 corrupt sector N written a long time ago?  Is the "failure block size" larger than
+a single sector when doing O_DIRECT (when that really works)?  Is it larger than a
+filesystem/blockdev block size when not using O_DIRECT?  What's the reason Oracle uses
+different journal block sizes on different OSes?
+
+I think the filesystem implementors do know about that effect.  Journal entries are finished
+with a commit block, to isolate the commit into its own block, which is not touched by the
+next transaction.  I think your two/three ping-pong blocks correspond to the journal's finite
+wraparound length on a filesystem - do say more if that's not so.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283646/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor283398"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Lying drives</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 21, 2008 20:50 UTC (Wed) by <b>ncm</b> (subscriber, #165)
+       [<a href="https://lwn.net/Articles/283398">Link</a>]
+    </p>
+    Then, of course, we have drives that claim to support barrier operations, but lie about it whenever traffic goes up.  They look way better in benchmarks.  Most likely whatever drive you have on your own system is one of those.  Drives that don't lie are low-volume products, so cost a lot more.
+<p>My conclusion is that it doesn't matter much what sort of barriers the system asks of a drive; the best you can do is have the OS send blocks to the drive in the right order.  Then, <i>your only hope is battery backup</i>, which actually helps only if your system stops writing to disk at least a few seconds before the drive itself loses power.  Distressingly many UPS-backed machines don't actually do a controlled shutdown when the battery gets low.
+</p><p>Note that if the head's writing when the power drops, that sector (and possibly several following it) is toast.  The notion of using the motor as a generator to keep the electronics sane for a few milliseconds is a fun idea, but not actually implemented in real drives.
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283398/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor283447"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 10:29 UTC (Thu) by <b>perrymg</b> (subscriber, #39684)
+       [<a href="https://lwn.net/Articles/283447">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>"if the commit record gets written first, the journal may be corrupted."
+
+Would placing the Journal into its own mirrored device suffice?
+(Assuming of course that only one mirror could fail at a time.)
+
+Wouldn't a mirrored Journal perform faster on (re)mount, especially if journal_data was in
+use? 
+
+For LVM an LV has the option to be mirrored (as well as striped), could a separate mirrored LV
+be used just for the Journal to avoid concerns about the lack of barriers on LVM?
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283447/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283465"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 13:35 UTC (Thu) by <b>perrymg</b> (subscriber, #39684)
+       [<a href="https://lwn.net/Articles/283465">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>I do see that a Linux system crash would still cause the Journal to become corrupted, mirrored
+Journal or not. Just 2 copies of a bad Journal at the point in time of the crash!
+
+But for disk related errors, mirroring at least the Journal would seem to make sense to me.
+Mirroring the whole disk would achieve the same thing, but obviously more data would have to
+be mirrored.
+
+I guess for Enterprise level users all disk would be in RAID arrays and hence their only real
+fear is that of a Linux system crash.
+
+
+
+
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283465/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283468"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 13:50 UTC (Thu) by <b>perrymg</b> (subscriber, #39684)
+       [<a href="https://lwn.net/Articles/283468">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Sorry for the multiple posts, but this topic is fascinating and important.
+
+If enabling barriers has a performance impact, then putting the Journal onto a separate disk
+with barriers enabled (Mirrored or not), and leaving the FS data on a disk with barriers
+disabled may be a short term compromise for some users?
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283468/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+
+<a name="CommAnchor283507"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 22, 2008 17:20 UTC (Thu) by <b>jordanb</b> (guest, #45668)
+       [<a href="https://lwn.net/Articles/283507">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>Why not insert a barrier *only* when the commit record is inserted before the journaled data
+on the disk? I can't imagine that happens too often, so it should cause few barriers will be
+inserted. It shouldn't have a terrible impact on performance, but it *would* help deal with
+the edge case of a journal write wrapping on the commit record causing the file system to be
+inconsistent.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283507/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor283634"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 23, 2008 16:55 UTC (Fri) by <b>jlokier</b> (guest, #52227)
+       [<a href="https://lwn.net/Articles/283634">Link</a>]
+    </p>
+    A couple of clarifications.
+
+<blockquote><i>...contiguous space is easy to come by. Keeping the journal together will be good for performance, but it also helps to prevent reordering. In normal usage, the commit record will land on the block just after the rest of the journal data, so there is no reason for the drive to reorder things. The commit record will naturally be written just after all of the other journal log data has made it to the media.</i></blockquote>
+
+That helps only with the <i>first</i> barrier, before the commit block.  There's a better way to eliminate that barrier, which is a checksum in the commit block and ext4 does do that.
+
+You still need the second barrier, somewhere after the commit block, because it orders the journal write against writes elsewhere on the disk - those are never contiguous.
+
+<blockquote><i>Disabling the write cache avoids this whole barrier problem, because writes can't be reordered then</i></blockquote>
+
+It's not clear if disabling write cache is enough, when ext3 is mounted with barrier=0 (the current default).  That stops the <i>disk</i> from reordering writes, but the <i>kernel elevator</i> is still able to reorder writes, when barrier=0, before sending them to the disk.  Setting barrier=1 has the dual effect of telling the kernel not to reorder requests around barrier writes, and ideally passing that constraint to the disk as well.
+
+<blockquote><i>Disabling barriers on xfs increases performance very very much in some situations, especially when deleting a directory tree with many small files, eg the linux-2.6 tree. With barriers it takes something like 2-3 minutes and without barriers around 20 seconds. (These numbers are
+from my memory).</i></blockquote>
+
+That suggests a flaw in the way XFS implements deletions.  There is no reason to require so many barriers.  The only thing which should be able to cause a high rate of barriers is a high rate of fsync() calls (which aren't done in this case) or the journal being too small.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283634/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283704"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 24, 2008 20:31 UTC (Sat) by <b>giraffedata</b> (subscriber, #1954)
+       [<a href="https://lwn.net/Articles/283704">Link</a>]
+    </p>
+    <blockquote>
+It's not clear if disabling write cache is enough, when ext3 is mounted with barrier=0 (the current default). That stops the <em>disk</em> from reordering writes, but the <em>kernel elevator</em> is still able to reorder writes, when barrier=0, before sending them to the disk. Setting barrier=1 has the dual effect of telling the kernel not to reorder requests around barrier writes, and ideally passing that constraint to the disk as well.
+</blockquote>
+<p>
+But isn't it impossibly naive for ext3 to assume writes it submits to the block layer get realized on disk in the order submitted?  I assume designers weren't that naive and, when working without barriers, ext3 withholds writes from the block layer until every prerequisite write has completed.
+</p><p>
+The value of barriers is supposed to be that ext3 doesn't have to let the queue run dry, with its attendant throughput slowdown.  Ext3 can submit writes for before the commit record, the commit record, and after the commit record, with barriers placed appropriately in the stream, and the block layer will take care of enforcing the required ordering.
+</p><p>
+The fact that "write completed" doesn't imply the data is persistent across a disk drive power failure (and furthermore the gaining of that persistence isn't in any particular order) is an orthogonal issue.  Which code deals with it depends upon whether ext3 uses barriers or not.  (And ISTR the block layer doesn't provide any mechanism separate from barriers to deal with it, so if you don't use barriers=1, it doesn't get dealt with).
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283704/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor283682"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 24, 2008 9:18 UTC (Sat) by <b>Xman</b> (guest, #10620)
+       [<a href="https://lwn.net/Articles/283682">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>I gotta say, I'm dubious of the notion that most of the time things out just fine with the
+ordering of journal writes. If that were true, enabling barriers wouldn't impose a 30%
+performance penalty (unless they really are being generated far more often than they need be,
+in which case, you have two problems ;-).
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283682/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor283701"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 24, 2008 19:50 UTC (Sat) by <b>giraffedata</b> (subscriber, #1954)
+       [<a href="https://lwn.net/Articles/283701">Link</a>]
+    </p>
+    <blockquote>
+Keeping the journal together will be good for performance, but it also helps to prevent reordering. In normal usage, the commit record will land on the block just after the rest of the journal data, so there is no reason for the drive to reorder things.
+</blockquote>
+<p>
+I don't see how that's true even usually.  Even a classic elevator algorithm sweeps backward as well as forward.  And if I were a disk drive with multiple blocks to write on the same track, I would not wait for the lowest numbered block to come around and write the track in order; I'd start writing whatever is under the head right now.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283701/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283706"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 24, 2008 23:40 UTC (Sat) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/283706">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>but on modern disks you really don't know where the borders of a track are. it's really just
+an array of blocks
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283706/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283709"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 25, 2008 2:47 UTC (Sun) by <b>giraffedata</b> (subscriber, #1954)
+       [<a href="https://lwn.net/Articles/283709">Link</a>]
+    </p>
+    <blockquote>
+but on modern disks you really don't know where the borders of a track are. it's really just
+an array of blocks
+</blockquote>
+<p>
+I don't know what "but" refers to here; I made a statement about "if I were a disk drive," and the disk drive definitely knows where the borders of the tracks are.  And though I have no actual evidence of it, I would be very surprised if the disk drive did not use that knowledge to optimize performance.
+</p><p>
+The idea suggested in the article that ext3 tends to get ordered writes (to the platters) because it usually does journal updates in logical block number order seems to assume that the disk drive does writes from cache to platter in logical block number order.  I can't believe that it would do that, even usually, because it would be so much slower than optimum.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283709/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283710"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 25, 2008 3:27 UTC (Sun) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/283710">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>the drive will write an entire track at a time (they have done so for years)
+
+but you have no way of knowing if the journal that you allocated spans a track boundry (since
+you don't know where the boundry is), and you also don't know if the drive has re-allocated
+any blocks to avoid bad spots on the disk in the middle of your journal.
+
+either one of these will destroy the atomic nature of writes to the journal
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283710/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283712"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 25, 2008 6:40 UTC (Sun) by <b>giraffedata</b> (subscriber, #1954)
+       [<a href="https://lwn.net/Articles/283712">Link</a>]
+    </p>
+    Whether it writes the whole track doesn't matter.  It's the order in which it writes the blocks.  Does it wait for the beginning of the track to come around and write from start to finish (average time - 1.5 revolutions)?  Or does it write starting now (average time 1 revolution)?  I presume it's the latter.
+<p>
+Nobody's said anything about ext3 knowing where the blocks are physically, so I don't know why you bring that up.  The article just says ext3 updates the journal in logical block number order and suggests that means they tend to go the platter in the same order.
+</p><p>
+And I've been saying I don't believe that.
+
+  </p></div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283712/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor283715"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 25, 2008 10:53 UTC (Sun) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/283715">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>I misunderstood what you were saying. I thought that you were saying that if the entire
+journal was on the same track it would get written all at once, even if it wrapped over the
+end of the journal.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283715/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor283883"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted May 27, 2008 5:48 UTC (Tue) by <b>perrymg</b> (subscriber, #39684)
+       [<a href="https://lwn.net/Articles/283883">Link</a>]
+    </p>
+    <div class="FormattedComment"><pre>This article has generated a lot of comments, and I for one would like to see a follow on
+article that takes many of these comments into account and filters the real facts out of them.
+
+Thanks for the great work, keep it coming.
+</pre></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/283883/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor508509"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Jul 28, 2012 1:38 UTC (Sat) by <b>carot</b> (guest, #85987)
+       [<a href="https://lwn.net/Articles/508509">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I want to ask a question about barrier,<br>
+what is the timing to do barrier operation?<br>
+only for file system metadata change or for user data change or for both?<br>
+<p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/508509/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor604942"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Jul 10, 2014 7:58 UTC (Thu) by <b>07Srivathsan</b> (guest, #97808)
+       [<a href="https://lwn.net/Articles/604942">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<p>
+Hi all,<br>
+</p><p>
+I am using Debian 6 Operating System (Kernel: 2.6.32-5-686).<br>
+The partitions created are of type ext3.<br>
+The machine will turn off frequently due to UPS failures, in such cases i face file system corruption.<br>
+To reduce the file system corruption many have suggested to enable barrier while mounting partitions.<br>
+By default for ext3 type partitions, barrier is disabled.<br>
+Will there be any side effects or serious issues on enabling barrier for ext3 partition?<br>
+Any suggestions on this please reply back.<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/604942/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor604974"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Barriers and journaling filesystems</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Jul 10, 2014 13:30 UTC (Thu) by <b>roblucid</b> (subscriber, #48964)
+       [<a href="https://lwn.net/Articles/604974">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Enabling the barrier by default, has been done on openSUSE for years, precisely because data integrity was valued more over benchmark results.<br>
+<p>
+The only issue over enabling it was the poorer showing in comparative benchmark reviews, where the reporters just use defaults without any care for fair comparisons or even reporting on default differences.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/604974/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor606035"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">What's the "reorder" mean in this sentence?</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Jul 21, 2014 12:46 UTC (Mon) by <b>leafonsword</b> (guest, #97971)
+       [<a href="https://lwn.net/Articles/606035">Link</a>]
+    </p>
+    <div class="FormattedComment">
+----------------------------------------------------------<br>
+contemporary drives maintain large internal caches and will reorder operations for better performance。。。。。。<br>
+----------------------------------------------------------<br>
+<p>
+I have a question to above sentence--What's the "reorder" mean in above sentence?<br>
+</p><p>
+Suppose normal oder--journal 1，data 1;journal 2，data 2。<br>
+Which folowing reorder meaning is true:<br>
+1.  journal 2,data 2；journal 1,data 1;<br>
+2.  data 1，journal 1;data 2，journal 2。<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/606035/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor606113"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">What's the "reorder" mean in this sentence?</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Jul 22, 2014 6:33 UTC (Tue) by <b>dlang</b> (<b>✭ supporter ✭</b>, #313)
+       [<a href="https://lwn.net/Articles/606113">Link</a>]
+    </p>
+    <div class="FormattedComment">
+unless you issue commands to the drive to force the order, the drive could do anything it wants<br>
+<p>
+journal2 data 1data2 jounrnal1<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/606113/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor611556"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">What's the "reorder" mean in this sentence?</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Sep 11, 2014 10:18 UTC (Thu) by <b>K28.5</b> (guest, #98820)
+       [<a href="https://lwn.net/Articles/611556">Link</a>]
+    </p>
+    <div class="FormattedComment">
+leafonsword: this doesn't refer to Journal vs Data. <br>
+Drive caches are generally involved in re-ordering I/Os by their logical block address (LBA) on the disk. Writes or reads in a randomly scattered sequence would be re-ordered by their LBA sequentially (i.e. an ascending or descending order) and unrelated requests for blocks in a similar location grouped together, so that they can (on a spinning disk) be executed with one smooth movement of the head/s, saving time. <br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/611556/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</td> <!-- MC -->
+<td class="RightColumn">
+<div id="azk93271_right_zone"></div>
+</td>
+</tr></tbody></table></td>
+</tr></tbody></table><!-- endpage -->
+
+        <br clear="all">
+        <center>
+        <p>
+        <font size="-2">
+        Copyright © 2008, Eklektix, Inc.<br>
+        This article may be redistributed under the terms of the
+              <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+              Commons CC BY-SA 4.0</a> license<br>
+        Comments and public postings are copyrighted by their creators.<br>
+        Linux  is a registered trademark of Linus Torvalds<br>
+        </font>
+        </p></center>
+        
+        
+        </body></html>

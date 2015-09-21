@@ -1,0 +1,621 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><!--
+ Archive processed by SingleFile 
+ url: https://lwn.net/Articles/400541/ 
+ saved date: Sun Sep 20 2015 04:22:43 GMT+0200 (CEST) 
+--><head><title>The end of block barriers [LWN.net]</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8>
+        <link rel=" icon"="" href="/images/favicon.png" type="image/png">
+        <link rel="alternate" type="application/rss+xml" title="LWN.net headlines" href="http://lwn.net/headlines/newrss">
+<link rel="alternate" type="application/rss+xml" title="Comments posted to this article" href="http://lwn.net/headlines/400541/">
+        <style rel="stylesheet" data-href="https://lwn.net/CSS/lwn">body {color: black;background-color: #ffffff;padding:0px;}h1 {margin:0px 0px 5px 0px;padding:0px;color: black;}h2 {margin:20px 0px 5px 0px;padding:0px;}h3 {margin:0px 0px 5px 0px;padding:0px;}a {text-decoration:none;}a:link { color: Blue;}a:visited {color: DarkBlue;}a:hover {color:Red;}a.name { color: black }a.name:link { color: black }a.name:hover { color: black }TABLE.Page { width: 100% }TD.LeftColumn { background-color: #ffcc99;width: 156px;overflow: hidden;vertical-align: top }TD.MidColumn { background-color: #ffffff;padding: 3px;border-style: none;vertical-align: top;}TD.MCTopBanner { background-color: #ffffff;border-style: none;padding: 0 0 0 4px;}.MCTopBanner CENTER { text-align: left; }TD.RightColumn { border-style: none none none none;border-width: thin;vertical-align: top;text-align: left;border-color: #eeeeee;padding-top: 6em; }DIV.MidColHeader { margin: 0px auto 0px 0px;padding: 0;max-width: 57em; }TABLE.Page TR { vertical-align: top; }TABLE.HeadlineView { }TABLE.HeadlineView TD { vertical-align: top }DIV.PageHeadline { text-align: center;max-width: 75em;margin-top: 1em;margin-bottom: 2em; }DIV.PageHeadline H1 { margin-bottom: 0.2em; }DIV.PageHeadline H2 { margin-top: 0.2em; }P.Cat1HL { background-color: #ffcc99;text-align: center;font-size: 200%;font-weight: bold;padding-top: 3px;padding-bottom: 5px;margin-bottom: 0.2em; }P.Cat2HL { background-color: #ffcc99;font-size: large;font-weight: bold;padding-left: 3px;margin-bottom: 0.3em; }P.Cat3HL { background-color: #ffcc99;font-weight: bold;padding-left: 3px;margin-bottom: 0.3em; }P.SummaryHL { font-weight: bold;font-size: larger;text-decoration: underline;margin-top: 0.4em;margin-bottom: 0.4em; }H2.SummaryHL { font-weight: bold;font-size: larger;text-decoration: underline;margin-top: 0.4em;margin-bottom: 0.4em; }P.SummaryHL A:link { color: black }P.SummaryHL A:visited { color: black }H2.SummaryHL A:link { color: black }H2.SummaryHL A:visited { color: black }P.IndexPrimary A:link { color: black }P.IndexPrimary A:visited { color: black }P.IndexSecondary A:link { color: black }P.IndexSecondary A:visited { color: black }TABLE.Form TH { text-align: left }SPAN { font-style: normal; font-weight: normal;color: darkred; background-color: white }SPAN.SpellingError {  background-color: #eeeeee; color: black }FONT.SpellingError {  background-color: #eeeeee }DIV.ErrorWords  { background-color: #eeeedd;border-style: groove;padding: 3px 3px 2px 3px;margin: 1px 5px 1px 0px; }DIV.BigQuote {font-style: normal; font-weight: normal;color: darkred; background-color: white;margin-left: 1cm; margin-right: 1cm }DIV.BigQuote P {margin-top: 1em; margin-bottom: 0px; }DIV.Headline { background-color: #ffcc99; font-weight: bold;font-size: larger;padding-left: 3px; }DIV.SummaryHeadline { font-weight: bold; font-size: larger;text-decoration: underline;margin-top: 0.4em;margin-bottom: 0.4em; }DIV.Byline { font-size: smaller; text-align: center }DIV.SideBox { margin: 1em 1px 1em 1px; }DIV.SideBox P { text-indent: -1em;margin: 0px 0px 1px 1em; }DIV.SideBox P.Header { font-weight: bold;text-indent: 0px;margin-left: 0px; }DIV.Comment { margin-left: 1em;background-color: inherit; }DIV.CommentSubtree { background-color: inherit; }DIV.OldCommentSubtree { background-color: #cccccc; }DIV.CommentBox, DIV.OldCommentBox {border-style: none none none solid;border-width: thin;max-width: 60em;margin-top: 1em;background-color: inherit;}DIV.CommentBox { border-color: #ffcc99; }DIV.OldCommentBox { border-color: #cccccc; }P.CommentTitle {padding: 2px 2px 2px 4px;margin: 0px;font-weight: bold;}DIV.CommentBox P.CommentTitle { background-color: #ffcc99; }DIV.OldCommentBox P.CommentTitle { background-color: #cccccc; }DIV.CommentBody { padding: 0px 4px 0px 4px;background-color: inherit; }P.CommentPoster { margin-top: 0px; }div.CommentReplyButton { display: none;text-align: right;padding: 4px; }DIV.FormattedComment { }PRE.FormattedComment { font: inherit; }DIV.FormattedComment PRE { font: inherit; }TD.Headline {background-color: #ffcc99 }TABLE.Middle { background-color: #ffffff; padding: 3px;border-style: none; width: 100% }TD.Middle { background-color: #ffffff; vertical-align: top }.Form { background-color: #eeeeee;padding: 3px;border-style: groove;}A.Current { background-color: darkred; color: white }A.Other { }P.NextLink { text-align: right }FONT.SearchItem { font-weight: bold; color: red }FONT.QuotedText { color: #990099 }FONT.Subscription { color: darkgreen }TR.Even { background-color: #eeeeee; }TR.Odd { }table.OddEven {border-spacing: 2px;border-collapse: separate;}table.OddEven tr:nth-child(even) {background-color: #ffffff;}table.OddEven tr:nth-child(odd) {background-color: #eeeeee;}table.OddEven th { background-color: #ffffff; }table.OddEven td { padding: 3px; }.s-nonexistent { background-color: red !important; }.s-withdrawn { background-color: red !important; }.s-in-progress { background-color: white !important; }.s-submitted { background-color: yellow !important; }.s-active { background-color: lightgreen !important; }P.Headlines { margin-bottom: 6px; text-indent: -1em; margin-left: 1em;margin-top: 0px }P.Feature { text-indent: -1em; margin-left: 1em; margin-top: 0px;margin-bottom: 2px}P.ErrorMessage { color: red; margin-left: 1cm;margin-right: 1cm; font-weight: bold;font-size: large }FONT.NonActive { color: red; font-weight: bold }A.NonActive { color: red; font-weight: bold }TABLE.TopNavigation { width: 100%;max-width: 55em;margin-bottom: 0;margin-top: 0px; }TD.NavLink { background-color: #eeeeee; text-align: center; max-width: 15em; }P.IndexPrimary { margin-top: 1em; margin-bottom: 0px; font-weight: bold; }P.IndexSecondary { margin-top: 0px; text-indent: 5mm; margin-bottom: 0px; }P.IndexEntry { text-indent: 1cm; margin-top: 0px; margin-bottom: 0px }DIV.TextAd { width: 150px; border-style: solid;border-width: thin;margin: 0px auto 10px auto;background-color: white;color: black; }P.TextAdHeader { background-color: #419d4a;color: white;margin-top: 0px;margin-bottom: 3px;text-align: center;font-weight: bold; }P.TextAdLink { margin: 2px }P.TextAdBody { margin: 10px 2px 2px 2px }P.TextAdFooter { border-top-style: dotted;border-top-width: thin;text-align: center;background-color: #ffcc99;margin: 2px 0px 0px 0px; }TABLE.tlnav { width: 100%; color: black; padding: 2px }TABLE.tlrw { width: 45%; float: right; background-color: #eeeedd;border-style: groove; margin: 5px; float: right }TABLE.tlr { width: 35%; float: right; background-color: #eeeedd;border-style: groove; margin: 5px; float: right }TABLE.tllw { width: 45%; float: left; background-color: #eeeedd;border-style: groove; margin: 5px }TABLE.tll { width: 35%; float: left; background-color: #eeeedd;border-style: groove; margin: 5px }P.QuoteAttr { text-align: right }DIV.tlrw { width: 45%;float: right;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 0px 1px 5px; }DIV.tlr  { width: 35%;float: right;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 0px 1px 5px; }DIV.tllw { width: 45%;float: left;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 5px 1px 0px; }DIV.tll  { width: 35%;float: left;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 5px 1px 0px; }P.tlqa { text-align: right }UL.spacylist LI { margin-bottom: 0.5em; }OL.spacylist LI { margin-bottom: 0.5em; }P.GuestAuthor { max-width: 15em; float: right; background-color: #eeeeee;border-style: groove; padding: 3px;margin: 6px 0px 2px 5px; float: right }DIV.GAByline { max-width: 15em; float: right; background-color: #eeeeee;border-style: groove; padding: 3px;margin: 6px 0px 2px 5px; float: right; text-align: center; }DIV.GAByline P { margin: 0px; text-align: left; }DIV.GAByline P:first-child {font-weight: bold; text-align: center;margin-bottom: 3px; }DIV.GAByline HR { width: 40% }DIV.FeatureByline { max-width: 20em; float: left; background-color: #eeeeee;border-style: groove; margin: 2px 5px 2px 0px;padding-bottom: 5px;padding-right: 25px;  padding-left: 5px; }DIV.FeatureByline HR { width: 40% }div.survey { margin-left: 1cm }div.sv_mc { margin-left: 10mm; margin-top: 0cm }SPAN.PullQuote { max-width: 30%;float: right;color: black;background-color: #eeeeee;margin: 2px 0px 2px 5px;padding: 5px 2px 5px 0.5em;border-style: none none none solid;border-color: #ffcc99;font-weight: normal;font-size: larger; }SPAN.invisible { display: none; }TABLE.CalM { width: 100%;border-spacing: 0 }TR.CalM { border-left-style: groove }TD.CalMDate { background-color: #eeeeee;font-size: x-large;width: 13%;border-left-style: groove;border-top-style: groove }TD.CalMEvent { font-size: smaller;vertical-align: middle;border-left-style: groove }TD.CalMContinue { font-size: smaller;vertical-align: middle;border-left-style: groove }TD.CalBlank { border-left-style: none }TD.CalMBottom { border-left-style: groove;border-bottom-style: groove }TD.CalMTop { border-left-style: none; border-top-style: groove }TD.CalMCorner { border-left-style: groove; border-top-style: groove }TD.CalMHeader { font-size: larger; font-weight: bold;text-align: center; width: 13%;padding-top: 20px; padding-bottom: 10px }TD.CalMName { font-size: x-large; font-weight: bold;text-align: center;background-color: #eeeeee;margin-bottom: 10px;border-top-style: groove;border-bottom-style: groove }TD.CalMArrow { vertical-align: middle; border-style: groove }DIV.ArticleText { margin:0px 0px 0px 0px;padding:0px 2px 0px 0px;max-width: 75em;}DIV.widepage DIV.ArticleText {max-width: 999em !important;}DIV.Printable { }DIV.Printable DIV.ArticleText { margin:0px 0px 0px 0px;padding:0px;max-width: none; }DIV.BlurbText { margin:0px 0px 0px 0px;padding:0px; }SPAN.UliMath { color: black;font-weight: bold; }SPAN.UliInvSig { color: black;font-weight: bold;text-decoration: overline }DIV.AdMarker { text-align: center;font-size: smaller;color: black;font-weight: bold; }DIV.AdRight { float:right;background-color: #ffffff;border-width: 3px;border-style: solid;border-color: #ffffff;margin-left: 2px;padding: 2px; }DIV.promobox { float: left;background-color: #eeeedd;border-style: groove;padding: 3px 3px 0px 3px;margin: 1px 5px 1px 0px; }UL.NoBullet { list-style-type: none; }DIV.FilteredComment { display: none;background-color: #eeeeee; }DIV.CommHdr { background-color: #eeeeee; }IMG.photo {max-width: 100%;}DIV.BlurbListing {padding-left: 3px;}.comment-title {width: 98%;}.comment-body {width: 98%;}.wide-form {width: 95%;margin: 0.1em 0.5em 0.1em 0.1em;padding: 0.2em;background-color: #eeeeee;border-radius: 0.5em;}.covered {background: #eeeeee;color: #eeeeee;}.covered::-moz-selection {background: #ffffff;color: black;}.covered::selection {background: #ffffff;color: black;}</style>
+<style rel="stylesheet" data-href="https://lwn.net/CSS/nosub">div.MakeALink { display: none }</style>
+
+        
+
+
+
+        <link type="image/x-icon" rel="shortcut icon" href="data:image/x-icon;base64,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"></head>
+        <body bgcolor="#ffffff" link="Blue" vlink="Green" alink="Green">
+        <table class="Page">
+<tbody><tr>
+<td class="LeftColumn">
+
+        <center>
+        <a href="https://undefined/"><img src="data:image/png;base64,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" width="153" height="120" border="0" alt="LWN.net Logo"></a>
+        </center>
+        <p>
+        
+
+</p><p>
+</p><div class="SideBox">
+<p class="Header">Not logged in</p>
+<p><a href="https://lwn.net/login">Log in now</a></p>
+<p><a href="https://lwn.net/newaccount">Create an account</a></p>
+<p><a href="https://lwn.net/subscribe/Info">Subscribe to LWN</a></p></div>
+
+<div class="SideBox">
+<p class="Header">Weekly Edition</p>
+<p><a href="https://lwn.net/Articles/399720">Return to the Kernel page</a></p></div>
+
+<div class="SideBox">
+<p class="Header">Recent Features</p>
+<p><a href="https://lwn.net/Articles/657111">LWN.net Weekly Edition for September 17, 2015</a></p>
+<p><a href="https://lwn.net/Articles/657345">How Debian managed the systemd transition</a></p>
+<p><a href="https://lwn.net/Articles/657269">Python and crypto-strength random numbers by default</a></p>
+<p><a href="https://lwn.net/Articles/657139">The LPC Android microconference, part 2</a></p>
+<p><a href="https://lwn.net/Articles/656672">LWN.net Weekly Edition for September 11, 2015</a></p></div>
+
+<div class="SideBox">
+<p><a href="https://lwn.net/Articles/400541/?format=printable">Printable page</a></p></div>
+
+</td><!-- LC -->
+
+<td><table><tbody><tr>
+<td class="MidColumn">
+           <table class="TopNavigation">
+
+<!-- First row - content links -->
+<tbody><tr>
+  <td class="NavLink"><a href="https://lwn.net/current">Weekly edition</a></td>
+  <td class="NavLink">
+	<a href="https://lwn.net/Kernel">Kernel</a></td>
+  <td class="NavLink"><a href="https://lwn.net/Security">Security</a></td>
+  <td class="NavLink">
+	<a href="http://lwn.net/Distributions/">Distributions</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/FAQ.lwn#contact">Contact Us</a> </td>
+  <td class="NavLink"><a href="https://lwn.net/Search">Search</a> </td>
+</tr>
+<!-- Second row: navigation links -->
+<tr>
+  <td class="NavLink"><a href="https://lwn.net/Archives">Archives</a></td>
+  <td class="NavLink"><a href="https://lwn.net/Calendar">Calendar</a></td>
+  <td class="NavLink"><a href="https://lwn.net/subscribe/Info">Subscribe</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/AuthorGuide.lwn">Write for LWN</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/FAQ.lwn">LWN.net FAQ</a></td>
+  <td class="NavLink"><a href="https://lwn.net/op/Sponsors.lwn">Sponsors</a></td>
+</tr>
+
+</tbody></table>
+</td><td></td></tr>
+<tr><td colspan="2" class="MCTopBanner">
+<div id="azk13321_leaderboard"></div></td></tr><tr><td class="MidColumn">
+<div class="PageHeadline">
+<h1>The end of block barriers</h1>
+</div>
+<div class="ArticleText">
+<div class="FeatureByline">
+           By <b>Jonathan Corbet</b><br>August 18, 2010
+           </div>
+One of the higher-profile decisions made at the recently-concluded <a href="http://lwn.net/Articles/399148/">Linux Storage and Filesystem
+summit</a> was to get rid of support for barriers in the Linux kernel block
+subsystem.  This was a popular decision, but also somewhat misunderstood
+(arguably, by your editor above all).  Now, <a href="http://lwn.net/Articles/399715/">a new patch series</a> from Tejun
+Heo shows how request ordering will likely be handled between filesystems
+and the block layer in the future.
+<p>
+
+The block layer must be able to reorder disk I/O operations if it is to
+obtain the sort of performance that users expect from their systems.  On
+rotating media, there is much to be gained by minimizing head seeks, and
+that goal is best achieved by executing all nearby requests together,
+regardless of the order in which those requests were issued.  Even with
+flash-based devices, there is some benefit to be had by grouping adjacent
+requests, especially when small requests can be coalesced into larger
+operations.  Proper dispatch of requests to the low-level device driver is
+normally the I/O scheduler's job; the scheduler will freely reorder
+requests, blissfully ignorant of the higher-level decisions which created
+those requests in the first place.
+</p><p>
+Note that this reordering also usually happens within the storage device
+itself; requests will be cached in (possibly volatile) memory and writes
+will be executed at a time which the hardware deems to be convenient.  This
+reordering is typically invisible to the operating system.
+</p><p>
+The problem, of course, is that it is not always safe to reorder I/O
+requests in arbitrary ways.  The classic example is that of a journaling
+filesystem, which operates in roughly this way:
+</p><p>
+</p><ol>
+<li> Begin a new transaction.
+</li><li> Write all planned metadata changes to the journal.  Depending on
+     the filesystem and its configuration, data changes may go to the
+     journal as well.
+</li><li> Write a commit record closing out the transaction.
+</li><li> Begin the process of writing the journaled changes to the filesystem
+     itself.
+</li><li> Goto 1.
+</li></ol>
+<p>
+If the system were to crash before step 3 completes, everything written to
+the journal would be lost, but the integrity of the filesystem would be
+unharmed.  If the system crashes after step&nbsp;3, but before the changes
+are written to the filesystem, those changes will be replayed at the next
+mount, preserving both the metadata and the filesystem's integrity.  Thus,
+journaling makes a filesystem relatively crash-proof.
+</p><p>
+But imagine what can happen if requests are reordered.  If the commit
+record is written before all of the other changes have been written to the
+journal, then, after a crash, an incomplete journal would be replayed,
+corrupting the filesystem.  Or, if a transaction frees some disk blocks
+which are subsequently reused elsewhere in the filesystem, and the reused
+blocks are written before the transaction which freed them is committed, a
+crash at the wrong time would, once again, corrupt things.  So, clearly,
+the filesystem must be able to impose some ordering on how requests are
+executed; otherwise, its attempts to guarantee filesystem integrity in all
+situations may well  be for nothing.
+</p><p>
+
+For some years, the answer has been barrier requests.  When the filesystem
+issues a request to the block layer, it can mark that request as a barrier,
+indicating that the block layer should execute all requests issued before
+the barrier prior to doing any requests issued afterward.  Barriers should,
+thus, ensure that operations make it to the media in the right order while
+not overly constraining the block layer's ability to reorder requests
+between the barriers.
+</p><p>
+In practice, barriers have an unpleasant reputation for killing block I/O
+performance, to the point that administrators are often tempted to turn
+them off and take their risks.  While the tagged queue operations provided
+by contemporary hardware should implement barriers reasonably well,
+attempts to make use of those features have generally run into
+difficulties.  So, in the real world, barriers are implemented by simply draining the
+I/O request queue prior to issuing the barrier operation, with some flush
+operations thrown in to get the hardware to actually commit the data to
+persistent media.  Queue-drain operations will stall the device and kill
+the parallelism needed for full performance; it's not surprising that the
+use of barriers can be painful.
+</p><p>
+In their discussions of this problem, the storage and filesystem developers
+have realized that the ordering semantics provided by block-layer barriers
+are much stronger than necessary.  Filesystems need to ensure that certain
+requests are executed in a specific order, and they need to ensure that
+specific requests have made it to the physical media before starting
+others.  Beyond that, though, filesystems need not concern themselves with
+the ordering for most other requests, so the use of barriers constrains the
+block layer more than is required.  In general, it was concluded,
+filesystems should concern themselves with ordering, since that's where the
+information is, and not dump that problem into the block layer.
+</p><p>
+To implement this reasoning, Tejun's patch gets rid of hard-barrier operations
+in the block layer; any filesystem trying to use them will get a cheery
+<tt>EOPNOTSUPP</tt> error for its pains.  A filesystem which wants
+operations to happen in a specific order will simply need to issue them in
+the proper order, waiting for completion when necessary.  The block layer
+can then reorder requests at will.
+</p><p>
+What the block layer cannot do, though, is evade the responsibility for
+getting important requests to the physical media when the filesystem
+requires it.  So, while barrier requests are going away, "flush requests"
+will replace them.  On suitably-capable devices, a flush request can have
+two separate requirements: (1)&nbsp;the write cache must be flushed before
+beginning the operation, and (2)&nbsp;the data associated with the flush
+request itself must be committed to persistent media by the time the
+request completes.  The second part is often called a "force unit access"
+(or FUA) request.
+</p><p>
+In this world, a journaling filesystem can issue all of the journal writes
+for a given transaction, then wait for them to complete.  At that point, it
+knows that the writes have made it to the device, but the device might have
+cached those requests internally.  The write of the commit record can then
+follow, with both the "flush" and "FUA" bits set; that will ensure that all
+of the journal data makes it to physical media before the commit record
+does, and that the commit record itself is written by the time the request
+completes.  Meanwhile, all other I/O operations - playing through previous
+transactions or those with no transaction at all - can be in flight at the
+same time, avoiding the queue stall which characterizes the barrier
+operations implemented by current kernels.
+</p><p>
+The patch set has been well received, but there is still work to be done,
+especially with regard to converting filesystems to the new way of doing
+things.  Christoph Hellwig has posted <a href="http://lwn.net/Articles/400777/">a set of patches</a> to that end.
+A lot of testing will be required as well; there is little desire
+to introduce bugs in this area, since the consequences of failure are so
+high.  But the development cycle has just begun, leaving a fair amount of
+time to shake down this work before the 2.6.37 merge window opens.</p><hr width="60%" align="left">
+           (<a href="https://lwn.net/login?target=/Articles/400541/">Log in</a> to post comments)
+           <p>
+           
+</p></div> <!-- ArticleText -->
+<p><a name="Comments"></a>
+
+<a name="CommAnchor400834"></a>
+</p><div class="CommentBox">
+  <p class="CommentTitle">"doesn't support DPO or FUA"</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 19, 2010 1:41 UTC (Thu) by <b>cesarb</b> (subscriber, #6266)
+       [<a href="https://lwn.net/Articles/400834">Link</a>]
+    </p>
+    <div class="FormattedComment">
+I often see things like the following in the kernel log for SATA disks:<br>
+<p>
+sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA<br>
+</p><p>
+What happens to these when a filesystem requests a force unit access?<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/400834/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor400999"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">"doesn't support DPO or FUA"</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 19, 2010 20:58 UTC (Thu) by <b>willy</b> (subscriber, #9762)
+       [<a href="https://lwn.net/Articles/400999">Link</a>]
+    </p>
+    <div class="FormattedComment">
+If the drive doesn't support FUA, the block layer sends down the FUA-tagged command, then sends down another flush.  So you get:<br>
+<p>
+write, write, write, flush, important write, flush, write, write, write<br>
+</p><p>
+instead of:<br>
+</p><p>
+write, write, write, flush, important write FUA, write, write, write<br>
+</p><p>
+This is documented in Documentation/block/barrier.txt if you're curious in learning more.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/400999/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor401095"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">"doesn't support DPO or FUA"</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 20, 2010 11:14 UTC (Fri) by <b>Hknr</b> (guest, #67789)
+       [<a href="https://lwn.net/Articles/401095">Link</a>]
+    </p>
+    <div class="FormattedComment">
+From Documentation/block/barrier.txt:<br>
+<p>
+»All low level drivers have to are implementing its prepare_flush_fn»...<br>
+</p><p>
+Does nobody ever (proof-)read these Documents?<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/401095/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor401237"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">"doesn't support DPO or FUA"</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 20, 2010 22:37 UTC (Fri) by <b>cesarb</b> (subscriber, #6266)
+       [<a href="https://lwn.net/Articles/401237">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt; Does nobody ever (proof-)read these Documents?</font><br>
+<p>
+Some people do. Every once in a while I see a batch of spelling fix patches on the git history of the kernel. After all, anyone can send a spelling fix patch.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/401237/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor402774"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">"doesn't support DPO or FUA"</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 29, 2010 22:24 UTC (Sun) by <b>Duncan</b> (guest, #6647)
+       [<a href="https://lwn.net/Articles/402774">Link</a>]
+    </p>
+    <div class="FormattedComment">
+<font class="QuotedText">&gt;&gt; "drivers have are implementing its prepare_flush_fn"...</font><br>
+<p>
+Gaah!  Spammers in the kernel docs!<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/402774/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor400855"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">The end of block barriers</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 19, 2010 8:09 UTC (Thu) by <b>butlerm</b> (subscriber, #13312)
+       [<a href="https://lwn.net/Articles/400855">Link</a>]
+    </p>
+    <div class="FormattedComment">
+The basic limitation I see with this is a complete write cache flush is not close to optimal on sufficiently intelligent devices.  That is where I/O threads come in. The complaint is made that a write barrier makes it difficult to re-order write requests in the block subsystem.  There is an easy solution to that: make the write barrier only apply to one I/O thread.<br>
+<p>
+Then the block layer can reorder requests arbitrarily as long as the I/O thread specific ordering constraints are met.  And when a thread specific write barrier needs to be issued to a lower level device, it can be translated to a device level write barrier instead of issuing a full write cache flush, without impairing the higher level block reordering at all.<br>
+</p><p>
+In addition, intelligent I/O thread supporting block devices could use the I/O thread specific barrier operation to order just the requests on that I/O thread instead of flushing its entire write cache.  iSCSI theoretically supports this now if you map I/O threads to connections (initiator target nexuses), although the SCSI architectural model doesn't seem to be designed to do it that way.<br>
+</p><p>
+However (with proper kernel support) a block layer protocol such as that used by DRBD could presumably easily be adapted to support I/O thread specific barrier operations, allowing the remote device to maintain a much larger write cache, one that doesn't need to be flushed every time a process calls fsync, or even forced to order all its block operations to satisfy the ordering constraints of just one I/O thread.  Provided there was a way to flush the cache for just one I/O thread, or (even better) be notified when the writes prior to an I/O thread specific barrier had completed, such support would reduce fsync latency on a busy device dramatically.<br>
+</p><p>
+It is not as if one was writing a distributed database protocol he would request a remote database node to flush every dirty block in its cache to ensure a commit.  Rather a request would be sent to commit just the ones associated with a certain transaction. I don't see why a distributed block device should be any different, and I/O threads are a simple way of making that happen. I/O threads or something like them are the future of block devices.  A full write cache flush makes the BKL look like an exercise in efficiency.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/400855/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor400887"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">The end of block barriers</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 19, 2010 11:31 UTC (Thu) by <b>zmi</b> (guest, #4829)
+       [<a href="https://lwn.net/Articles/400887">Link</a>]
+    </p>
+    <div class="FormattedComment">
+You partly answered a question I had to the article: What makes the new algorithm that much faster than barriers? When I still send a "cache must be flushed" request to the device, even normal writes are stopped until the device flush it's cache, and it will take some time to fill the cache again to get good performance, during that another flush might incur...<br>
+<p>
+Think of a simple file server, where 3 persons copy files to:<br>
+Person 1 copies his MP3 collection to the server.<br>
+Person 2 copies her HD-video collection to the server.<br>
+Person 3 runs a highly parallel intensive write database.<br>
+</p><p>
+While for 1 and especially 2 there will be very low metadata operations, 3 generates lots of fsync's. From the article I read that a full cache flush would happen, suspending even the normal writes of person 1+2. Or am I misinterpreting that?<br>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/400887/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor400907"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">The end of block barriers</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 19, 2010 13:13 UTC (Thu) by <b>corbet</b> (editor, #1)
+       [<a href="https://lwn.net/Articles/400907">Link</a>]
+    </p>
+    The cache flush can happen in parallel with other I/O.  Forcing specific blocks to persistent media can only slow things down, but they have to get there soon in any case.  While the drive is executing the cache flush, it can be satisfying other requests whenever it's convenient.  "Cache flush" doesn't mean "write <i>only</i> blocks in the cache" or "don't satisfy outstanding reads while you're at it".  It will be far more efficient than a full queue drain.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/400907/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor400932"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">The end of block barriers</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 19, 2010 15:25 UTC (Thu) by <b>butlerm</b> (subscriber, #13312)
+       [<a href="https://lwn.net/Articles/400932">Link</a>]
+    </p>
+    <div class="FormattedComment">
+The problem is that in general an fsync requires a journal commit. If you have to flush the entire write cache throughput for non-fsync-serialized threads might be fine, but the performance of threads that call fsync will seriously suffer due to the delay.<br>
+<p>
+Flushing the write cache of the device a lot also moves the request ordering / merging efficiency problem down a level. If the device must flush the entire write cache on a regular basis, it has much reduced opportunity to order write operations as optimal for that device.<br>
+</p><p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/400932/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
+
+<a name="CommAnchor400866"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Why not explicit dependencies?</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 19, 2010 9:44 UTC (Thu) by <b>epa</b> (subscriber, #39769)
+       [<a href="https://lwn.net/Articles/400866">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Issuing a request and then waiting for it before sending the next seems like an inefficient way to do things.  If request A needs to be done before request B, why have a round trip back to the filesystem code after A is complete before sending B?<br>
+<p>
+Perhaps a 'makefile' kind of interface would work better: each request to list zero or more previous requests which must be completed before this one is processed.  Then the I/O layer could go away and execute them all in the fastest order possible without having to wait for the filesystem.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/400866/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor400943"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Why not explicit dependencies?</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 19, 2010 16:14 UTC (Thu) by <b>butlerm</b> (subscriber, #13312)
+       [<a href="https://lwn.net/Articles/400943">Link</a>]
+    </p>
+    <div class="FormattedComment">
+You don't normally have to wait for the next request. You may, however, have to wait for a group of requests to complete before issuing some of the requests after that.<br>
+<p>
+Explicit dependencies would be the most flexible of course, but the problem is that arbitrary dependencies are difficult for a block layer to process.  A barrier on the other hand means always execute requests (within some context) issued before the barrier before the requests issued after the barrier (within the same context).<br>
+</p><p>
+That can be inefficient if an (upper layer) barrier is at the level of an entire block device, because the block layer cannot re-order and merge barrier independent requests across the barrier.  One way to solve that problem is with I/O thread identifiers and I/O thread specific barriers. That is not quite as flexible as explicit request level dependencies, but it is much easier to implement, and solves the same problem. <br>
+</p><p>
+The method described in this article is to require the filesystems to implement their own concept of I/O threads without passing I/O thread identity information down to the block layer, and waiting on request completion for the requests from that upper layer I/O thread and write cache flushes instead.  All modern journalled filesystems have at least one identifiable I/O thread - that associated with serialization of the journal commits. In this case it is just implicit instead of explicit, and the lower layer doesn't know anything about it.<br>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/400943/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+
+<a name="CommAnchor400945"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Why not explicit dependencies?</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 19, 2010 16:17 UTC (Thu) by <b>butlerm</b> (subscriber, #13312)
+       [<a href="https://lwn.net/Articles/400945">Link</a>]
+    </p>
+    <div class="FormattedComment">
+An I/O thread should not be confused with a CPU thread of course.<br>
+</div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/400945/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor400998"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Ordered tags are not widely supported</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 19, 2010 20:55 UTC (Thu) by <b>willy</b> (subscriber, #9762)
+       [<a href="https://lwn.net/Articles/400998">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Apparently the last hard drive to support them shipped about fifteen years ago.  I'm told they aren't even available in high-end storage arrays.<br>
+<p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/400998/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+<div class="Comment">
+
+<a name="CommAnchor401061"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">Ordered tags are not widely supported</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 20, 2010 7:40 UTC (Fri) by <b>butlerm</b> (subscriber, #13312)
+       [<a href="https://lwn.net/Articles/401061">Link</a>]
+    </p>
+    <div class="FormattedComment">
+Microsoft was asking that write barriers be added to SATA just three years ago. I don't know if they made any progress.  There are several related patents and patent applications out there.<br>
+<p>
+Hitachi, for example, has a patent on transforming a flush cache command into a write barrier in a disk drive, something that is necessary (more or less) to implement an asynchronous cache flush (cf. Patent 7574565, filed 2006, published last year).<br>
+</p><p>
+</p><p>
+</p><p>
+</p></div>
+
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/401061/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</div>
+
+<a name="CommAnchor402227"></a>
+<div class="CommentBox">
+  <p class="CommentTitle">The end of block barriers</p>
+  <div class="CommentBody">
+    <p class="CommentPoster">Posted Aug 26, 2010 16:21 UTC (Thu) by <b>joib</b> (guest, #8541)
+       [<a href="https://lwn.net/Articles/402227">Link</a>]
+    </p>
+    In case anybody is wondering whether Linux inability to expose scsi ordered tag semantics for the filesystems to use puts Linux at a disadvantage compared to MS, <a rel="nofollow" href="http://www.osronline.com/showthread.cfm?link=176686">this thread</a> suggests that Windows only ever issues SCSI SIMPLE (i.e. unordered) tags, and any ordering requirements are handled by waiting for completion.
+  </div>
+  <p>
+  </p><div class="CommentReplyButton">
+    <form action="/Articles/402227/comment" method="post">
+      <input type="submit" value="Reply to this comment">
+    </form>
+  </div>
+  
+</div>
+</td> <!-- MC -->
+<td class="RightColumn">
+<div id="azk93271_right_zone"></div>
+</td>
+</tr></tbody></table></td>
+</tr></tbody></table><!-- endpage -->
+
+        <br clear="all">
+        <center>
+        <p>
+        <font size="-2">
+        Copyright © 2010, Eklektix, Inc.<br>
+        This article may be redistributed under the terms of the
+              <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+              Commons CC BY-SA 4.0</a> license<br>
+        Comments and public postings are copyrighted by their creators.<br>
+        Linux  is a registered trademark of Linus Torvalds<br>
+        </font>
+        </p></center>
+        
+        
+        </body></html>
