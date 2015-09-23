@@ -19,7 +19,7 @@ If you want to help, read these and post a review.
   Development notice
 ----------------------
 
-Code will be developed in Python/Cython or .NET/Mono depending on further testing. Documentation is created in LibreOffice writer and XMind mind mapping tool. User experience design will be done in Glade.
+Code will be developed in .NET/Mono. Documentation is created in LibreOffice and XMind. User experience design will be done in Glade.
 
 Referenced documentation is a local copy of published articles, a good read that has some interesting ideas. There are also some random notes, few wallpapers, and other junk you can ignore.
 
