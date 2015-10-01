@@ -43,13 +43,14 @@ namespace Measurements
 
 		public static void Main (string[] args)
 		{
-			int AMOUNT = 8000;
-			int BLOCK = 512;
 			long AREA = 0;
+			int AMOUNT = 0;
+			int BLOCK = 512;
 
 			AREA = SuffixToBytes (args [0]);
-			Console.WriteLine ("Amount: " + AMOUNT + "  Block size: " + BLOCK + "  Area: " + 
-			                   AREA + " = " + BytesToSuffix(AREA));
+			AMOUNT = (int)Math.Min (AREA/512/20, 8000);
+			Console.WriteLine ("Amount: " + AMOUNT + "  Block size: " + BLOCK + 
+			                   "  Area: " + AREA + " = " + BytesToSuffix(AREA));
 
 			string diskpath = args [1];
 			int fd = Syscall.open (diskpath, OpenFlags.O_RDONLY);
