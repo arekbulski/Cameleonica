@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Measurements", "Measurements\Measurements.csproj", "{CA79CA3E-9180-4675-8B54-762295268D6E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA79CA3E-9180-4675-8B54-762295268D6E}.Debug|x86.ActiveCfg = Debug|x86
+		{CA79CA3E-9180-4675-8B54-762295268D6E}.Debug|x86.Build.0 = Debug|x86
+		{CA79CA3E-9180-4675-8B54-762295268D6E}.Release|x86.ActiveCfg = Release|x86
+		{CA79CA3E-9180-4675-8B54-762295268D6E}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Measurements\Measurements.csproj
+	EndGlobalSection
+EndGlobal
