@@ -10,12 +10,12 @@ namespace Measurements
 {
 	class MainClass
 	{
-		static long ToBytes (string size)
+		static long SuffixToBytes (string size)
 		{
 			Dictionary<string,long> suffixes = new Dictionary<string, long> {
-				{"KB",1024},
-				{"MB",1024*1024},
-				{"GB",1024*1024*1024},
+				{"KB",1024L},
+				{"MB",1024L*1024},
+				{"GB",1024L*1024*1024},
 				{"TB",1024L*1024*1024*1024},
 			};
 
@@ -27,14 +27,29 @@ namespace Measurements
 			return long.Parse (size);
 		}
 
+		static string BytesToSuffix(long size)
+		{
+			string[] suffixes = {"B","KB","MB","GB","TB"};
+
+			int suffix = 0;
+			double sized = size;
+			while (size >= 1024) {
+				suffix++;
+				size /= 1024;
+				sized /= 1024;
+			}
+			return sized.ToString("F2") + suffixes[suffix];
+		}
+
 		public static void Main (string[] args)
 		{
 			int AMOUNT = 8000;
 			int BLOCK = 512;
 			long AREA = 0;
 
-			AREA = ToBytes (args [0]);
-			Console.WriteLine ("Amount: " + AMOUNT + "  Block size: " + BLOCK + "  Area: " + AREA);
+			AREA = SuffixToBytes (args [0]);
+			Console.WriteLine ("Amount: " + AMOUNT + "  Block size: " + BLOCK + "  Area: " + 
+			                   AREA + " = " + BytesToSuffix(AREA));
 
 			string diskpath = args [1];
 			int fd = Syscall.open (diskpath, OpenFlags.O_RDONLY);
@@ -67,7 +82,6 @@ namespace Measurements
 			var min95 = timesascending [(int)(0.05 * AMOUNT)];
 			var max95 = timesascending [(int)(0.95 * AMOUNT)];
 
-			Console.WriteLine ("Subset of data: " + string.Join (" ", times.Take (4)) + "...");
 			Console.WriteLine ("Total: " + sum + "   Average: " + sum / AMOUNT);
 			Console.WriteLine ("Min: " + times.Min () + "  of upper 95 percent: " + min95);
 			Console.WriteLine ("Max: " + times.Max () + "  of lower 95 percent: " + max95);
