@@ -19,6 +19,6 @@ Experimental code is also in the repository.
   Development notice
 ----------------------
 
-Code will be developed in .NET/Mono and later also in the kernel. Documentation is created in LibreOffice and XMind. User experience design will later be done in Glade.
+Code will be developed in .NET or Python (debate is ongoing) and later also in the kernel (a long way ahead). Documentation is created in LibreOffice and XMind. User experience design will later be done in Glade.
 
 License is set to MIT Licence, unless something changes.
