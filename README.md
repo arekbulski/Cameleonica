@@ -14,6 +14,8 @@ Only design documentation is being developed at this point. You can help by revi
 - [Questions and Answers](documentation/responses.pdf) (3 pages)
 - [Ideas and Observations](documentation/ideas.pdf) (12 pages)
 
+Experimental code is also in the repository.
+
   Development notice
 ----------------------
 
