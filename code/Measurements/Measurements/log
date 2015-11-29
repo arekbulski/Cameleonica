@@ -1,0 +1,64 @@
+noop
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 1TB
+Total: 81854,49ms  Max: 29,58ms  Average: 15,37ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 512GB
+Total: 84188,32ms  Max: 30,38ms  Average: 15,85ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 256GB
+Total: 73160,39ms  Max: 28,42ms  Average: 13,69ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 128GB
+Total: 82159,82ms  Max: 30,79ms  Average: 15,39ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 64GB
+Total: 77123,98ms  Max: 29,55ms  Average: 14,37ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 32GB
+Total: 68714,76ms  Max: 28,01ms  Average: 12,75ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 16GB
+Total: 64555,56ms  Max: 27,46ms  Average: 11,92ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 8GB
+Total: 62941,10ms  Max: 26,96ms  Average: 11,55ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 4GB
+Total: 64335,33ms  Max: 27,70ms  Average: 11,83ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 2GB
+Total: 52587,17ms  Max: 20,93ms  Average: 9,66ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 1GB
+Total: 52653,95ms  Max: 21,55ms  Average: 9,30ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 512MB
+Total: 48223,60ms  Max: 19,67ms  Average: 8,79ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 256MB
+Total: 53984,99ms  Max: 25,49ms  Average: 9,38ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 128MB
+Total: 44011,12ms  Max: 14,04ms  Average: 8,05ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 64MB
+Total: 42454,15ms  Max: 13,90ms  Average: 7,76ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 32MB
+Total: 41922,36ms  Max: 15,66ms  Average: 7,61ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 16MB
+Total: 44130,26ms  Max: 20,57ms  Average: 7,60ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 8MB
+Total: 40231,53ms  Max: 17,38ms  Average: 7,19ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 4MB
+Total: 41817,92ms  Max: 20,68ms  Average: 7,42ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 2MB
+Total: 41311,94ms  Max: 20,87ms  Average: 7,30ms
+3
+Amount: 5000  Block: 512  Max area: 1TB  Area: 1MB
+Total: 35196,36ms  Max: 19,49ms  Average: 6,06ms

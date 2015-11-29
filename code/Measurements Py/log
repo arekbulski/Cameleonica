@@ -1,0 +1,10 @@
+Entire disk has size:  1TB
+Area tested: 1MB    Average: 0.006815sec  Max: 0.025817sec  Sum: 32.369052sec
+Area tested: 4MB    Average: 0.006750sec  Max: 0.014732sec  Sum: 32.063539sec
+Area tested: 16MB   Average: 0.007301sec  Max: 0.014843sec  Sum: 34.681278sec
+Area tested: 128MB  Average: 0.008960sec  Max: 0.027364sec  Sum: 42.561853sec
+Area tested: 1GB    Average: 0.011098sec  Max: 0.031379sec  Sum: 52.715635sec
+Area tested: 4GB    Average: 0.013129sec  Max: 0.033543sec  Sum: 62.361229sec
+Area tested: 16GB   Average: 0.013718sec  Max: 0.031268sec  Sum: 65.159894sec
+Area tested: 128GB  Average: 0.015107sec  Max: 0.031425sec  Sum: 71.758911sec
+Area tested: 1TB    Average: 0.017035sec  Max: 0.031566sec  Sum: 80.915787sec
