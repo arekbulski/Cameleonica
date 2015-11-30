@@ -4,18 +4,23 @@ import os, time, random
 def BytesString(n):
     suffixes = ['B','KB','MB','GB','TB','PB','EB','ZB','YB']
     suffix = 0
-    while n % 1024 == 0:
+    while n % 1024 == 0 and suffix+1 < len(suffixes):
         suffix += 1
         n /= 1024
     return '{0}{1}'.format(n, suffixes[suffix])
 
-KB,MB,GB,TB = 1024,1024**2,1024**3,1024**4
+def BytesInt(s):
+    suffixes = ['B','KB','MB','GB','TB','PB','EB','ZB','YB']
+    for power,suffix in reversed(list(enumerate(suffixes))):
+        if s.endswith(suffix):
+            return int(s.rstrip(suffix))*1024**power
+    raise ValueError('BytesInt requires proper suffix ('+' '.join(suffixes)+').')
 
 disk = open('/dev/sdb', 'r')
-disksize = TB
+disksize = BytesInt('1TB')
 print 'Entire disk has size: ', BytesString(disksize)
 
-for area in [1*MB,4*MB,16*MB,128*MB,1*GB,4*GB,16*GB,128*GB,1*TB]:
+for area in map(BytesInt, '1MB 4MB 16MB 128MB 1GB 4GB 16GB 128GB 1TB'.split()):
     os.system('echo noop | sudo tee /sys/block/sdb/queue/scheduler > /dev/null')
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
