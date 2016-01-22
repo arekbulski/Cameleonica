@@ -34,8 +34,7 @@ for area in map(BytesInt, '1MB 4MB 16MB 128MB 1GB 4GB 16GB 128GB 1TB'.split()):
         disk.seek(right)
         disk.read(512)
         end = time.time()
-        point = (end-start)
-        times.append(point)
+        times.append(end-start)
 
     times = sorted(times)[:4750]
     print 'Area tested: {0:5}  Average: {1:6f}sec  Max: {2:6f}sec  Sum: {3:2f}sec'.format(
