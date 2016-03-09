@@ -1,2 +1,0 @@
-gpg --verify $1
-
