@@ -10,13 +10,13 @@ Further design will include a FUSE and Dokan frontend, and a Nautilus extension.
 
 Only design documentation is being developed at this point. You can help by reviewing these documents and posting questions and suggestions for improvement. Easiest way for you to submit anything is to create a new Issue and start a discussion.
 
-- [Mission statement](documentation/mission.pdf) (7 pages)
-- [Questions and Answers](documentation/responses.pdf) (3 pages)
-- [Ideas and Observations](documentation/ideas.pdf) (12 pages)
+- [Mission statement](documentation/extracted-mission.pdf) (7 pages)
+- [Ideas and Observations](documentation/extracted-ideas.pdf) (12 pages)
+- [Questions and Answers](documentation/extracted-responses.pdf) (3 pages)
 
 Alternatively, there is a combined version:
 
-- [(combined all of the above)](documentation/combined.pdf) (22 pages)
+- [(combined all of the above)](documentation/combined.pdf) (24 pages)
 
 Experimental code is also in the repository.
 
