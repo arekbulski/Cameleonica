@@ -20,14 +20,14 @@ def BytesInt(s):
 
 disk = open('/dev/sdb', 'r')
 disksize = BytesInt('1TB')
-print 'Entire disk has size: ', BytesString(disksize)
+print 'Entire disk size: ', BytesString(disksize)
 
 for area in map(BytesInt, '1MB 4MB 16MB 128MB 1GB 4GB 16GB 128GB 1TB'.split()):
     os.system('echo noop | sudo tee /sys/block/sdb/queue/scheduler > /dev/null')
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
     times = []
-    for _ in range(5000):
+    for _ in range(500):
         left = random.randint(0, disksize-area)
         right = left + random.randint(0, area)
         disk.seek(left)
@@ -39,5 +39,5 @@ for area in map(BytesInt, '1MB 4MB 16MB 128MB 1GB 4GB 16GB 128GB 1TB'.split()):
         times.append(end-start)
 
     times = sorted(times)[:4750]
-    print 'Area tested: {0:5}  Average: {1:6f}sec  Max: {2:6f}sec  Sum: {3:2f}sec'.format(
-        BytesString(area), sum(times)/len(times), max(times), sum(times))
+    print 'Area tested: {0:5}   Average: {1:3.2f} ms   Max: {2:3.2f} ms   Sum: {3:0.2f} sec'.format(
+        BytesString(area), sum(times)/len(times)*1000, max(times)*1000, sum(times))
