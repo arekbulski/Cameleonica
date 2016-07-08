@@ -28,7 +28,8 @@ print 'Entire disk size: {0}  Sample size: {1}  (displayed {2})'.format(
     BytesString(disksize), samplesize, 
     format(displaysamplesize) if displaytimes else 'none')
 
-for area in map(BytesInt, '1MB 4MB 16MB 128MB 1GB 4GB 16GB 128GB 1TB'.split()):
+for area in map(BytesInt, '1MB 2MB 4MB 8MB 16MB 32MB 64MB 128MB 256MB 512MB 1GB 2GB 4GB 8GB 16GB 32GB 64GB 128GB 256GB 512GB 1TB'.split()):
+
     os.system('echo noop | sudo tee /sys/block/sdb/queue/scheduler > /dev/null')
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
