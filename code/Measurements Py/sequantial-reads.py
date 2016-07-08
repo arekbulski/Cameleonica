@@ -19,18 +19,19 @@ def BytesInt(s):
     raise ValueError('BytesInt requires proper suffix ('+' '.join(suffixes)+').')
 
 disk = open('/dev/sdb', 'r')
-disksize = BytesInt('1TB')
 bufsize = BytesInt('64MB')
-bufcount = 15
+bufcount = 16
 displaytimes = '-v' in sys.argv
 
-print 'Entire disk size: {0}  Buffer size: {1}  Buffer count: {2}'.format(BytesString(disksize), BytesString(bufsize), bufcount)
+print 'Buffer size: {0}  Buffer count: {1}  Total: {2}'.format(
+    BytesString(bufsize), bufcount, BytesString(bufsize*bufcount))
 
 os.system('echo noop | sudo tee /sys/block/sdb/queue/scheduler > /dev/null')
 os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
 times = []
 disk.seek(0)
+disk.read(512)
 for _ in range(bufcount):
     start = time.time()
     disk.read(bufsize)

@@ -19,23 +19,22 @@ def BytesInt(s):
     raise ValueError('BytesInt requires proper suffix ('+' '.join(suffixes)+').')
 
 disk = open('/dev/sdb', 'r')
-disksize = BytesInt('1TB')
 samplesize = 250
 displaytimes = '-v' in sys.argv
 displaysamplesize = 24
 
-print 'Entire disk size: {0}  Sample size: {1}  (displayed {2})'.format(BytesString(disksize), samplesize, format(displaysamplesize) if displaytimes else 'none')
+print 'Using beginning of disk.  Sample size: {0}  (displayed {1})'.format(
+    samplesize, format(displaysamplesize) if displaytimes else 'none')
 
 for area in map(BytesInt, '1MB 4MB 16MB 128MB 1GB 4GB 16GB 128GB 1TB'.split()):
     os.system('echo noop | sudo tee /sys/block/sdb/queue/scheduler > /dev/null')
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
     times = []
+    disk.seek(0)
+    disk.read(512)
     for _ in range(samplesize):
-        left = random.randint(0, disksize-area)
-        right = left + random.randint(0, area)
-        disk.seek(left)
-        disk.read(512)
+        right = random.randint(0, area)
         start = time.time()
         disk.seek(right)
         disk.read(512)
