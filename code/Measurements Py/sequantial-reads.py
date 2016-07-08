@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import os, time, random
+import sys, os, time, random
 
 def BytesString(n):
     suffixes = ['B','KB','MB','GB','TB','PB','EB','ZB','YB']
@@ -20,19 +20,25 @@ def BytesInt(s):
 
 disk = open('/dev/sdb', 'r')
 disksize = BytesInt('1TB')
-bufsize = BytesInt('16MB')
-print 'Entire disk size: ', BytesString(disksize), ' Buffer size: ', BytesString(bufsize)
+bufsize = BytesInt('64MB')
+bufcount = 15
+displaytimes = '-v' in sys.argv
+
+print 'Entire disk size: {0}  Buffer size: {1}  Buffer count: {2}'.format(BytesString(disksize), BytesString(bufsize), bufcount)
 
 os.system('echo noop | sudo tee /sys/block/sdb/queue/scheduler > /dev/null')
 os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
 times = []
 disk.seek(0)
-for _ in range(20):
+for _ in range(bufcount):
     start = time.time()
     disk.read(bufsize)
     end = time.time()
     times.append(end-start)
 
-print 'Read times: ', ', '.join(['{0:0.4f}'.format(x) for x in times]), ' in seconds'
-print 'Average throughput: {0:0.0f} bytes/sec'.format(bufsize/(sum(times)/len(times)))
+avg = bufsize/(sum(times)/len(times))
+print 'Average throughput: {0:0.0f} bytes/sec ({1:0.2f} megabytes/sec)'.format(avg, avg/1024/1024)
+print 'Total time: {0:0.2f} sec'.format(sum(times))
+if displaytimes:
+    print 'Read times: {0} sec'.format(' '.join(['{0:0.4f}'.format(x) for x in times]))
