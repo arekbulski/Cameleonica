@@ -10,6 +10,8 @@ def BytesString(n):
     return '{0}{1}'.format(n, suffixes[suffix])
 
 def BytesInt(s):
+    if all(c in '0123456789' for c in s):
+        return int(s)
     suffixes = ['B','KB','MB','GB','TB','PB','EB','ZB','YB']
     for power,suffix in reversed(list(enumerate(suffixes))):
         if s.endswith(suffix):
