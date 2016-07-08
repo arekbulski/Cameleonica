@@ -39,7 +39,8 @@ for _ in range(bufcount):
     times.append(end-start)
 
 avg = bufsize/(sum(times)/len(times))
-print 'Average throughput: {0:0.0f} bytes/sec ({1:0.2f} megabytes/sec)'.format(avg, avg/1024/1024)
+print 'Average throughput: {0:0.0f} bytes/sec ({1:0.2f} megabytes/sec)'.format(
+    avg, avg/1024/1024)
 print 'Total time: {0:0.2f} sec'.format(sum(times))
 if displaytimes:
     print 'Read times: {0} sec'.format(' '.join(['{0:0.4f}'.format(x) for x in times]))

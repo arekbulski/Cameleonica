@@ -24,7 +24,9 @@ samplesize = 250
 displaytimes = '-v' in sys.argv
 displaysamplesize = 24
 
-print 'Entire disk size: {0}  Sample size: {1}  (displayed {2})'.format(BytesString(disksize), samplesize, format(displaysamplesize) if displaytimes else 'none')
+print 'Entire disk size: {0}  Sample size: {1}  (displayed {2})'.format(
+    BytesString(disksize), samplesize, 
+    format(displaysamplesize) if displaytimes else 'none')
 
 for area in map(BytesInt, '1MB 4MB 16MB 128MB 1GB 4GB 16GB 128GB 1TB'.split()):
     os.system('echo noop | sudo tee /sys/block/sdb/queue/scheduler > /dev/null')
