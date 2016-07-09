@@ -34,20 +34,22 @@ disk.seek(0,2)
 disksize = disk.tell()
 os.system('echo noop | sudo tee /sys/block/sdb/queue/scheduler > /dev/null')
 
-samplesize = 100
+print 'Syntax: progam [-v]:  for verbose mode.'
+print 'Disk name: {0}  Disk size: {1}  Scheduler disabled.'.format(
+    disk.name, BytesStringFloat(disksize))
+
+
+
+samplesize = 5
 displaytimes = '-v' in sys.argv
 displaysamplesize = 24
-
-print 'Syntax: progam [-v]:  for verbose mode.'
-print 'Disk name: {0}  Disk size: {1}'.format(
-    disk.name, BytesStringFloat(disksize))
 
 for randomareas in [False,True]:
     print
     print 'Measuring: Random seek time {0}'.format(
         'using random areas of disk.' if randomareas else 'using beginning of disk.')
-    print 'Sample size: {0}  (displayed {1})'.format(
-        samplesize, displaysamplesize if displaytimes else 'none')
+    print 'Sample size: {0} {1}'.format(
+        samplesize, '(displayed {0})'.format(displaysamplesize) if randomareas else '')
 
     for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
         if disksize < area:
@@ -76,3 +78,32 @@ for randomareas in [False,True]:
             print 'Read times: {0} ... {1} ms'.format(
                 ' '.join(['{0:0.2f}'.format(x*1000) for x in times[:displaysamplesize/2]]), 
                 ' '.join(['{0:0.2f}'.format(x*1000) for x in times[-displaysamplesize/2:]]))
+
+
+
+bufsize = BytesInt('64MB')
+bufcount = 16
+
+print
+print 'Measuring: Sequential read throughput {0}'.format(
+    'using random areas of disk.' if randomareas else 'using beginning of disk.')
+print 'Buffer size: {0}  Buffer count: {1}  Total: {2}'.format(
+    BytesString(bufsize), bufcount, BytesString(bufsize*bufcount))
+
+os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
+
+times = []
+disk.seek(0)
+disk.read(512)
+for _ in range(bufcount):
+    start = time.time()
+    disk.read(bufsize)
+    end = time.time()
+    times.append(end-start)
+
+avg = bufsize/(sum(times)/len(times))
+print 'Average throughput: {0}/sec'.format(
+    BytesStringFloat(avg))
+print 'Total time: {0:0.2f} sec'.format(sum(times))
+if displaytimes:
+    print 'Read times: {0} sec'.format(' '.join(['{0:0.4f}'.format(x) for x in times]))
