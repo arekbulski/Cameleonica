@@ -42,11 +42,12 @@ print 'Syntax: progam [-v]:  for verbose mode.'
 print 'Disk name: {0}  Disk size: {1}  Scheduler disabled.'.format(
     disk.name, BytesStringFloat(disksize))
 
+displaytimes = '-v' in sys.argv
+
 
 #--------------------------------------------------------------------------------------------------
 
 samplesize = 100
-displaytimes = '-v' in sys.argv
 displaysamplesize = 24
 
 for randomareas in [False,True]:
@@ -77,7 +78,7 @@ for randomareas in [False,True]:
             times.append(finish-start)
 
         times = sorted(times)[:samplesize*95/100]
-        print 'Area tested: {0:6}   Average: {1:3.2f} ms   Max: {2:3.2f} ms   Sum: {3:0.2f} sec'.format(
+        print 'Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
             BytesString(area) if area < disksize else BytesStringFloat(area), 
             sum(times)/len(times)*1000, max(times)*1000, sum(times))
         if displaytimes:
@@ -109,16 +110,16 @@ for i in range(0,7):
         times.append(finish-start)
 
     avg = bufsize/(sum(times)/len(times))
-    print 'Buffer: {0:4}   Count: {1:3}   Average: {2:6}/sec   Total time: {3:0.2f} sec'.format(
-        BytesString(bufsize), bufcount, BytesStringFloat(avg), sum(times))
+    print 'Buffer: {0:4}   Average: {1:8}/sec   Samples: {2:3}   Total: {3:0.2f} sec'.format(
+        BytesString(bufsize), BytesStringFloat(avg), bufcount, sum(times))
     if displaytimes:
         print 'Read times: {0} sec'.format(' '.join(['{0:0.4f}'.format(x) for x in times]))
 
 
 #--------------------------------------------------------------------------------------------------
 
-bufsize = BytesInt('16MB')
-bufcount = 64
+bufsize = BytesInt('10MB')
+bufcount = 100
 
 print
 print 'Measuring: Sequential read throughput using beginning of disk.'
@@ -135,7 +136,7 @@ for _ in range(bufcount):
     times.append(finish-start)
 
 avg = bufsize/(sum(times)/len(times))
-print 'Buffer: {0}   Count: {1}   Average: {2}/sec   Total: {3}'.format(
-    BytesString(bufsize), bufcount, BytesStringFloat(avg), BytesString(bufsize*bufcount), sum(times))
+print 'Buffer: {0:4}   Average: {1:8}/sec   Samples: {2:3}   Total: {3:0.2f} sec'.format(
+    BytesString(bufsize), BytesStringFloat(avg), bufcount, sum(times))
 if displaytimes:
     print 'Read times: {0} sec'.format(' '.join(['{0:0.4f}'.format(x) for x in times]))
