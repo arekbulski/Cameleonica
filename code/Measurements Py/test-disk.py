@@ -88,7 +88,6 @@ if modeseeks or modeseeksrandom:
                     finish = time.time()
                     times.append(finish-start)
 
-                # times = sorted(times)[:bufcount*95//100]
                 print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
                     BytesString(area) if area < disksize else BytesStringFloat(area), 
                     sum(times)/len(times)*1000, max(times)*1000, sum(times)))
