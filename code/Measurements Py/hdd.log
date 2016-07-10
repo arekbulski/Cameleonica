@@ -62,3 +62,5 @@ Buffer: 64MB   Average: 53.75MB /sec   Samples:   2   Total: 2.38 sec
 
 Measuring: Sequential read throughput using beginning of disk.
 Buffer: 10MB   Average: 93.00MB /sec   Samples: 100   Total: 10.75 sec
+
+Returned disk scheduler to CFQ.

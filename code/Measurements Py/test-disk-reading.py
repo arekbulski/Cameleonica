@@ -155,3 +155,11 @@ if modethroughput:
         BytesString(bufsize), BytesStringFloat(avg), bufcount, sum(times))
     if displaytimes:
         print 'Read times: {0} sec'.format(' '.join(['{0:0.4f}'.format(x) for x in times]))
+
+
+#--------------------------------------------------------------------------------------------------
+
+os.system('echo cfq | sudo tee /sys/block/sdb/queue/scheduler > /dev/null')
+
+print
+print 'Returned disk scheduler to CFQ.'
