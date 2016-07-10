@@ -3,60 +3,62 @@ Disk name: /dev/sdb  Disk size: 1.36TB  Scheduler disabled.
 
 Measuring: Random seek time using beginning of disk.
 Sample size: 100 
-Area tested: 1MB      Average: 0.12 ms   Max: 0.37 ms   Sum: 0.01 sec
-Area tested: 2MB      Average: 0.16 ms   Max: 0.39 ms   Sum: 0.01 sec
-Area tested: 4MB      Average: 0.18 ms   Max: 0.81 ms   Sum: 0.02 sec
-Area tested: 8MB      Average: 0.30 ms   Max: 3.87 ms   Sum: 0.03 sec
-Area tested: 16MB     Average: 0.92 ms   Max: 8.99 ms   Sum: 0.09 sec
-Area tested: 32MB     Average: 1.97 ms   Max: 9.73 ms   Sum: 0.19 sec
-Area tested: 64MB     Average: 4.59 ms   Max: 12.52 ms   Sum: 0.44 sec
-Area tested: 128MB    Average: 5.90 ms   Max: 12.88 ms   Sum: 0.56 sec
-Area tested: 256MB    Average: 7.01 ms   Max: 13.74 ms   Sum: 0.67 sec
-Area tested: 512MB    Average: 7.59 ms   Max: 13.38 ms   Sum: 0.72 sec
-Area tested: 1GB      Average: 8.75 ms   Max: 19.40 ms   Sum: 0.83 sec
-Area tested: 2GB      Average: 8.62 ms   Max: 14.13 ms   Sum: 0.82 sec
-Area tested: 4GB      Average: 9.00 ms   Max: 19.83 ms   Sum: 0.86 sec
-Area tested: 8GB      Average: 10.24 ms   Max: 15.62 ms   Sum: 0.97 sec
-Area tested: 16GB     Average: 11.22 ms   Max: 24.09 ms   Sum: 1.07 sec
-Area tested: 32GB     Average: 10.87 ms   Max: 16.44 ms   Sum: 1.03 sec
-Area tested: 64GB     Average: 11.32 ms   Max: 16.32 ms   Sum: 1.08 sec
-Area tested: 128GB    Average: 11.59 ms   Max: 21.04 ms   Sum: 1.10 sec
-Area tested: 256GB    Average: 12.96 ms   Max: 22.44 ms   Sum: 1.23 sec
-Area tested: 512GB    Average: 13.73 ms   Max: 24.10 ms   Sum: 1.30 sec
-Area tested: 1TB      Average: 15.31 ms   Max: 25.82 ms   Sum: 1.45 sec
-Area tested: 1.36TB   Average: 17.02 ms   Max: 30.45 ms   Sum: 1.62 sec
+Area tested: 1MB      Average: 0.12 ms   Max: 0.39 ms   Sum: 0.01 sec
+Area tested: 2MB      Average: 0.13 ms   Max: 0.32 ms   Sum: 0.01 sec
+Area tested: 4MB      Average: 0.15 ms   Max: 0.39 ms   Sum: 0.01 sec
+Area tested: 8MB      Average: 0.21 ms   Max: 2.21 ms   Sum: 0.02 sec
+Area tested: 16MB     Average: 0.66 ms   Max: 5.87 ms   Sum: 0.06 sec
+Area tested: 32MB     Average: 1.96 ms   Max: 10.75 ms   Sum: 0.19 sec
+Area tested: 64MB     Average: 4.37 ms   Max: 12.42 ms   Sum: 0.42 sec
+Area tested: 128MB    Average: 6.12 ms   Max: 12.78 ms   Sum: 0.58 sec
+Area tested: 256MB    Average: 7.32 ms   Max: 13.00 ms   Sum: 0.69 sec
+Area tested: 512MB    Average: 7.67 ms   Max: 12.88 ms   Sum: 0.73 sec
+Area tested: 1GB      Average: 8.36 ms   Max: 13.96 ms   Sum: 0.79 sec
+Area tested: 2GB      Average: 8.70 ms   Max: 17.94 ms   Sum: 0.83 sec
+Area tested: 4GB      Average: 9.46 ms   Max: 15.18 ms   Sum: 0.90 sec
+Area tested: 8GB      Average: 9.29 ms   Max: 14.35 ms   Sum: 0.88 sec
+Area tested: 16GB     Average: 9.51 ms   Max: 15.88 ms   Sum: 0.90 sec
+Area tested: 32GB     Average: 10.30 ms   Max: 16.09 ms   Sum: 0.98 sec
+Area tested: 64GB     Average: 10.29 ms   Max: 16.73 ms   Sum: 0.98 sec
+Area tested: 128GB    Average: 11.30 ms   Max: 22.05 ms   Sum: 1.07 sec
+Area tested: 256GB    Average: 12.10 ms   Max: 20.52 ms   Sum: 1.15 sec
+Area tested: 512GB    Average: 13.32 ms   Max: 22.60 ms   Sum: 1.27 sec
+Area tested: 1TB      Average: 14.36 ms   Max: 26.34 ms   Sum: 1.36 sec
+Area tested: 1.36TB   Average: 15.46 ms   Max: 25.02 ms   Sum: 1.47 sec
 
 Measuring: Random seek time using random areas of disk.
 Sample size: 100 
-Area tested: 1MB      Average: 5.59 ms   Max: 13.40 ms   Sum: 0.53 sec
-Area tested: 2MB      Average: 6.78 ms   Max: 13.19 ms   Sum: 0.64 sec
-Area tested: 4MB      Average: 6.44 ms   Max: 12.26 ms   Sum: 0.61 sec
-Area tested: 8MB      Average: 7.20 ms   Max: 14.03 ms   Sum: 0.68 sec
-Area tested: 16MB     Average: 7.33 ms   Max: 14.43 ms   Sum: 0.70 sec
-Area tested: 32MB     Average: 6.74 ms   Max: 12.37 ms   Sum: 0.64 sec
-Area tested: 64MB     Average: 8.25 ms   Max: 13.47 ms   Sum: 0.78 sec
-Area tested: 128MB    Average: 7.99 ms   Max: 13.59 ms   Sum: 0.76 sec
-Area tested: 256MB    Average: 8.29 ms   Max: 13.44 ms   Sum: 0.79 sec
-Area tested: 512MB    Average: 8.51 ms   Max: 13.59 ms   Sum: 0.81 sec
-Area tested: 1GB      Average: 10.45 ms   Max: 34.34 ms   Sum: 0.99 sec
-Area tested: 2GB      Average: 9.62 ms   Max: 24.73 ms   Sum: 0.91 sec
-Area tested: 4GB      Average: 11.44 ms   Max: 23.23 ms   Sum: 1.09 sec
-Area tested: 8GB      Average: 12.61 ms   Max: 27.58 ms   Sum: 1.20 sec
-Area tested: 16GB     Average: 10.93 ms   Max: 20.76 ms   Sum: 1.04 sec
-Area tested: 32GB     Average: 12.34 ms   Max: 27.61 ms   Sum: 1.17 sec
-Area tested: 64GB     Average: 12.54 ms   Max: 18.88 ms   Sum: 1.19 sec
-Area tested: 128GB    Average: 13.22 ms   Max: 27.17 ms   Sum: 1.26 sec
-Area tested: 256GB    Average: 13.10 ms   Max: 25.23 ms   Sum: 1.24 sec
-Area tested: 512GB    Average: 15.48 ms   Max: 29.29 ms   Sum: 1.47 sec
-Area tested: 1TB      Average: 16.37 ms   Max: 30.64 ms   Sum: 1.56 sec
-Area tested: 1.36TB   Average: 17.54 ms   Max: 35.79 ms   Sum: 1.67 sec
+Area tested: 1MB      Average: 6.15 ms   Max: 15.96 ms   Sum: 0.58 sec
+Area tested: 2MB      Average: 7.67 ms   Max: 33.55 ms   Sum: 0.73 sec
+Area tested: 4MB      Average: 6.64 ms   Max: 12.16 ms   Sum: 0.63 sec
+Area tested: 8MB      Average: 6.80 ms   Max: 12.60 ms   Sum: 0.65 sec
+Area tested: 16MB     Average: 7.56 ms   Max: 12.68 ms   Sum: 0.72 sec
+Area tested: 32MB     Average: 7.80 ms   Max: 12.75 ms   Sum: 0.74 sec
+Area tested: 64MB     Average: 7.91 ms   Max: 12.69 ms   Sum: 0.75 sec
+Area tested: 128MB    Average: 7.61 ms   Max: 13.56 ms   Sum: 0.72 sec
+Area tested: 256MB    Average: 8.15 ms   Max: 13.40 ms   Sum: 0.77 sec
+Area tested: 512MB    Average: 7.86 ms   Max: 13.36 ms   Sum: 0.75 sec
+Area tested: 1GB      Average: 8.29 ms   Max: 14.06 ms   Sum: 0.79 sec
+Area tested: 2GB      Average: 10.20 ms   Max: 20.20 ms   Sum: 0.97 sec
+Area tested: 4GB      Average: 11.39 ms   Max: 28.89 ms   Sum: 1.08 sec
+Area tested: 8GB      Average: 11.99 ms   Max: 27.23 ms   Sum: 1.14 sec
+Area tested: 16GB     Average: 13.09 ms   Max: 23.16 ms   Sum: 1.24 sec
+Area tested: 32GB     Average: 12.10 ms   Max: 22.26 ms   Sum: 1.15 sec
+Area tested: 64GB     Average: 12.79 ms   Max: 22.07 ms   Sum: 1.22 sec
+Area tested: 128GB    Average: 12.58 ms   Max: 19.73 ms   Sum: 1.20 sec
+Area tested: 256GB    Average: 13.97 ms   Max: 28.25 ms   Sum: 1.33 sec
+Area tested: 512GB    Average: 15.25 ms   Max: 24.82 ms   Sum: 1.45 sec
+Area tested: 1TB      Average: 15.72 ms   Max: 26.74 ms   Sum: 1.49 sec
+Area tested: 1.36TB   Average: 15.64 ms   Max: 26.40 ms   Sum: 1.49 sec
+
+Measuring: Random read throughput with various sizes.
+Buffer: 1MB    Count: 128   Average: 33.20MB/sec   Total time: 3.86 sec
+Buffer: 2MB    Count:  64   Average: 44.84MB/sec   Total time: 2.85 sec
+Buffer: 4MB    Count:  32   Average: 61.43MB/sec   Total time: 2.08 sec
+Buffer: 8MB    Count:  16   Average: 67.89MB/sec   Total time: 1.89 sec
+Buffer: 16MB   Count:   8   Average: 72.49MB/sec   Total time: 1.77 sec
+Buffer: 32MB   Count:   4   Average: 65.66MB/sec   Total time: 1.95 sec
+Buffer: 64MB   Count:   2   Average: 80.67MB/sec   Total time: 1.59 sec
 
 Measuring: Sequential read throughput using beginning of disk.
-Buffer size: 64MB  Buffer count: 16  Total: 1GB
-Average throughput: 104.52MB/sec
-Total time: 9.80 sec
-
-Measuring: Sequential read throughput using random areas of disk.
-Buffer size: 64MB  Buffer count: 16  Total: 1GB
-Average throughput: 72.49MB/sec
-Total time: 14.13 sec
+Buffer: 16MB   Count: 64   Average: 105.61MB/sec   Total: 1GB
