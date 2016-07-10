@@ -44,53 +44,50 @@ samplesize = 100
 displaytimes = '-v' in sys.argv
 displaysamplesize = 24
 
-for randomareas in [False,True]:
-    print
-    print 'Measuring: Random seek time {0}'.format(
-        'using random areas of disk.' if randomareas else 'using beginning of disk.')
-    print 'Sample size: {0} {1}'.format(
-        samplesize, '(displayed {0})'.format(displaysamplesize) if displaytimes else '')
+# for randomareas in [False,True]:
+#     print
+#     print 'Measuring: Random seek time {0}'.format(
+#         'using random areas of disk.' if randomareas else 'using beginning of disk.')
+#     print 'Sample size: {0} {1}'.format(
+#         samplesize, '(displayed {0})'.format(displaysamplesize) if displaytimes else '')
 
-    for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
-        if area > disksize:
-            continue
+#     for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
+#         if area > disksize:
+#             continue
 
-        os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
+#         os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
-        times = []
-        disk.seek(0)
-        disk.read(512)
-        for _ in range(samplesize):
-            left = random.randint(0, disksize-area) if randomareas else 0
-            right = left + random.randint(0, area)
-            disk.seek(left)
-            disk.read(512)
-            start = time.time()
-            disk.seek(right)
-            disk.read(512)
-            finish = time.time()
-            times.append(finish-start)
+#         times = []
+#         disk.seek(0)
+#         disk.read(512)
+#         for _ in range(samplesize):
+#             left = random.randint(0, disksize-area) if randomareas else 0
+#             right = left + random.randint(0, area)
+#             disk.seek(left)
+#             disk.read(512)
+#             start = time.time()
+#             disk.seek(right)
+#             disk.read(512)
+#             finish = time.time()
+#             times.append(finish-start)
 
-        times = sorted(times)[:samplesize*95/100]
-        print 'Area tested: {0:6}   Average: {1:3.2f} ms   Max: {2:3.2f} ms   Sum: {3:0.2f} sec'.format(
-            BytesString(area) if area < disksize else BytesStringFloat(area), 
-            sum(times)/len(times)*1000, max(times)*1000, sum(times))
-        if displaytimes:
-            print 'Read times: {0} ... {1} ms'.format(
-                ' '.join(['{0:0.2f}'.format(x*1000) for x in times[:displaysamplesize/2]]), 
-                ' '.join(['{0:0.2f}'.format(x*1000) for x in times[-displaysamplesize/2:]]))
+#         times = sorted(times)[:samplesize*95/100]
+#         print 'Area tested: {0:6}   Average: {1:3.2f} ms   Max: {2:3.2f} ms   Sum: {3:0.2f} sec'.format(
+#             BytesString(area) if area < disksize else BytesStringFloat(area), 
+#             sum(times)/len(times)*1000, max(times)*1000, sum(times))
+#         if displaytimes:
+#             print 'Read times: {0} ... {1} ms'.format(
+#                 ' '.join(['{0:0.2f}'.format(x*1000) for x in times[:displaysamplesize/2]]), 
+#                 ' '.join(['{0:0.2f}'.format(x*1000) for x in times[-displaysamplesize/2:]]))
 
 
+bufcount = 64
 
-bufsize = BytesInt('64MB')
-bufcount = 16
+print
+print 'Measuring: Random read throughput with various sizes.'
+print 'Buffer count: {0}'.format(bufcount)
 
-for randomareas in [False,True]:
-    print
-    print 'Measuring: Sequential read throughput {0}'.format(
-        'using random areas of disk.' if randomareas else 'using beginning of disk.')
-    print 'Buffer size: {0}  Buffer count: {1}  Total: {2}'.format(
-        BytesString(bufsize), bufcount, BytesString(bufsize*bufcount))
+for bufsize in [BytesInt('1MB')*2**i for i in range(0,7)]:
 
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
@@ -98,19 +95,43 @@ for randomareas in [False,True]:
     disk.seek(0)
     disk.read(512)
     for _ in range(bufcount):
-        if randomareas:
-            left = random.randint(0, disksize-bufsize)
-            disk.seek(left)
-            disk.read(512)
-
         start = time.time()
+        left = random.randint(0, disksize-bufsize)
+        disk.seek(left)
         disk.read(bufsize)
         finish = time.time()
         times.append(finish-start)
 
     avg = bufsize/(sum(times)/len(times))
-    print 'Average throughput: {0}/sec'.format(
-        BytesStringFloat(avg))
-    print 'Total time: {0:0.2f} sec'.format(sum(times))
+    print 'Buffer size: {0:6}   Average: {1:6}/sec   Total time: {2:0.2f} sec'.format(
+        BytesString(bufsize), BytesStringFloat(avg), sum(times))
     if displaytimes:
         print 'Read times: {0} sec'.format(' '.join(['{0:0.4f}'.format(x) for x in times]))
+
+
+
+bufsize = BytesInt('16MB')
+bufcount = 64
+
+print
+print 'Measuring: Sequential read throughput using beginning of disk.'
+print 'Buffer size: {0}  Buffer count: {1}  Total: {2}'.format(
+    BytesString(bufsize), bufcount, BytesString(bufsize*bufcount))
+
+os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
+
+times = []
+disk.seek(0)
+disk.read(512)
+for _ in range(bufcount):
+    start = time.time()
+    disk.read(bufsize)
+    finish = time.time()
+    times.append(finish-start)
+
+avg = bufsize/(sum(times)/len(times))
+print 'Average throughput: {0}/sec'.format(
+    BytesStringFloat(avg))
+print 'Total time: {0:0.2f} sec'.format(sum(times))
+if displaytimes:
+    print 'Read times: {0} sec'.format(' '.join(['{0:0.4f}'.format(x) for x in times]))
