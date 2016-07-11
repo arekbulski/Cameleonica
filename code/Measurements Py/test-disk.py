@@ -82,10 +82,10 @@ if modeseeks or modeseeksrandom:
                     right = left + random.randint(0, area)
                     disk.seek(left)
                     disk.read(bufsize)
-                    start = time.time()
+                    start = time.perf_counter()
                     disk.seek(right)
                     disk.read(bufsize)
-                    finish = time.time()
+                    finish = time.perf_counter()
                     times.append(finish-start)
 
                 print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
@@ -109,11 +109,11 @@ if modethroughputrandom:
         disk.seek(0)
         disk.read(512)
         for _ in range(bufcount):
-            start = time.time()
+            start = time.perf_counter()
             left = random.randint(0, disksize-bufsize)
             disk.seek(left)
             disk.read(bufsize)
-            finish = time.time()
+            finish = time.perf_counter()
             times.append(finish-start)
 
         avg = bufsize/(sum(times)/len(times))
@@ -136,9 +136,9 @@ if modethroughput:
     disk.seek(0)
     disk.read(512)
     for _ in range(bufcount):
-        start = time.time()
+        start = time.perf_counter()
         disk.read(bufsize)
-        finish = time.time()
+        finish = time.perf_counter()
         times.append(finish-start)
 
     avg = bufsize/(sum(times)/len(times))
