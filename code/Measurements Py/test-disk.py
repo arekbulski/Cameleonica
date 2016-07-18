@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import sys, os, time, random, ctypes
+import sys, os, time, random, ctypes, concurrent.futures
 
 
 #--------------------------------------------------------------------------------------------------
@@ -64,7 +64,7 @@ bufsize = 512
 bufcount = 100
 
 print()
-print('Measuring: Random seek time using readahead.')
+print('Measuring: Concurrent random seek time using readahead.')
 print('Samples: {0}   Sample size: {1}'.format(
     bufcount, bufsize))
 
@@ -87,10 +87,46 @@ for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
     disk.read(bufsize)
     for i in offsets:
         start = time.perf_counter()
-        disk.seek(i)
-        disk.read(bufsize)
+        os.pread(disk.fileno(), bufsize, i)
         finish = time.perf_counter()
         times.append(finish-start)
+
+    print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
+        BytesString(area) if area < disksize else BytesStringFloat(area), 
+        sum(times)/len(times)*1000, max(times)*1000, sum(times)))
+
+
+#--------------------------------------------------------------------------------------------------
+
+bufsize = 512
+bufcount = 100
+
+print()
+print('Measuring: Concurrent random seek time using thread pool.')
+print('Samples: {0}   Sample size: {1}'.format(
+    bufcount, bufsize))
+
+for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
+    if area > disksize:
+        continue
+
+    os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
+
+    offsets = []
+    for _ in range(bufcount):
+        right = random.randint(0, area)
+        offsets.append(right)
+
+    times = list(offsets)
+    def task(i):
+        start = time.perf_counter()
+        os.pread(disk.fileno(), bufsize, offsets[i])
+        finish = time.perf_counter()
+        times[i] = (finish-start)
+
+    with concurrent.futures.ThreadPoolExecutor(16) as pool:
+        for i in range(len(offsets)):
+            pool.submit(task, i)
 
     print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
         BytesString(area) if area < disksize else BytesStringFloat(area), 
@@ -121,14 +157,12 @@ if modeseeks or modeseeksrandom:
                 times = []
                 disk.seek(0)
                 disk.read(bufsize)
-                for _ in range(bufcount):
+                for i in range(bufcount):
                     left = random.randint(0, disksize-area) if randomareas else 0
                     right = left + random.randint(0, area)
-                    disk.seek(left)
-                    disk.read(bufsize)
+                    os.pread(disk.fileno(), bufsize, left)
                     start = time.perf_counter()
-                    disk.seek(right)
-                    disk.read(bufsize)
+                    os.pread(disk.fileno(), bufsize, right)
                     finish = time.perf_counter()
                     times.append(finish-start)
 
@@ -150,13 +184,10 @@ if modethroughputrandom:
         os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
         times = []
-        disk.seek(0)
-        disk.read(512)
         for _ in range(bufcount):
             start = time.perf_counter()
             left = random.randint(0, disksize-bufsize)
-            disk.seek(left)
-            disk.read(bufsize)
+            os.pread(disk.fileno(), bufsize, left)
             finish = time.perf_counter()
             times.append(finish-start)
 
@@ -177,8 +208,8 @@ if modethroughput:
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
     times = []
+    os.pread(disk.fileno(), 512, 0)
     disk.seek(0)
-    disk.read(512)
     for _ in range(bufcount):
         start = time.perf_counter()
         disk.read(bufsize)
