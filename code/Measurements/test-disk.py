@@ -135,40 +135,68 @@ for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
 
 #--------------------------------------------------------------------------------------------------
 
-if modeseeks or modeseeksrandom:
+if modeseeks:
     bufsize = 512
     bufcount = 100
     displaysamplecount = 24
 
-    for randomareas in [False,True]:
-        if (modeseeks and (not randomareas)) or (modeseeksrandom and randomareas):
-            print()
-            print('Measuring: Random seek time {0}'.format(
-                'using random areas of disk.' if randomareas else 'using beginning of disk.'))
-            print('Samples: {0}   Sample size: {1}'.format(
-                bufcount, bufsize))
+    print()
+    print('Measuring: Random seek time using beginning of disk.')
+    print('Samples: {0}   Sample size: {1}'.format(
+        bufcount, bufsize))
 
-            for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
-                if area > disksize:
-                    continue
+    for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
+        if area > disksize:
+            continue
 
-                os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
+        os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
-                times = []
-                disk.seek(0)
-                disk.read(bufsize)
-                for i in range(bufcount):
-                    left = random.randint(0, disksize-area) if randomareas else 0
-                    right = left + random.randint(0, area)
-                    os.pread(disk.fileno(), bufsize, left)
-                    start = time.perf_counter()
-                    os.pread(disk.fileno(), bufsize, right)
-                    finish = time.perf_counter()
-                    times.append(finish-start)
+        times = []
+        os.pread(disk.fileno(), bufsize, 0)
+        for i in range(bufcount):
+            offset = random.randint(0, area)
+            start = time.perf_counter()
+            os.pread(disk.fileno(), bufsize, offset)
+            finish = time.perf_counter()
+            times.append(finish-start)
 
-                print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
-                    BytesString(area) if area < disksize else BytesStringFloat(area), 
-                    sum(times)/len(times)*1000, max(times)*1000, sum(times)))
+        print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
+            BytesString(area) if area < disksize else BytesStringFloat(area), 
+            sum(times)/len(times)*1000, max(times)*1000, sum(times)))
+
+
+#--------------------------------------------------------------------------------------------------
+
+if modeseeksrandom:
+    bufsize = 512
+    bufcount = 100
+    displaysamplecount = 24
+
+    print()
+    print('Measuring: Random seek time using random areas of disk.')
+    print('Samples: {0}   Sample size: {1}'.format(
+        bufcount, bufsize))
+
+    for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
+        if area > disksize:
+            continue
+
+        os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
+
+        times = []
+        os.pread(disk.fileno(), bufsize, 0)
+        for i in range(bufcount):
+            left = random.randint(0, disksize-area)
+            right = left + random.randint(0, area)
+            os.pread(disk.fileno(), bufsize, left)
+            start = time.perf_counter()
+            os.pread(disk.fileno(), bufsize, right)
+            finish = time.perf_counter()
+            times.append(finish-start)
+
+        print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
+            BytesString(area) if area < disksize else BytesStringFloat(area), 
+            sum(times)/len(times)*1000, max(times)*1000, sum(times)))
 
 
 #--------------------------------------------------------------------------------------------------
