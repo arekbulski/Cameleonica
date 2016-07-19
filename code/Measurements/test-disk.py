@@ -37,20 +37,8 @@ disk = open('/dev/sdb', 'rb')
 disksize = disk.seek(0,2)
 os.system('echo noop | sudo tee /sys/block/sdb/queue/scheduler > /dev/null')
 
-print('Syntax: progam [-s -sr -t -tr]:  to run specific modes..')
 print('Disk name: {0}  Disk size: {1}  Scheduler disabled.'.format(
     disk.name, BytesStringFloat(disksize)))
-
-modeseeks = '-s' in sys.argv
-modeseeksrandom = '-sr' in sys.argv
-modethroughput = '-t' in sys.argv
-modethroughputrandom = '-tr' in sys.argv
-allmodes = (not modeseeks) and (not modeseeksrandom) and (not modethroughput) and (not modethroughputrandom)
-if allmodes:
-    modeseeks = True
-    modeseeksrandom = True
-    modethroughput = True
-    modethroughputrandom = True
 
 
 #--------------------------------------------------------------------------------------------------
@@ -135,118 +123,114 @@ for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
 
 #--------------------------------------------------------------------------------------------------
 
-if modeseeks:
-    bufsize = 512
-    bufcount = 100
-    displaysamplecount = 24
+bufsize = 512
+bufcount = 100
+displaysamplecount = 24
 
-    print()
-    print('Measuring: Random seek time using beginning of disk.')
-    print('Samples: {0}   Sample size: {1}'.format(
-        bufcount, bufsize))
+print()
+print('Measuring: Random seek time using beginning of disk.')
+print('Samples: {0}   Sample size: {1}'.format(
+    bufcount, bufsize))
 
-    for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
-        if area > disksize:
-            continue
-
-        os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
-
-        times = []
-        os.pread(disk.fileno(), bufsize, 0)
-        for i in range(bufcount):
-            offset = random.randint(0, area)
-            start = time.perf_counter()
-            os.pread(disk.fileno(), bufsize, offset)
-            finish = time.perf_counter()
-            times.append(finish-start)
-
-        print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
-            BytesString(area) if area < disksize else BytesStringFloat(area), 
-            sum(times)/len(times)*1000, max(times)*1000, sum(times)))
-
-
-#--------------------------------------------------------------------------------------------------
-
-if modeseeksrandom:
-    bufsize = 512
-    bufcount = 100
-    displaysamplecount = 24
-
-    print()
-    print('Measuring: Random seek time using random areas of disk.')
-    print('Samples: {0}   Sample size: {1}'.format(
-        bufcount, bufsize))
-
-    for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
-        if area > disksize:
-            continue
-
-        os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
-
-        times = []
-        os.pread(disk.fileno(), bufsize, 0)
-        for i in range(bufcount):
-            left = random.randint(0, disksize-area)
-            right = left + random.randint(0, area)
-            os.pread(disk.fileno(), bufsize, left)
-            start = time.perf_counter()
-            os.pread(disk.fileno(), bufsize, right)
-            finish = time.perf_counter()
-            times.append(finish-start)
-
-        print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
-            BytesString(area) if area < disksize else BytesStringFloat(area), 
-            sum(times)/len(times)*1000, max(times)*1000, sum(times)))
-
-
-#--------------------------------------------------------------------------------------------------
-
-if modethroughputrandom:
-    print()
-    print('Measuring: Random read throughput with various sizes.')
-
-    for i in range(0,7):
-        bufsize = BytesInt('1MB')*2**i
-        bufcount = 128//2**i
-
-        os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
-
-        times = []
-        for _ in range(bufcount):
-            start = time.perf_counter()
-            left = random.randint(0, disksize-bufsize)
-            os.pread(disk.fileno(), bufsize, left)
-            finish = time.perf_counter()
-            times.append(finish-start)
-
-        avg = bufsize/(sum(times)/len(times))
-        print('Buffer: {0:4}   Average: {1:8}/sec   Samples: {2:3}   Total: {3:0.2f} sec'.format(
-            BytesString(bufsize), BytesStringFloat(avg), bufcount, sum(times)))
-
-
-#--------------------------------------------------------------------------------------------------
-
-if modethroughput:
-    print()
-    print('Measuring: Sequential read throughput using beginning of disk.')
-
-    bufsize = BytesInt('10MB')
-    bufcount = 100
+for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
+    if area > disksize:
+        continue
 
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
     times = []
-    os.pread(disk.fileno(), 512, 0)
-    disk.seek(0)
+    os.pread(disk.fileno(), bufsize, 0)
+    for i in range(bufcount):
+        offset = random.randint(0, area)
+        start = time.perf_counter()
+        os.pread(disk.fileno(), bufsize, offset)
+        finish = time.perf_counter()
+        times.append(finish-start)
+
+    print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
+        BytesString(area) if area < disksize else BytesStringFloat(area), 
+        sum(times)/len(times)*1000, max(times)*1000, sum(times)))
+
+
+#--------------------------------------------------------------------------------------------------
+
+bufsize = 512
+bufcount = 100
+displaysamplecount = 24
+
+print()
+print('Measuring: Random seek time using random areas of disk.')
+print('Samples: {0}   Sample size: {1}'.format(
+    bufcount, bufsize))
+
+for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
+    if area > disksize:
+        continue
+
+    os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
+
+    times = []
+    os.pread(disk.fileno(), bufsize, 0)
+    for i in range(bufcount):
+        left = random.randint(0, disksize-area)
+        right = left + random.randint(0, area)
+        os.pread(disk.fileno(), bufsize, left)
+        start = time.perf_counter()
+        os.pread(disk.fileno(), bufsize, right)
+        finish = time.perf_counter()
+        times.append(finish-start)
+
+    print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
+        BytesString(area) if area < disksize else BytesStringFloat(area), 
+        sum(times)/len(times)*1000, max(times)*1000, sum(times)))
+
+
+#--------------------------------------------------------------------------------------------------
+
+print()
+print('Measuring: Random read throughput with various sizes.')
+
+for i in range(0,7):
+    bufsize = BytesInt('1MB')*2**i
+    bufcount = 128//2**i
+
+    os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
+
+    times = []
     for _ in range(bufcount):
         start = time.perf_counter()
-        disk.read(bufsize)
+        left = random.randint(0, disksize-bufsize)
+        os.pread(disk.fileno(), bufsize, left)
         finish = time.perf_counter()
         times.append(finish-start)
 
     avg = bufsize/(sum(times)/len(times))
     print('Buffer: {0:4}   Average: {1:8}/sec   Samples: {2:3}   Total: {3:0.2f} sec'.format(
         BytesString(bufsize), BytesStringFloat(avg), bufcount, sum(times)))
+
+
+#--------------------------------------------------------------------------------------------------
+
+print()
+print('Measuring: Sequential read throughput using beginning of disk.')
+
+bufsize = BytesInt('10MB')
+bufcount = 100
+
+os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
+
+times = []
+os.pread(disk.fileno(), 512, 0)
+disk.seek(0)
+for _ in range(bufcount):
+    start = time.perf_counter()
+    disk.read(bufsize)
+    finish = time.perf_counter()
+    times.append(finish-start)
+
+avg = bufsize/(sum(times)/len(times))
+print('Buffer: {0:4}   Average: {1:8}/sec   Samples: {2:3}   Total: {3:0.2f} sec'.format(
+    BytesString(bufsize), BytesStringFloat(avg), bufcount, sum(times)))
 
 
 #--------------------------------------------------------------------------------------------------
