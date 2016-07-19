@@ -1,4 +1,3 @@
-Syntax: progam [-s -sr -t -tr]:  to run specific modes..
 Disk name: /dev/sdb  Disk size: 1.36TB  Scheduler disabled.
 
 Measuring: Concurrent random seek time using readahead.
