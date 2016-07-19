@@ -1,4 +1,9 @@
-data = '0' * 10  #just 10 bytes should fit within inode
-for i in xrange(200000):  #200K
-    with open('files/%d' % i, 'w') as f:
+#!/usr/bin/python3
+import sys, os, time, random
+
+data = bytes(10)
+for i in range(200*1000): #10K
+    with open('files/%s' % i, 'wb') as f:
         f.write(data)
+
+os.system("sync")

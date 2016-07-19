@@ -1,4 +1,9 @@
-data = '0' * 51200 #50KB
-for i in xrange(10000): #10K
-    with open('files/%d' % i, 'w') as f:
+#!/usr/bin/python3
+import sys, os, time, random
+
+data = bytes(50*1024)
+for i in range(10000): #10K
+    with open('files/%s' % i, 'wb') as f:
         f.write(data)
+
+os.system("sync")

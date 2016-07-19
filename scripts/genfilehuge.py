@@ -1,4 +1,9 @@
-with open('file1','w') as f:
-    data = '0' * 512
-    for i in xrange(0, 2*1024**3, 512):
+#!/usr/bin/python3
+import sys, os, time, random
+
+with open('file1', 'wb') as f:
+    data = bytes(1024*1024)
+    for i in range(0, int(2e9), len(data)):
         f.write(data)
+
+os.system("sync")

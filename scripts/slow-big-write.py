@@ -15,7 +15,7 @@ with open("file1","wb") as f:
         os.system("sync")
         #os.system("echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null")
         time.sleep(10)
-        print(i, end=" ", flush=1)
+        print(".", end=" ", flush=1)
     print()
 
 os.system("filefrag file1")
