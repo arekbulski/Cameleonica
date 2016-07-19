@@ -220,7 +220,6 @@ bufcount = 100
 os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
 times = []
-os.pread(disk.fileno(), 512, 0)
 disk.seek(0)
 for _ in range(bufcount):
     start = time.perf_counter()
