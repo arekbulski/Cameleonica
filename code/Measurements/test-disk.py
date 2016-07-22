@@ -33,9 +33,10 @@ def BytesStringFloat(n):
 
 #--------------------------------------------------------------------------------------------------
 
-disk = open('/dev/sdb', 'rb')
+dev = os.path.realpath(sys.argv[1]).split('/')[-1]
+disk = open('/dev/%s' % dev, 'rb')
 disksize = disk.seek(0,2)
-os.system('echo noop | sudo tee /sys/block/sdb/queue/scheduler > /dev/null')
+os.system('echo noop | sudo tee /sys/block/%s/queue/scheduler > /dev/null' % dev)
 
 print('Disk name: {0}  Disk size: {1}  Scheduler disabled.'.format(
     disk.name, BytesStringFloat(disksize)))
@@ -234,7 +235,7 @@ print('Buffer: {0:4}   Average: {1:8}/sec   Samples: {2:3}   Total: {3:0.2f} sec
 
 #--------------------------------------------------------------------------------------------------
 
-os.system('echo cfq | sudo tee /sys/block/sdb/queue/scheduler > /dev/null')
+os.system('echo cfq | sudo tee /sys/block/%s/queue/scheduler > /dev/null' % dev)
 
 print()
 print('Returned disk scheduler to CFQ.')
