@@ -33,7 +33,7 @@ def BytesStringFloat(n):
 
 #--------------------------------------------------------------------------------------------------
 
-disk = open('/dev/sdb', 'rb')
+disk = open(sys.argv[1], 'rb')
 disksize = disk.seek(0,2)
 os.system('echo noop | sudo tee /sys/block/sdb/queue/scheduler > /dev/null')
 
