@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-import demosafeappend
+import keyvaluestore
 
-c = demosafeappend.Container("/tmp/test-demosafeappend")
+c = keyvaluestore.Container("/tmp/test-keyvaluestore")
 assert c.getkeys() == []
 c.set(1, 2)
 assert c.get(1) == ("any picklable object", 2)
