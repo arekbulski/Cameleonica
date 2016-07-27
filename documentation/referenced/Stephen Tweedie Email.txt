@@ -1,0 +1,69 @@
+On Sun, 2015-10-18 at 23:39 +0200, Arek Bulski wrote:
+
+> I read an interview where you said that disks nowadays guarantee
+> atomic sector writes. I am inclined to believe that. However, I
+> stumbled upon some comments on LWN saying that its all baloney because
+> electronics outside the disk can fail before the disk, due to power
+> loss, and therefore pass corrupted data to disk. Is there some
+> citation that could authoritatively confirm one way or another?
+
+Both can be true; though the exact characteristics of (especially
+consumer-grade) devices are often not well-specified and written down.
+But generally most disks can guarantee atomic writes *if* the write
+actually makes media, and *if* there are no other failures anywhere in
+the memory or IO chain.
+
+But as always, your guarantees are only as good as the weakest link in
+the chain.  If power fails, you also have writeback caches to worry
+about; and disks are often fairly relaxed about when they have made
+writes persistent, in order to gain performance advantages.  There are
+ways to ensure persistence via disabling of writeback caching, use of
+barriers and IO flags to force writes to media, etc; but guarantees vary
+from disk to disk, especially for consumer devices.
+
+Also a power supply will generally lose voltage gradually, not all at
+once.  I've certainly heard anecdotally that this can cause soft memory
+errors from DRAM before it gets to the point where the system is fully
+powered-down --- DRAM is very much an analogue technology these days so
+can be vulnerable to noisy or lowered voltage.
+
+There are also a number of recent research papers on error rates of disk
+data --- for very large storage arrays, simply getting the wrong data
+back becomes increasingly likely.  There are checksum techniques to
+guard against this sort of thing to some extent.
+
+The extent to which a particular system copes with all these failure
+modes is likely to be down to just how much attention the manufacturer
+of each part of the system has paid to them.
+
+> For disclosure, I am slowly pursuing a PhD with my own filesystem
+> being the topic. Atomic writes are an important issue for me.
+
+Computers are very complex systems.  Full data integrity depends on
+nothing being corrupt anywhere --- not in CPU, not in cache, not in main
+memory, nor in any of the motherboard interconnects; not in disk
+cabling, nor in the disk cache, nor on the disk itself.  And integrity
+in the presence of failures depends on every level of that system
+working predictably in the failure modes you care about.
+
+No filesystem can guarantee all of that; it's perfectly fine (even
+required) to make assumptions about what guarantees the hardware must
+provide in order for the filesystem to work correctly.  And if cheap
+hardware perhaps fails to provide the same level of guarantee, then
+that's perfectly acceptable --- just the same way that non-ECC DRAM
+provides less assurances than ECC DRAM, and RAID0 provides less
+protection than RAID1.
+
+If you care about atomic writes, then it's probably OK just to assume
+that the disk provides them, and state that ensuring that property in
+the presence of power failures is the responsibility of the hardware.
+Doing more requires deep understanding of the failure modes and
+attention to each possible case.
+
+btw, I haven't been very deeply involved in storage for a number of
+years now, so I'm not the best expert; but there is definitely ongoing
+work in this area, eg. current T10 (scsi specification) work on
+providing multi-sector atomicity guarantees.
+
+Thanks,
+ Stephen
