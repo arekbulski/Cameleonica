@@ -2,7 +2,9 @@
 import struct, pickle, os
 
 class Container:
-    """Key-value file based database. Requires an *atomic ordered filesystem* to guarantee crash consistency. Database can get compacted by sparsing the file. No thread safety. No file locking or concurrency. Pickle module restrictions apply."""
+    """Key-value file based database. Item access can only be used for single key query and update so no slices. Provides len.
+
+    Requires an *atomic ordered filesystem* to guarantee crash consistency. Database can get compacted by sparsing the file. No thread safety. No file locking or concurrency. Pickle module restrictions apply."""
 
     def __init__(self, filename):
         """Constructor. Opens a file holding database that is of required format or is empty. Changes need to be manually committed to disk."""
@@ -13,8 +15,16 @@ class Container:
         self.revert()
 
     def __del__(self):
-        """Destructor."""
         self.file.close()
+
+    def __getitem__(self, key):
+        return self.get(key)
+
+    def __setitem__(self, key, value):
+        self.set(key, value)
+
+    def __len__(self):
+        return len(self.keys)
 
     def get(self, key):
         """Returns the value for specified key. Throws KeyError if key was not found."""
