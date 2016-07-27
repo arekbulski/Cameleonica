@@ -4,14 +4,17 @@ import struct, pickle, os
 class Container:
     """Key-value file based database. Requires an *atomic ordered filesystem* to guarantee crash consistency. Database can get compacted by sparsing the file. No thread safety. No file locking or concurrency. Pickle module restrictions apply."""
 
-    def __init__(self, filename, *, autocommit=False):
-        """Constructor. Opens a file holding database that is of required format or is empty. By default, changes need to be manually committed to disk."""
+    def __init__(self, filename):
+        """Constructor. Opens a file holding database that is of required format or is empty. Changes need to be manually committed to disk."""
         try:
             self.file = open(filename, "r+b")
         except FileNotFoundError:
             self.file = open(filename, "w+b")
-        self.autocommit = autocommit
         self.revert()
+
+    def __del__(self):
+        """Destructor."""
+        self.file.close()
 
     def get(self, key):
         """Returns the value for specified key. Throws KeyError if key was not found."""
@@ -30,24 +33,20 @@ class Container:
         dumplen = len(dump)
         self.file.write(dump)
         self.keys[key] = (dumpat, dumplen)
-        self.internalautocommit()
 
     def setfrom(self, key, sourcekey)
         """Assigns existing value to another key. This uses less disk space than setting keys separately. Changes are not persisted until commited."""
         self.keys[key] = self.keys[sourcekey]
-        self.internalautocommit()
 
     def remove(self, key):
         """Removes a specified existing key-value. Throws KeyError if key not found. Reclaims disk space by sparsing the file. Changes are not persisted until commited."""
         dumpat, dumplen = self.keys.pop(key)
         self.awaitingpunch.append((dumpat, dumplen))
-        self.internalautocommit()
 
     def removeall(self):
         """Removes all key-values. Reclaims disk space by truncating the file. Changes are not persisted until commited."""
         self.awaitingpunch.extend(self.keys)
         self.keys = {}
-        self.internalautocommit()
 
     def commit(self):
         """Persists changes made to the database."""
@@ -64,7 +63,7 @@ class Container:
             if sum(dump):
                 rootat, rootlen = struct.unpack("<LL", dump)
                 self.awaitingpunch.append((rootat, rootlen))
-                
+
             for punchat, punchlen in self.awaitingpunch.items():
                 pass
             self.awaitingpunch.clear()
@@ -72,11 +71,6 @@ class Container:
             self.file.seek(0, 0)
             self.file.truncate()
             self.awaitingpunch.clear()
-
-    def internalautocommit(self):
-        """Used internally."""
-        if self.autocommit:
-            self.commit()
 
     def revert(self):
         """Rolls back the changes made to the database since last commit."""
