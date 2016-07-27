@@ -2,7 +2,7 @@
 import struct, pickle, os
 
 class Container:
-    """Key-value file based database. Requires an *atomic ordered filesystem* to guarantee crash consistency. Currently database never shrinks. No thread safety. No file locking or concurrency. Pickle module restrictions apply."""
+    """Key-value file based database. Requires an *atomic ordered filesystem* to guarantee crash consistency. Database can get compacted by sparsing the file. No thread safety. No file locking or concurrency. Pickle module restrictions apply."""
 
     def __init__(self, filename, *, autocommit=False):
         """Constructor. Opens a file holding database that is of required format or is empty. By default, changes need to be manually committed to disk."""
@@ -38,12 +38,14 @@ class Container:
         self.internalautocommit()
 
     def remove(self, key):
-        """Removes a specified existing key-value. Throws KeyError if key not found. Does not reclaim disk space yet. Changes are not persisted until commited."""
-        self.keys.pop(key)
+        """Removes a specified existing key-value. Throws KeyError if key not found. Reclaims disk space by sparsing the file. Changes are not persisted until commited."""
+        dumpat, dumplen = self.keys.pop(key)
+        self.awaitingpunch.append((dumpat, dumplen))
         self.internalautocommit()
 
     def removeall(self):
-        """Removes all key-values. Reclaims entire disk space. Changes are not persisted until commited."""
+        """Removes all key-values. Reclaims disk space by truncating the file. Changes are not persisted until commited."""
+        self.awaitingpunch.extend(self.keys)
         self.keys = {}
         self.internalautocommit()
 
@@ -56,11 +58,22 @@ class Container:
             self.file.write(dump)
             self.file.seek(0, 0)
             self.file.write(struct.pack("<LL", dumpat, dumplen))
+
+            self.file.seek(0, 0)
+            dump = self.file.read(8)
+            if sum(dump):
+                rootat, rootlen = struct.unpack("<LL", dump)
+                self.awaitingpunch.append((rootat, rootlen))
+                
+            for punchat, punchlen in self.awaitingpunch.items():
+                pass
+            self.awaitingpunch.clear()
         else:
             self.file.seek(0, 0)
             self.file.truncate()
+            self.awaitingpunch.clear()
 
-    def internalautocommit():
+    def internalautocommit(self):
         """Used internally."""
         if self.autocommit:
             self.commit()
@@ -73,5 +86,7 @@ class Container:
             rootat, rootlen = struct.unpack("<LL", dump)
             self.file.seek(rootat, 0)
             self.keys = pickle.loads(self.file.read(rootlen))
+            self.awaitingpunch = []
         else:
             self.keys = {}
+            self.awaitingpunch = []
