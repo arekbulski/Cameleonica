@@ -1,5 +1,11 @@
 #!/usr/bin/python3
-import struct, pickle, os
+import struct, pickle, os, ctypes
+
+libc = ctypes.cdll.LoadLibrary("libc.so.6")
+
+def fallocate(fd, mode, offset, len):
+    libc.fallocate(ctypes.c_int(fd), ctypes.c_int(mode), ctypes.c_longlong(offset), ctypes.c_longlong(len))
+
 
 class Container:
     """Key-value file based database. Item access can only be used for single key query and update so no slices. Provides len.
@@ -50,36 +56,40 @@ class Container:
 
     def remove(self, key):
         """Removes a specified existing key-value. Throws KeyError if key not found. Reclaims disk space by sparsing the file. Changes are not persisted until commited."""
-        dumpat, dumplen = self.keys.pop(key)
-        self.awaitingpunch.append((dumpat, dumplen))
+        punchat, punchlen = self.keys.pop(key)
+        self.awaitingpunch.append((punchat, punchlen))
 
     def removeall(self):
         """Removes all key-values. Reclaims disk space by truncating the file. Changes are not persisted until commited."""
-        self.awaitingpunch.extend(self.keys)
+        for punchat, punchlen in self.keys.items():
+            self.awaitingpunch.append((punchat, punchlen))
         self.keys = {}
 
     def commit(self):
         """Persists changes made to the database."""
         if self.keys:
-            dump = pickle.dumps(self.keys)
-            dumpat = max(8, self.file.seek(0, 2))
-            dumplen = len(dump)
-            self.file.write(dump)
-            self.file.seek(0, 0)
-            self.file.write(struct.pack("<LL", dumpat, dumplen))
-
             self.file.seek(0, 0)
             dump = self.file.read(8)
             if sum(dump):
                 rootat, rootlen = struct.unpack("<LL", dump)
                 self.awaitingpunch.append((rootat, rootlen))
 
+            dump = pickle.dumps(self.keys)
+            dumpat = max(8, self.file.seek(0, 2))
+            dumplen = len(dump)
+            self.file.write(dump)
+            self.file.flush()
+            os.fsync(self.file.fileno())
+            self.file.seek(0, 0)
+            self.file.write(struct.pack("<LL", dumpat, dumplen))
+            self.file.flush()
+            os.fsync(self.file.fileno())
+
             for punchat, punchlen in self.awaitingpunch.items():
-                pass
+                fallocate(self.file.fileno(), 3, punchat, punchlen)
             self.awaitingpunch.clear()
         else:
-            self.file.seek(0, 0)
-            self.file.truncate()
+            self.file.truncate(0)
             self.awaitingpunch.clear()
 
     def revert(self):
