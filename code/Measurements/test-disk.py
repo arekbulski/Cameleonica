@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import sys, os, time, random, ctypes, concurrent.futures
+import sys, os, time, random, ctypes
 
 
 #--------------------------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ def BytesStringFloat(n):
 
 dev = os.path.realpath(sys.argv[1]).split('/')[-1]
 disk = open('/dev/%s' % dev, 'rb')
-disksize = disk.seek(0,2)
+disksize = disk.seek(0, 2)
 os.system('echo noop | sudo tee /sys/block/%s/queue/scheduler > /dev/null' % dev)
 
 print('Disk name: {0}  Disk size: {1}  Scheduler disabled.'.format(
@@ -63,17 +63,13 @@ for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
 
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
-    offsets = []
-    for _ in range(bufcount):
-        right = random.randint(0, area)
-        offsets.append(right)
+    offsets = [random.randint(0, area) for i in range(bufcount)]
 
     for i in offsets:
         readahead(disk.fileno(), i, bufsize)
 
     times = []
-    disk.seek(0)
-    disk.read(bufsize)
+    os.pread(disk.fileno(), bufsize, 0)
     for i in offsets:
         start = time.perf_counter()
         os.pread(disk.fileno(), bufsize, i)
@@ -89,44 +85,6 @@ for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
 
 bufsize = 512
 bufcount = 100
-
-print()
-print('Measuring: Concurrent random seek time using thread pool.')
-print('Samples: {0}   Sample size: {1}'.format(
-    bufcount, bufsize))
-
-for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
-    if area > disksize:
-        continue
-
-    os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
-
-    offsets = []
-    for _ in range(bufcount):
-        right = random.randint(0, area)
-        offsets.append(right)
-
-    times = list(offsets)
-    def task(i):
-        start = time.perf_counter()
-        os.pread(disk.fileno(), bufsize, offsets[i])
-        finish = time.perf_counter()
-        times[i] = (finish-start)
-
-    with concurrent.futures.ThreadPoolExecutor(16) as pool:
-        for i in range(len(offsets)):
-            pool.submit(task, i)
-
-    print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
-        BytesString(area) if area < disksize else BytesStringFloat(area), 
-        sum(times)/len(times)*1000, max(times)*1000, sum(times)))
-
-
-#--------------------------------------------------------------------------------------------------
-
-bufsize = 512
-bufcount = 100
-displaysamplecount = 24
 
 print()
 print('Measuring: Random seek time using beginning of disk.')
@@ -157,7 +115,6 @@ for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
 
 bufsize = 512
 bufcount = 100
-displaysamplecount = 24
 
 print()
 print('Measuring: Random seek time using random areas of disk.')
@@ -173,11 +130,11 @@ for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
     times = []
     os.pread(disk.fileno(), bufsize, 0)
     for i in range(bufcount):
-        left = random.randint(0, disksize-area)
-        right = left + random.randint(0, area)
-        os.pread(disk.fileno(), bufsize, left)
+        pre = random.randint(0, disksize-area)
+        offset = left + random.randint(0, area)
+        os.pread(disk.fileno(), bufsize, pre)
         start = time.perf_counter()
-        os.pread(disk.fileno(), bufsize, right)
+        os.pread(disk.fileno(), bufsize, offset)
         finish = time.perf_counter()
         times.append(finish-start)
 
@@ -199,9 +156,9 @@ for i in range(0,7):
 
     times = []
     for _ in range(bufcount):
+        offset = random.randint(0, disksize-bufsize)
         start = time.perf_counter()
-        left = random.randint(0, disksize-bufsize)
-        os.pread(disk.fileno(), bufsize, left)
+        os.pread(disk.fileno(), bufsize, offset)
         finish = time.perf_counter()
         times.append(finish-start)
 
