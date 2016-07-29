@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import sys, os, time, random, ctypes
+import sys, os, time, timeit, random, ctypes
 
 
 #--------------------------------------------------------------------------------------------------
@@ -63,18 +63,12 @@ for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
 
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
-    offsets = [random.randint(0, area) for i in range(bufcount)]
+    offsets = [random.randint(0, area-bufsize) for i in range(bufcount)]
 
     for i in offsets:
         readahead(disk.fileno(), i, bufsize)
 
-    times = []
-    os.pread(disk.fileno(), bufsize, 0)
-    for i in offsets:
-        start = time.perf_counter()
-        os.pread(disk.fileno(), bufsize, i)
-        finish = time.perf_counter()
-        times.append(finish-start)
+    times = [timeit.timeit(lambda: os.pread(disk.fileno(), bufsize, i), number=1) for i in offsets]
 
     print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
         BytesString(area) if area < disksize else BytesStringFloat(area), 
@@ -97,46 +91,10 @@ for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
 
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
-    times = []
+    offsets = [random.randint(0, area-bufsize) for i in range(bufcount)]
+
     os.pread(disk.fileno(), bufsize, 0)
-    for i in range(bufcount):
-        offset = random.randint(0, area)
-        start = time.perf_counter()
-        os.pread(disk.fileno(), bufsize, offset)
-        finish = time.perf_counter()
-        times.append(finish-start)
-
-    print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
-        BytesString(area) if area < disksize else BytesStringFloat(area), 
-        sum(times)/len(times)*1000, max(times)*1000, sum(times)))
-
-
-#--------------------------------------------------------------------------------------------------
-
-bufsize = 512
-bufcount = 100
-
-print()
-print('Measuring: Random seek time using random areas of disk.')
-print('Samples: {0}   Sample size: {1}'.format(
-    bufcount, bufsize))
-
-for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
-    if area > disksize:
-        continue
-
-    os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
-
-    times = []
-    os.pread(disk.fileno(), bufsize, 0)
-    for i in range(bufcount):
-        pre = random.randint(0, disksize-area)
-        offset = left + random.randint(0, area)
-        os.pread(disk.fileno(), bufsize, pre)
-        start = time.perf_counter()
-        os.pread(disk.fileno(), bufsize, offset)
-        finish = time.perf_counter()
-        times.append(finish-start)
+    times = [timeit.timeit(lambda: os.pread(disk.fileno(), bufsize, i), number=1) for i in offsets]
 
     print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
         BytesString(area) if area < disksize else BytesStringFloat(area), 
@@ -154,13 +112,9 @@ for i in range(0,7):
 
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
-    times = []
-    for _ in range(bufcount):
-        offset = random.randint(0, disksize-bufsize)
-        start = time.perf_counter()
-        os.pread(disk.fileno(), bufsize, offset)
-        finish = time.perf_counter()
-        times.append(finish-start)
+    offsets = [random.randint(0, disksize-bufsize) for i in range(bufcount)]
+
+    times = [timeit.timeit(lambda: os.pread(disk.fileno(), bufsize, i), number=1) for i in offsets]
 
     avg = bufsize/(sum(times)/len(times))
     print('Buffer: {0:4}   Average: {1:8}/sec   Samples: {2:3}   Total: {3:0.2f} sec'.format(
@@ -177,13 +131,8 @@ bufcount = 100
 
 os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
-times = []
 disk.seek(0)
-for _ in range(bufcount):
-    start = time.perf_counter()
-    disk.read(bufsize)
-    finish = time.perf_counter()
-    times.append(finish-start)
+times = [timeit.timeit(lambda: disk.read(bufsize), number=1) for i in offsets]
 
 avg = bufsize/(sum(times)/len(times))
 print('Buffer: {0:4}   Average: {1:8}/sec   Samples: {2:3}   Total: {3:0.2f} sec'.format(
@@ -196,3 +145,4 @@ os.system('echo cfq | sudo tee /sys/block/%s/queue/scheduler > /dev/null' % dev)
 
 print()
 print('Returned disk scheduler to CFQ.')
+
