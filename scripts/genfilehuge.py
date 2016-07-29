@@ -6,4 +6,4 @@ with open('file1', 'wb') as f:
     for i in range(0, int(2e9), len(data)):
         f.write(data)
 
-os.system("sync")
+os.system('sync')
