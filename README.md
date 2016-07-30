@@ -23,7 +23,7 @@ Experimental code is also in the repository.
   Development notice
 ----------------------
 
-Code will be developed in Python and later also in the kernel (a long way ahead). Documentation is created in LibreOffice and XMind. User experience design will later be done in Glade.
+Code will be developed in Python and later also in the kernel (a long way ahead). Documentation is created in LibreOffice, XMind and [draw.io](https://www.draw.io/). User experience design will later be done in Glade.
 
 License is set to MIT Licence, unless something changes.
 
