@@ -17,7 +17,7 @@ class Container:
         try:
             self.file = open(filename, "r+b")
         except FileNotFoundError:
-            self.file = open(filename, "w+b")
+            self.file = open(filename, "x+b")
         self.revert()
 
     def __del__(self):
