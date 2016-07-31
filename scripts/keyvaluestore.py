@@ -3,8 +3,8 @@ import struct, pickle, os, ctypes
 
 libc = ctypes.cdll.LoadLibrary("libc.so.6")
 
-def fallocate(fd, mode, offset, len):
-    libc.fallocate(ctypes.c_int(fd), ctypes.c_int(mode), ctypes.c_longlong(offset), ctypes.c_longlong(len))
+def fallocate(fd, mode, offset, length):
+    libc.fallocate(ctypes.c_int(fd), ctypes.c_int(mode), ctypes.c_longlong(offset), ctypes.c_longlong(length))
 
 
 class Container:
@@ -23,6 +23,12 @@ class Container:
     def __del__(self):
         self.file.close()
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.file.close()
+
     def __getitem__(self, key):
         return self.get(key)
 
@@ -31,6 +37,15 @@ class Container:
 
     def __len__(self):
         return len(self.keys)
+
+    def __contains__(self, key):
+        return key in self.keys
+
+    def __iter__(self):
+        return self.keys
+
+    def __repr__(self):
+        return '<Container: {0} keys'.format(len(self.keys))
 
     def get(self, key):
         """Returns the value for specified key. Throws KeyError if key was not found."""
