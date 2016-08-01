@@ -45,7 +45,7 @@ class Container:
         return self.keys
 
     def __repr__(self):
-        return '<Container: {0} keys'.format(len(self.keys))
+        return '<Container: file {0}>'.format(self.file.name)
 
     def get(self, key):
         """Returns the value for specified key. Throws KeyError if key was not found."""
