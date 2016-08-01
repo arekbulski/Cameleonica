@@ -33,6 +33,12 @@ def BytesStringFloat(n):
 
 #--------------------------------------------------------------------------------------------------
 
+if len(sys.argv) < 2:
+    print('Syntax: program /dev/sda > log')
+    print('Path can also use /dev/disk/by-id/  by-label/  by-path/  by-uuid/')
+    print('Redirect to a log file is optional.')
+    sys.exit()
+
 dev = os.path.realpath(sys.argv[1]).split('/')[-1]
 disk = open('/dev/%s' % dev, 'rb')
 disksize = disk.seek(0, 2)
@@ -106,9 +112,9 @@ for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
 print()
 print('Measuring: Random read throughput with various sizes.')
 
-for i in range(0,7):
+for i in range(8):
     bufsize = BytesInt('1MB')*2**i
-    bufcount = 128//2**i
+    bufcount = int(128/((4/3)**i))
 
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
