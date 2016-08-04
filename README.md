@@ -8,15 +8,15 @@ Further design will include a FUSE and Dokan frontend, and a Nautilus extension.
   Project status and roadmap
 ------------------------------
 
-Only design documentation is being developed at this point. You can help by reviewing these documents and posting questions and suggestions for improvement. Easiest way for you to ask questions is to create a new Issue. I suggest downloading combined version (may be more up-to-date):
+Only design documentation is being developed at this point. You can help by reviewing these documents and posting questions and suggestions for improvement. Easiest way for you to ask questions is to create a new Issue. 
 
-- [combined all of the above](documentation/combined.pdf) (28 pages)
+- [complete document](documentation/combined.pdf) (30 pages)
 
-Alternatively, there are extracted sections:
+Documentation is divided into sections:
 
-- [Mission statement](documentation/extracted-mission.pdf) (8 pages)
-- [Ideas and Observations](documentation/extracted-ideas.pdf) (16 pages)
-- [Questions and Answers](documentation/extracted-responses.pdf) (4 pages)
+- Mission statement (8 pages)
+- Ideas and Observations (18 pages)
+- Questions and Answers (4 pages)
 
 Experimental code is also in the repository.
 
