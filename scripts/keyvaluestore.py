@@ -65,10 +65,6 @@ class Container:
         self.file.write(dump)
         self.keys[key] = (dumpat, dumplen)
 
-    def setfrom(self, key, sourcekey)
-        """Assigns existing value to another key. This uses less disk space than setting keys separately. Changes are not persisted until commited."""
-        self.keys[key] = self.keys[sourcekey]
-
     def remove(self, key):
         """Removes a specified existing key-value. Throws KeyError if key not found. Reclaims disk space by sparsing the file. Changes are not persisted until commited."""
         punchat, punchlen = self.keys.pop(key)
