@@ -106,6 +106,7 @@ class Container:
         else:
             self.file.truncate(0)
             self.awaitingpunch.clear()
+            os.fsync(self.file.fileno())
 
     def revert(self):
         """Rolls back the changes made to the database since last commit."""
