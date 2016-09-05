@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import struct, pickle, os, ctypes
+from diskfile import DiskFile
 
 libc = ctypes.cdll.LoadLibrary("libc.so.6")
 
@@ -7,17 +8,21 @@ def fallocate(fd, mode, offset, length):
     libc.fallocate(ctypes.c_int(fd), ctypes.c_int(mode), ctypes.c_longlong(offset), ctypes.c_longlong(length))
 
 
+
 class Container:
     """Key-value file based database. Item access can only be used for single key query and update so no slices. Provides len.
 
     Requires an *atomic ordered filesystem* to guarantee crash consistency. Database can get compacted by sparsing the file. No thread safety. No file locking or concurrency. Pickle module restrictions apply."""
 
-    def __init__(self, filename):
+    def __init__(self, filename, overwrite=False):
         """Constructor. Opens a file holding database that is of required format or is empty. Changes need to be manually committed to disk."""
-        try:
-            self.file = open(filename, "r+b")
-        except FileNotFoundError:
-            self.file = open(filename, "x+b")
+        if overwrite:
+            self.file = DiskFile(open(filename, "w+b"))
+        else:
+            try:
+                self.file = DiskFile(open(filename, "r+b"))
+            except FileNotFoundError:
+                self.file = DiskFile(open(filename, "x+b"))
         self.revert()
 
     def __del__(self):
@@ -116,3 +121,5 @@ class Container:
         else:
             self.keys = {}
             self.awaitingpunch = []
+
+
