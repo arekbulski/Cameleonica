@@ -1,27 +1,22 @@
 #!/usr/bin/python3
-import keyvaluestore
+import unittest
+from keyvaluestore import Container
 
 
-def throws(code, errortype):
-    try:
-        code()
-    except errortype, e:
-        return True
-    else:
-        return False
+class TestContainer(unittest.TestCase):
 
-assert throws(lambda: 1, AssertionError)
-assert throws(lambda: open('???'), OSError)
+    def setUp(self):
+        self.c = Container('/tmp/test-keyvaluestore', overwrite=1)
 
+    def test_set(self):
+        self.c.set(1, 2)
+        self.c["bykey"] = "value"
+        self.assertEqual(self.c.get(1), 2)
+        self.assertEqual(self.c["bykey"], "value")
 
-filename = '/tmp/test-keyvaluestore'
-
-with keyvaluestore.Container(filename) as c:
-    assert c.getkeys() == []
-    c.set(1, 2)
-    assert c.get(1) == ('any picklable object', 2)
-    assert c.get('nonexisting') == None
-    assert c.getkeys() == [1]
-    c.revert()
-    assert c.getkeys() == []
+    def test_set_overwrite(self):
+        self.c.set(1, 2)
+        self.c.set(1, 3)
+        self.c.set(1, 4)
+        self.assertEqual(self.c.get(1), 4)
 
