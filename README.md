@@ -3,7 +3,7 @@
 
 Cameleonica is a prototype of a highly versatile filesystem and is to cover a wide range of safety and security and usability features. It aims to guarantee confidentiality, authenticity, plausible deniability, transactions, snapshots, versioning, instantaneous copying, permanent deletion, high performance, low delays, non-transparent compression and hashing, and manageability. 
 
-Internal design includes extents, complete inodes, copy on write, atomic and ordered operations, segmented log structured layout. Possibly also intent based recovery, and deniably encrypted pointers. 
+Internal design includes atomic and ordered operations, diskless fsync, extents, complete inodes, copy on write, segmented log structured layout, copying garbage collector, complete dictionary and alternative B-tree, rings and chains abstract data structures, file level RAID. Possibly also intent based recovery, and deniably encrypted pointers. 
 
   Project status and roadmap
 ------------------------------
