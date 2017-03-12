@@ -1,7 +1,9 @@
   Cameleonica filesystem
 ==========================
 
-It aims to guarantee confidentiality, authenticity, plausible deniability, transactions, snapshots, versioning, instantaneous copying, permanent deletion, high performance, low delays, internal compression, non-transparent compression and hashing, deduplication, departitioning, and serializability.
+Cameleonica is a safe cryptographic steganographic advanced filesystem.
+
+It aims to guarantee confidentiality, authenticity, plausible deniability, transactions, snapshots, versioning, instantaneous copying, permanent deletion, high throughput, low delays, internal compression, non-transparent compression and hashing, deduplication, departitioning, and serializability.
 
 Internal design includes atomic and ordered operations, diskless fsync, extents, complete inodes, copy on write, segmented log structured disk layout, append only operations, copying garbage collector, complete dictionary and alternative B-tree, rings and chains abstract data structures, file level RAID modes.
 
