@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 import struct, pickle, os, ctypes
-from diskfile import DiskFile
+import diskfile
+
+
 
 libc = ctypes.cdll.LoadLibrary("libc.so.6")
 
@@ -17,12 +19,12 @@ class Container:
     def __init__(self, filename, overwrite=False):
         """Constructor. Opens a file holding database that is of required format or is empty. Changes need to be manually committed to disk."""
         if overwrite:
-            self.file = DiskFile(open(filename, "w+b"))
+            self.file = diskfile.open2(filename, "w+b")
         else:
             try:
-                self.file = DiskFile(open(filename, "r+b"))
+                self.file = diskfile.open2(filename, "r+b")
             except FileNotFoundError:
-                self.file = DiskFile(open(filename, "x+b"))
+                self.file = diskfile.open2(filename, "x+b")
         self.revert()
 
     def __del__(self):
@@ -50,7 +52,7 @@ class Container:
         return self.keys
 
     def __repr__(self):
-        return '<Container: file {0}>'.format(self.file.name)
+        return '<Container: {0}>'.format(self.file.name)
 
     def get(self, key):
         """Returns the value for specified key. Throws KeyError if key was not found."""
@@ -71,18 +73,18 @@ class Container:
         self.keys[key] = (dumpat, dumplen)
 
     def remove(self, key):
-        """Removes a specified existing key-value. Throws KeyError if key not found. Reclaims disk space by sparsing the file. Changes are not persisted until commited."""
+        """Removes a specified existing key-value. Throws KeyError if key not found. Changes are not persisted until commited."""
         punchat, punchlen = self.keys.pop(key)
         self.awaitingpunch.append((punchat, punchlen))
 
     def removeall(self):
-        """Removes all key-values. Reclaims disk space by truncating the file. Changes are not persisted until commited."""
+        """Removes all key-values. Changes are not persisted until commited."""
         for punchat, punchlen in self.keys.items():
             self.awaitingpunch.append((punchat, punchlen))
         self.keys = {}
 
     def commit(self):
-        """Persists changes made to the database."""
+        """Persists changes onto disk. If some keys were removed, holes are punced through. If all keys were removed, file is truncated."""
         if self.keys:
             self.file.seek(0, 0)
             dump = self.file.read(8)
@@ -121,5 +123,3 @@ class Container:
         else:
             self.keys = {}
             self.awaitingpunch = []
-
-

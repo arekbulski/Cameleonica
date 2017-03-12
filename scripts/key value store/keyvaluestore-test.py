@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 import unittest
-from keyvaluestore import Container
+import keyvaluestore
 
 
 class TestContainer(unittest.TestCase):
 
     def setUp(self):
-        self.c = Container('/tmp/test-keyvaluestore', overwrite=1)
+        self.c = keyvaluestore.Container('/tmp/test-keyvaluestore', overwrite=True)
 
     def test_set(self):
         self.c.set(1, 2)
@@ -19,4 +19,3 @@ class TestContainer(unittest.TestCase):
         self.c.set(1, 3)
         self.c.set(1, 4)
         self.assertEqual(self.c.get(1), 4)
-

@@ -1,11 +1,11 @@
-from io import BufferedRandom
-import os
+#!/usr/bin/python3
+import os, io
 
 
-class DiskFile(BufferedRandom):
+class BufferedRandom2(io.BufferedRandom):
 
-    def __init__(self, raw):
-        super(DiskFile, self).__init__(raw)
+    def __init__(self, stream):
+        super().__init__(stream)
 
     def readp(self, offset, length):
         return os.pread(self.fileno(), length, offset)
@@ -19,5 +19,7 @@ class DiskFile(BufferedRandom):
     def flushsync(self):
         self.flush()
         self.sync()
-        return None #????
 
+
+def open2(filename, mode):
+    return BufferedRandom2(open(filename, mode))
