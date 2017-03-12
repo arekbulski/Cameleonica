@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-import os, io
+import os, io, ctypes
+
+libc = ctypes.cdll.LoadLibrary("libc.so.6")
 
 
 class BufferedRandom2(io.BufferedRandom):
@@ -19,6 +21,9 @@ class BufferedRandom2(io.BufferedRandom):
     def flushsync(self):
         self.flush()
         self.sync()
+
+    def fallocate(self, mode, offset, length):
+        libc.fallocate(ctypes.c_int(self.fileno()), ctypes.c_int(mode), ctypes.c_longlong(offset), ctypes.c_longlong(length))
 
 
 def open2(filename, mode):
