@@ -30,6 +30,11 @@ def BytesStringFloat(n):
         x /= 1024.0
     return '{0:0.2f}{1}'.format(x, suffixes[suffix])
 
+libc = ctypes.CDLL(None, use_errno=True)
+
+def readahead(fileno, offset, count):
+    libc.readahead(ctypes.c_int(fileno), ctypes.c_longlong(offset), ctypes.c_size_t(count))
+
 
 #--------------------------------------------------------------------------------------------------
 
@@ -50,10 +55,53 @@ print('Disk name: {0}  Disk size: {1}  Scheduler disabled.'.format(
 
 #--------------------------------------------------------------------------------------------------
 
-libc = ctypes.CDLL(None, use_errno=True)
+bufsize = 512
+bufcount = 100
 
-def readahead(fileno, offset, count):
-    libc.readahead(ctypes.c_int(fileno), ctypes.c_longlong(offset), ctypes.c_size_t(count))
+print()
+print('Measuring: Track buffer working forward.')
+print('Samples: {0}   Sample size: {1}'.format(
+    bufcount, bufsize))
+
+for bufsize in [512*2**i for i in range(0,16)]:
+    os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
+
+    offsets = [random.randint(0, disksize-512-bufsize) for i in range(bufcount)]
+
+    def f(offset):
+        os.pread(disk.fileno(), 512, offset)
+        return timeit.timeit(lambda: os.pread(disk.fileno(), bufsize, offset+512), number=1)
+    times = [f(i) for i in offsets]
+
+    print('Size tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
+        BytesString(bufsize), sum(times)/len(times)*1000, max(times)*1000, sum(times) ))
+
+
+#--------------------------------------------------------------------------------------------------
+
+bufsize = 512
+bufcount = 100
+
+print()
+print('Measuring: Track buffer working backwards.')
+print('Samples: {0}   Sample size: {1}'.format(
+    bufcount, bufsize))
+
+for bufsize in [512*2**i for i in range(0,16)]:
+    os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
+
+    offsets = [random.randint(0, disksize-512) for i in range(bufcount)]
+
+    def f(offset):
+        os.pread(disk.fileno(), 512, offset)
+        return timeit.timeit(lambda: os.pread(disk.fileno(), bufsize, offset-bufsize), number=1)
+    times = [f(i) for i in offsets]
+
+    print('Size tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
+        BytesString(bufsize), sum(times)/len(times)*1000, max(times)*1000, sum(times) ))
+
+
+#--------------------------------------------------------------------------------------------------
 
 bufsize = 512
 bufcount = 100
@@ -77,7 +125,7 @@ for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
     times = [timeit.timeit(lambda: os.pread(disk.fileno(), bufsize, i), number=1) for i in offsets]
 
     print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
-        BytesString(area) if area < disksize else BytesStringFloat(area), 
+        BytesString(area) if area < disksize else BytesStringFloat(area),
         sum(times)/len(times)*1000, max(times)*1000, sum(times)))
 
 
@@ -103,7 +151,7 @@ for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
     times = [timeit.timeit(lambda: os.pread(disk.fileno(), bufsize, i), number=1) for i in offsets]
 
     print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
-        BytesString(area) if area < disksize else BytesStringFloat(area), 
+        BytesString(area) if area < disksize else BytesStringFloat(area),
         sum(times)/len(times)*1000, max(times)*1000, sum(times)))
 
 
@@ -151,4 +199,3 @@ os.system('echo cfq | sudo tee /sys/block/%s/queue/scheduler > /dev/null' % dev)
 
 print()
 print('Returned disk scheduler to CFQ.')
-

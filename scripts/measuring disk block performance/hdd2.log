@@ -1,5 +1,43 @@
 Disk name: /dev/sdb  Disk size: 1.36TB  Scheduler disabled.
 
+Measuring: Track buffer working forward.
+Samples: 100   Sample size: 512
+Size tested: 512B     Average:  0.40 ms   Max: 31.33 ms   Total: 0.04 sec
+Size tested: 1KB      Average:  0.23 ms   Max: 10.89 ms   Total: 0.02 sec
+Size tested: 2KB      Average:  5.68 ms   Max: 88.35 ms   Total: 0.57 sec
+Size tested: 4KB      Average:  1.37 ms   Max: 33.04 ms   Total: 0.14 sec
+Size tested: 8KB      Average:  2.63 ms   Max: 44.12 ms   Total: 0.26 sec
+Size tested: 16KB     Average:  0.70 ms   Max: 11.17 ms   Total: 0.07 sec
+Size tested: 32KB     Average:  2.83 ms   Max: 51.93 ms   Total: 0.28 sec
+Size tested: 64KB     Average:  2.78 ms   Max: 25.61 ms   Total: 0.28 sec
+Size tested: 128KB    Average:  7.11 ms   Max: 38.11 ms   Total: 0.71 sec
+Size tested: 256KB    Average:  7.46 ms   Max: 57.61 ms   Total: 0.75 sec
+Size tested: 512KB    Average:  9.46 ms   Max: 94.28 ms   Total: 0.95 sec
+Size tested: 1MB      Average: 22.51 ms   Max: 138.22 ms   Total: 2.25 sec
+Size tested: 2MB      Average: 31.62 ms   Max: 182.48 ms   Total: 3.16 sec
+Size tested: 4MB      Average: 58.94 ms   Max: 433.08 ms   Total: 5.89 sec
+Size tested: 8MB      Average: 122.71 ms   Max: 1232.37 ms   Total: 12.27 sec
+Size tested: 16MB     Average: 230.24 ms   Max: 512.39 ms   Total: 23.02 sec
+
+Measuring: Track buffer working backwards.
+Samples: 100   Sample size: 512
+Size tested: 512B     Average:  0.06 ms   Max:  0.75 ms   Total: 0.01 sec
+Size tested: 1KB      Average:  1.19 ms   Max: 36.69 ms   Total: 0.12 sec
+Size tested: 2KB      Average:  1.35 ms   Max: 32.91 ms   Total: 0.13 sec
+Size tested: 4KB      Average:  1.59 ms   Max: 33.00 ms   Total: 0.16 sec
+Size tested: 8KB      Average:  3.23 ms   Max: 32.90 ms   Total: 0.32 sec
+Size tested: 16KB     Average:  2.83 ms   Max: 33.09 ms   Total: 0.28 sec
+Size tested: 32KB     Average:  3.86 ms   Max: 32.92 ms   Total: 0.39 sec
+Size tested: 64KB     Average:  3.38 ms   Max: 32.97 ms   Total: 0.34 sec
+Size tested: 128KB    Average:  5.90 ms   Max: 37.41 ms   Total: 0.59 sec
+Size tested: 256KB    Average: 10.53 ms   Max: 44.25 ms   Total: 1.05 sec
+Size tested: 512KB    Average: 23.87 ms   Max: 76.13 ms   Total: 2.39 sec
+Size tested: 1MB      Average: 27.23 ms   Max: 241.42 ms   Total: 2.72 sec
+Size tested: 2MB      Average: 37.64 ms   Max: 145.93 ms   Total: 3.76 sec
+Size tested: 4MB      Average: 62.44 ms   Max: 261.54 ms   Total: 6.24 sec
+Size tested: 8MB      Average: 129.31 ms   Max: 694.85 ms   Total: 12.93 sec
+Size tested: 16MB     Average: 277.50 ms   Max: 3041.17 ms   Total: 27.75 sec
+
 Measuring: Concurrent random seek time using readahead.
 Samples: 100   Sample size: 512
 Area tested: 1MB      Average:  0.91 ms   Max: 73.38 ms   Total: 0.09 sec
