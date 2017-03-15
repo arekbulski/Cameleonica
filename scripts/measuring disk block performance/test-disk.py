@@ -67,7 +67,6 @@ for bufsize in [512*2**i for i in range(0,16)]:
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
     offsets = [random.randint(0, disksize-512-bufsize) for i in range(bufcount)]
-
     def f(offset):
         os.pread(disk.fileno(), 512, offset)
         return timeit.timeit(lambda: os.pread(disk.fileno(), bufsize, offset+512), number=1)
@@ -91,7 +90,6 @@ for bufsize in [512*2**i for i in range(0,16)]:
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
     offsets = [random.randint(0, disksize-512) for i in range(bufcount)]
-
     def f(offset):
         os.pread(disk.fileno(), 512, offset)
         return timeit.timeit(lambda: os.pread(disk.fileno(), bufsize, offset-bufsize), number=1)
@@ -118,10 +116,8 @@ for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
     offsets = [random.randint(0, area-bufsize) for i in range(bufcount)]
-
     for i in offsets:
         readahead(disk.fileno(), i, bufsize)
-
     times = [timeit.timeit(lambda: os.pread(disk.fileno(), bufsize, i), number=1) for i in offsets]
 
     print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
@@ -146,7 +142,6 @@ for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
     offsets = [random.randint(0, area-bufsize) for i in range(bufcount)]
-
     os.pread(disk.fileno(), bufsize, 0)
     times = [timeit.timeit(lambda: os.pread(disk.fileno(), bufsize, i), number=1) for i in offsets]
 
@@ -167,7 +162,6 @@ for i in range(8):
     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
 
     offsets = [random.randint(0, disksize-bufsize) for i in range(bufcount)]
-
     times = [timeit.timeit(lambda: os.pread(disk.fileno(), bufsize, i), number=1) for i in offsets]
 
     avg = bufsize/(sum(times)/len(times))
