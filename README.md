@@ -1,9 +1,9 @@
   Cameleonica filesystem
 ==========================
 
-Cameleonica is a safe cryptographic steganographic advanced filesystem.
+Cameleonica is a prototype safe cryptographic steganographic advanced filesystem.
 
-It aims to guarantee confidentiality, authenticity, plausible deniability, permanent deletion, versioning, snapshots, transactions, file and directory cloning, high throughput, low delays, internal compression, non-transparent compression and hashing, deduplication, departitioning, and serializability.
+It aims to guarantee confidentiality, authenticity, plausible deniability, permanent deletion, versioning, snapshots, transactions, file and directory cloning, high throughput, low delays, internal compression, non-transparent compression and hashing, deduplication, departitioning, serializability, replication and tiering.
 
 Internal design includes atomic and ordered operations, diskless fsync, extents, complete inodes, copy on write, segmented log structured disk layout, append only operations, copying garbage collector, complete dictionary and alternative B-tree, rings and chains abstract data structures, file level RAID modes.
 
@@ -13,13 +13,13 @@ Internal design includes atomic and ordered operations, diskless fsync, extents,
 Only design documentation is being developed at this point. You can help by reviewing these documents and posting questions and suggestions for improvement, just create a new Issue.
 
 - [Complete specification pdf](documentation/combined.pdf) (42 pages)
-- [First implementation pdf](documentation/implementation2017.pdf) (4 pages)
+- [First implementation pdf](documentation/implementation2017.pdf) (currently edited, 4 pages)
 
 Documentation is divided into sections:
 
 - Mission statement (8 pages)
-- Ideas and Observations (20 pages)
-- Preliminary design (being edited, 10 pages)
+- Ideas and Observations (currently edited, 20 pages)
+- Preliminary design (currently edited, 10 pages)
 - Questions and Answers (4 pages)
 
 Experimental code is also in the repository.
