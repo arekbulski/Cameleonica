@@ -3,17 +3,17 @@
 
 Cameleonica is a prototype safe cryptographic steganographic advanced filesystem.
 
-It aims to guarantee confidentiality, authenticity, plausible deniability, permanent deletion, versioning, snapshots, transactions, file and directory cloning, high throughput, low delays, internal compression, non-transparent compression and hashing, deduplication, departitioning, serializability, replication and tiering.
+It aims to guarantee confidentiality, authenticity, plausible deniability, permanent deletion, versioning, snapshots, transactions, directory cloning, high throughputs, low delays, internal compression, non-transparent compression and hashing, deduplication, departitioning, serializability, multiple-device replication and tiering. 
 
 Internal design includes atomic and ordered operations, diskless fsync, extents, complete inodes, copy on write, segmented log structured disk layout, append only operations, copying garbage collector, complete dictionary and alternative B-tree, rings and chains abstract data structures, file level RAID modes.
 
   Project status and roadmap
 ------------------------------
 
-Only design documentation is being developed at this point. You can help by reviewing these documents and posting questions and suggestions for improvement, just create a new Issue.
+Only design documentation is being developed at this point. You can help by reviewing these documents and posting questions or suggestions for improvement, just create a new Issue.
 
 - [Complete specification pdf](documentation/combined.pdf) (42 pages)
-- [First implementation pdf](documentation/implementation2017.pdf) (currently edited, 4 pages)
+- [First implementation pdf](documentation/implementation2017.pdf) (currently edited, 6 pages)
 
 Documentation is divided into sections:
 
