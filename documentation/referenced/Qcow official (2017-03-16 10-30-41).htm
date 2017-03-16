@@ -1,0 +1,1319 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US" style="transition: top 0s ease-out; position: relative; top: 0px;"><!--
+ Archive processed by SingleFile 
+ url: http://git.qemu-project.org/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt 
+ saved date: Thu Mar 16 2017 10:30:41 GMT+0100 (CET) 
+--><!--
+ Archive processed by SingleFile 
+ url: http://git.qemu-project.org/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt 
+ saved date: Thu Mar 16 2017 10:30:36 GMT+0100 (CET) 
+--><!--
+ Archive processed by SingleFile 
+ url: http://git.qemu-project.org/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt 
+ saved date: Thu Mar 16 2017 10:30:36 GMT+0100 (CET) 
+--><!-- git web interface version 1.8.3.1, (C) 2005-2006, Kay Sievers <kay.sievers@vrfy.org>, Christian Gierke --><!-- git core binaries version 1.8.3.1 --><head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8">
+<meta name="generator" content="gitweb/1.8.3.1 git/1.8.3.1">
+<meta name="robots" content="index, nofollow">
+<title>git.qemu-project.org Git - qemu.git/blob - docs/specs/qcow2.txt</title>
+<style rel="stylesheet" type="text/css" data-href="http://git.qemu-project.org/static/gitweb.css">body {
+	font-family: sans-serif;
+	font-size: small;
+	border: solid #d9d8d1;
+	border-width: 1px;
+	margin: 10px;
+	background-color: #ffffff;
+	color: #000000;
+}
+
+a {
+	color: #0000cc;
+}
+
+a:hover, a:visited, a:active {
+	color: #880000;
+}
+
+span.cntrl {
+	border: dashed #aaaaaa;
+	border-width: 1px;
+	padding: 0px 2px 0px 2px;
+	margin:  0px 2px 0px 2px;
+}
+
+img.logo {
+	float: right;
+	border-width: 0px;
+}
+
+img.avatar {
+	vertical-align: middle;
+}
+
+a.list img.avatar {
+	border-style: none;
+}
+
+div.page_header {
+	height: 25px;
+	padding: 8px;
+	font-size: 150%;
+	font-weight: bold;
+	background-color: #d9d8d1;
+}
+
+div.page_header a:visited, a.header {
+	color: #0000cc;
+}
+
+div.page_header a:hover {
+	color: #880000;
+}
+
+div.page_nav {
+	padding: 8px;
+}
+
+div.page_nav a:visited {
+	color: #0000cc;
+}
+
+div.page_path {
+	padding: 8px;
+	font-weight: bold;
+	border: solid #d9d8d1;
+	border-width: 0px 0px 1px;
+}
+
+div.page_footer {
+	height: 17px;
+	padding: 4px 8px;
+	background-color: #d9d8d1;
+}
+
+div.page_footer_text {
+	float: left;
+	color: #555555;
+	font-style: italic;
+}
+
+div#generating_info {
+	margin: 4px;
+	font-size: smaller;
+	text-align: center;
+	color: #505050;
+}
+
+div.page_body {
+	padding: 8px;
+	font-family: monospace;
+}
+
+div.title, a.title {
+	display: block;
+	padding: 6px 8px;
+	font-weight: bold;
+	background-color: #edece6;
+	text-decoration: none;
+	color: #000000;
+}
+
+div.readme {
+	padding: 8px;
+}
+
+a.title:hover {
+	background-color: #d9d8d1;
+}
+
+div.title_text {
+	padding: 6px 0px;
+	border: solid #d9d8d1;
+	border-width: 0px 0px 1px;
+	font-family: monospace;
+}
+
+div.log_body {
+	padding: 8px 8px 8px 150px;
+}
+
+span.age {
+	position: relative;
+	float: left;
+	width: 142px;
+	font-style: italic;
+}
+
+span.signoff {
+	color: #888888;
+}
+
+div.log_link {
+	padding: 0px 8px;
+	font-size: 70%;
+	font-family: sans-serif;
+	font-style: normal;
+	position: relative;
+	float: left;
+	width: 136px;
+}
+
+div.list_head {
+	padding: 6px 8px 4px;
+	border: solid #d9d8d1;
+	border-width: 1px 0px 0px;
+	font-style: italic;
+}
+
+.author_date, .author {
+	font-style: italic;
+}
+
+div.author_date {
+	padding: 8px;
+	border: solid #d9d8d1;
+	border-width: 0px 0px 1px 0px;
+}
+
+a.list {
+	text-decoration: none;
+	color: #000000;
+}
+
+a.subject, a.name {
+	font-weight: bold;
+}
+
+table.tags a.subject {
+	font-weight: normal;
+}
+
+a.list:hover {
+	text-decoration: underline;
+	color: #880000;
+}
+
+a.text {
+	text-decoration: none;
+	color: #0000cc;
+}
+
+a.text:visited {
+	text-decoration: none;
+	color: #880000;
+}
+
+a.text:hover {
+	text-decoration: underline;
+	color: #880000;
+}
+
+table {
+	padding: 8px 4px;
+	border-spacing: 0;
+}
+
+table.diff_tree {
+	font-family: monospace;
+}
+
+table.combined.diff_tree th {
+	text-align: center;
+}
+
+table.combined.diff_tree td {
+	padding-right: 24px;
+}
+
+table.combined.diff_tree th.link,
+table.combined.diff_tree td.link {
+	padding: 0px 2px;
+}
+
+table.combined.diff_tree td.nochange a {
+	color: #6666ff;
+}
+
+table.combined.diff_tree td.nochange a:hover,
+table.combined.diff_tree td.nochange a:visited {
+	color: #d06666;
+}
+
+table.blame {
+	border-collapse: collapse;
+}
+
+table.blame td {
+	padding: 0px 5px;
+	font-size: 100%;
+	vertical-align: top;
+}
+
+th {
+	padding: 2px 5px;
+	font-size: 100%;
+	text-align: left;
+}
+
+/* do not change row style on hover for 'blame' view */
+tr.light,
+table.blame .light:hover {
+	background-color: #ffffff;
+}
+
+tr.dark,
+table.blame .dark:hover {
+	background-color: #f6f6f0;
+}
+
+/* currently both use the same, but it can change */
+tr.light:hover,
+tr.dark:hover {
+	background-color: #edece6;
+}
+
+/* boundary commits in 'blame' view */
+/* and commits without "previous" */
+tr.boundary td.sha1,
+tr.no-previous td.linenr {
+	font-weight: bold;
+}
+
+/* for 'blame_incremental', during processing */
+tr.color1 { background-color: #f6fff6; }
+tr.color2 { background-color: #f6f6ff; }
+tr.color3 { background-color: #fff6f6; }
+
+td {
+	padding: 2px 5px;
+	font-size: 100%;
+	vertical-align: top;
+}
+
+td.link, td.selflink {
+	padding: 2px 5px;
+	font-family: sans-serif;
+	font-size: 70%;
+}
+
+td.selflink {
+	padding-right: 0px;
+}
+
+td.sha1 {
+	font-family: monospace;
+}
+
+.error {
+	color: red;
+	background-color: yellow;
+}
+
+td.current_head {
+	text-decoration: underline;
+}
+
+td.category {
+	background-color: #d9d8d1;
+	border-top: 1px solid #000000;
+	border-left: 1px solid #000000;
+	font-weight: bold;
+}
+
+table.diff_tree span.file_status.new {
+	color: #008000;
+}
+
+table.diff_tree span.file_status.deleted {
+	color: #c00000;
+}
+
+table.diff_tree span.file_status.moved,
+table.diff_tree span.file_status.mode_chnge {
+	color: #777777;
+}
+
+table.diff_tree span.file_status.copied {
+  color: #70a070;
+}
+
+/* noage: "No commits" */
+table.project_list td.noage {
+	color: #808080;
+	font-style: italic;
+}
+
+/* age2: 60*60*24*2 <= age */
+table.project_list td.age2, table.blame td.age2 {
+	font-style: italic;
+}
+
+/* age1: 60*60*2 <= age < 60*60*24*2 */
+table.project_list td.age1 {
+	color: #009900;
+	font-style: italic;
+}
+
+table.blame td.age1 {
+	color: #009900;
+	background: transparent;
+}
+
+/* age0: age < 60*60*2 */
+table.project_list td.age0 {
+	color: #009900;
+	font-style: italic;
+	font-weight: bold;
+}
+
+table.blame td.age0 {
+	color: #009900;
+	background: transparent;
+	font-weight: bold;
+}
+
+td.pre, div.pre, div.diff {
+	font-family: monospace;
+	font-size: 12px;
+	white-space: pre;
+}
+
+td.mode {
+	font-family: monospace;
+}
+
+/* progress of blame_interactive */
+div#progress_bar {
+	height: 2px;
+	margin-bottom: -2px;
+	background-color: #d8d9d0;
+}
+div#progress_info {
+	float: right;
+	text-align: right;
+}
+
+/* format of (optional) objects size in 'tree' view */
+td.size {
+	font-family: monospace;
+	text-align: right;
+}
+
+/* styling of diffs (patchsets): commitdiff and blobdiff views */
+div.diff.header,
+div.diff.extended_header {
+	white-space: normal;
+}
+
+div.diff.header {
+	font-weight: bold;
+
+	background-color: #edece6;
+
+	margin-top: 4px;
+	padding: 4px 0px 2px 0px;
+	border: solid #d9d8d1;
+	border-width: 1px 0px 1px 0px;
+}
+
+div.diff.header a.path {
+	text-decoration: underline;
+}
+
+div.diff.extended_header,
+div.diff.extended_header a.path,
+div.diff.extended_header a.hash {
+	color: #777777;
+}
+
+div.diff.extended_header .info {
+	color: #b0b0b0;
+}
+
+div.diff.extended_header {
+	background-color: #f6f5ee;
+	padding: 2px 0px 2px 0px;
+}
+
+div.diff a.list,
+div.diff a.path,
+div.diff a.hash {
+	text-decoration: none;
+}
+
+div.diff a.list:hover,
+div.diff a.path:hover,
+div.diff a.hash:hover {
+	text-decoration: underline;
+}
+
+div.diff.to_file a.path,
+div.diff.to_file {
+	color: #007000;
+}
+
+div.diff.add {
+	color: #008800;
+}
+
+div.diff.add span.marked {
+	background-color: #aaffaa;
+}
+
+div.diff.from_file a.path,
+div.diff.from_file {
+	color: #aa0000;
+}
+
+div.diff.rem {
+	color: #cc0000;
+}
+
+div.diff.rem span.marked {
+	background-color: #ffaaaa;
+}
+
+div.diff.chunk_header a,
+div.diff.chunk_header {
+	color: #990099;
+}
+
+div.diff.chunk_header {
+	border: dotted #ffe0ff;
+	border-width: 1px 0px 0px 0px;
+	margin-top: 2px;
+}
+
+div.diff.chunk_header span.chunk_info {
+	background-color: #ffeeff;
+}
+
+div.diff.chunk_header span.section {
+	color: #aa22aa;
+}
+
+div.diff.incomplete {
+	color: #cccccc;
+}
+
+div.diff.nodifferences {
+	font-weight: bold;
+	color: #600000;
+}
+
+/* side-by-side diff */
+div.chunk_block {
+	overflow: hidden;
+}
+
+div.chunk_block div.old {
+	float: left;
+	width: 50%;
+	overflow: hidden;
+}
+
+div.chunk_block div.new {
+	margin-left: 50%;
+	width: 50%;
+}
+
+div.chunk_block.rem div.old div.diff.rem {
+	background-color: #fff5f5;
+}
+div.chunk_block.add div.new div.diff.add {
+	background-color: #f8fff8;
+}
+div.chunk_block.chg div     div.diff {
+	background-color: #fffff0;
+}
+div.chunk_block.ctx div     div.diff.ctx {
+	color: #404040;
+}
+
+
+div.index_include {
+	border: solid #d9d8d1;
+	border-width: 0px 0px 1px;
+	padding: 12px 8px;
+}
+
+div.search {
+	font-size: 100%;
+	font-weight: normal;
+	margin: 4px 8px;
+	float: right;
+	top: 56px;
+	right: 12px
+}
+
+div.projsearch {
+	text-align: center;
+	margin: 20px 0px;
+}
+
+div.projsearch form {
+	margin-bottom: 2px;
+}
+
+td.linenr {
+	text-align: right;
+}
+
+a.linenr {
+	color: #999999;
+	text-decoration: none
+}
+
+a.rss_logo {
+	float: right;
+	padding: 3px 0px;
+	width: 35px;
+	line-height: 10px;
+	border: 1px solid;
+	border-color: #fcc7a5 #7d3302 #3e1a01 #ff954e;
+	color: #ffffff;
+	background-color: #ff6600;
+	font-weight: bold;
+	font-family: sans-serif;
+	font-size: 70%;
+	text-align: center;
+	text-decoration: none;
+}
+
+a.rss_logo:hover {
+	background-color: #ee5500;
+}
+
+a.rss_logo.generic {
+	background-color: #ff8800;
+}
+
+a.rss_logo.generic:hover {
+	background-color: #ee7700;
+}
+
+span.refs span {
+	padding: 0px 4px;
+	font-size: 70%;
+	font-weight: normal;
+	border: 1px solid;
+	background-color: #ffaaff;
+	border-color: #ffccff #ff00ee #ff00ee #ffccff;
+}
+
+span.refs span a {
+	text-decoration: none;
+	color: inherit;
+}
+
+span.refs span a:hover {
+	text-decoration: underline;
+}
+
+span.refs span.indirect {
+	font-style: italic;
+}
+
+span.refs span.ref {
+	background-color: #aaaaff;
+	border-color: #ccccff #0033cc #0033cc #ccccff;
+}
+
+span.refs span.tag {
+	background-color: #ffffaa;
+	border-color: #ffffcc #ffee00 #ffee00 #ffffcc;
+}
+
+span.refs span.head {
+	background-color: #aaffaa;
+	border-color: #ccffcc #00cc33 #00cc33 #ccffcc;
+}
+
+span.atnight {
+	color: #cc0000;
+}
+
+span.match {
+	color: #e00000;
+}
+
+div.binary {
+	font-style: italic;
+}
+
+div.remote {
+	margin: .5em;
+	border: 1px solid #d9d8d1;
+	display: inline-block;
+}
+
+/* JavaScript-based timezone manipulation */
+
+.popup { /* timezone selection UI */
+	position: absolute;
+	/* "top: 0; right: 0;" would be better, if not for bugs in browsers */
+	top: 0; left: 0;
+	border: 1px solid;
+	padding: 2px;
+	background-color: #f0f0f0;
+	font-style: normal;
+	color: #000000;
+	cursor: auto;
+}
+
+.close-button { /* close timezone selection UI without selecting */
+	/* float doesn't work within absolutely positioned container,
+	 * if width of container is not set explicitly */
+	/* float: right; */
+	position: absolute;
+	top: 0px; right: 0px;
+	border:  1px solid green;
+	margin:  1px 1px 1px 1px;
+	padding-bottom: 2px;
+	width:     12px;
+	height:    10px;
+	font-size:  9px;
+	font-weight: bold;
+	text-align: center;
+	background-color: #fff0f0;
+	cursor: pointer;
+}
+
+
+/* Style definition generated by highlight 2.4.5, http://www.andre-simon.de/ */
+
+/* Highlighting theme definition: */
+
+.num    { color:#2928ff; }
+.esc    { color:#ff00ff; }
+.str    { color:#ff0000; }
+.dstr   { color:#818100; }
+.slc    { color:#838183; font-style:italic; }
+.com    { color:#838183; font-style:italic; }
+.dir    { color:#008200; }
+.sym    { color:#000000; }
+.line   { color:#555555; }
+.kwa    { color:#000000; font-weight:bold; }
+.kwb    { color:#830000; }
+.kwc    { color:#000000; font-weight:bold; }
+.kwd    { color:#010181; }
+</style>
+<link rel="alternate" title="qemu.git - history of docs/specs/qcow2.txt - RSS feed" href="/?p=qemu.git;a=rss;f=docs/specs/qcow2.txt" type="application/rss+xml">
+<link rel="alternate" title="qemu.git - history of docs/specs/qcow2.txt - RSS feed (no merges)" href="/?p=qemu.git;a=rss;f=docs/specs/qcow2.txt;opt=--no-merges" type="application/rss+xml">
+<link rel="alternate" title="qemu.git - history of docs/specs/qcow2.txt - Atom feed" href="/?p=qemu.git;a=atom;f=docs/specs/qcow2.txt" type="application/atom+xml">
+<link rel="alternate" title="qemu.git - history of docs/specs/qcow2.txt - Atom feed (no merges)" href="/?p=qemu.git;a=atom;f=docs/specs/qcow2.txt;opt=--no-merges" type="application/atom+xml">
+<link rel="shortcut icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAgMAAABinRfyAAAACVBMVEXAAAAAgAD///+K/HwIAAAAJUlEQVQI12NYBQQM2IgGBQ4mCIEQW7oyK4phampkGIQAc1G1AQCRxCNbyW92oQAAAABJRU5ErkJggg==" type="image/png">
+</head>
+<body>
+<div class="page_header">
+<a title="git homepage" href="http://git-scm.com/"><img class="logo" height="27" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAAAbCAMAAADoKTksAAAAGFBMVEX///9gYF2wr6oAgADOzcfAAADo6Ob39/aVDKdHAAAAcklEQVR42u2V0QqAIBRDr3dL//+PS62HNAh04EOdlyGDAwNFi8mmSSQtmYDoNA3Bf9EC0VbosgOATlRDMG1GhEKN64QB0Sl5n1a7NteKUGhTJ2pq3OqBac9XcUSEzNdf/7RI9IscIkaFJ4s8CHAa6QLIHUeGBB8gmt5TAAAAAElFTkSuQmCC" alt="git" width="72"></a><a href="http://undefined/">git://git.qemu-project.org</a> / <a href="http://git.qemu-project.org/?p=qemu.git;a=summary">qemu.git</a> / blob
+</div>
+<form method="get" action="/" enctype="application/x-www-form-urlencoded"><div class="search">
+<input name="p" type="hidden" value="qemu.git">
+<input name="a" type="hidden" value="search">
+<input name="h" type="hidden" value="80cdfd0e919dee9d77535429b098b89b4cb5a6a5">
+<select name="st">
+<option selected="selected" value="commit">commit</option>
+<option value="grep">grep</option>
+<option value="author">author</option>
+<option value="committer">committer</option>
+<option value="pickaxe">pickaxe</option>
+</select><sup><a href="http://git.qemu-project.org/?p=qemu.git;a=search_help">?</a></sup> search:
+<input type="text" name="s">
+<span title="Extended regular expression"><label><input type="checkbox" name="sr" value="1">re</label></span></div>
+</form>
+<div class="page_nav">
+<br><br></div>
+<div class="title">80cdfd0e919dee9d77535429b098b89b4cb5a6a5</div>
+<div class="page_path"><a title="tree root" href="http://git.qemu-project.org/?p=qemu.git;a=tree">[qemu.git]</a> / <a title="docs" href="http://git.qemu-project.org/?p=qemu.git;a=tree;f=docs">docs</a> / <a title="docs/specs" href="http://git.qemu-project.org/?p=qemu.git;a=tree;f=docs/specs">specs</a> / <a title="docs/specs/qcow2.txt" href="http://git.qemu-project.org/?p=qemu.git;a=blob_plain;f=docs/specs/qcow2.txt">qcow2.txt</a><br></div>
+<div class="page_body">
+<div class="pre"><a id="l1" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l1" class="linenr">   1</a> ==&nbsp;General&nbsp;==</div>
+<div class="pre"><a id="l2" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l2" class="linenr">   2</a> </div>
+<div class="pre"><a id="l3" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l3" class="linenr">   3</a> A&nbsp;qcow2&nbsp;image&nbsp;file&nbsp;is&nbsp;organized&nbsp;in&nbsp;units&nbsp;of&nbsp;constant&nbsp;size,&nbsp;which&nbsp;are&nbsp;called</div>
+<div class="pre"><a id="l4" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l4" class="linenr">   4</a> (host)&nbsp;clusters.&nbsp;A&nbsp;cluster&nbsp;is&nbsp;the&nbsp;unit&nbsp;in&nbsp;which&nbsp;all&nbsp;allocations&nbsp;are&nbsp;done,</div>
+<div class="pre"><a id="l5" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l5" class="linenr">   5</a> both&nbsp;for&nbsp;actual&nbsp;guest&nbsp;data&nbsp;and&nbsp;for&nbsp;image&nbsp;metadata.</div>
+<div class="pre"><a id="l6" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l6" class="linenr">   6</a> </div>
+<div class="pre"><a id="l7" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l7" class="linenr">   7</a> Likewise,&nbsp;the&nbsp;virtual&nbsp;disk&nbsp;as&nbsp;seen&nbsp;by&nbsp;the&nbsp;guest&nbsp;is&nbsp;divided&nbsp;into&nbsp;(guest)</div>
+<div class="pre"><a id="l8" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l8" class="linenr">   8</a> clusters&nbsp;of&nbsp;the&nbsp;same&nbsp;size.</div>
+<div class="pre"><a id="l9" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l9" class="linenr">   9</a> </div>
+<div class="pre"><a id="l10" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l10" class="linenr">  10</a> All&nbsp;numbers&nbsp;in&nbsp;qcow2&nbsp;are&nbsp;stored&nbsp;in&nbsp;Big&nbsp;Endian&nbsp;byte&nbsp;order.</div>
+<div class="pre"><a id="l11" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l11" class="linenr">  11</a> </div>
+<div class="pre"><a id="l12" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l12" class="linenr">  12</a> </div>
+<div class="pre"><a id="l13" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l13" class="linenr">  13</a> ==&nbsp;Header&nbsp;==</div>
+<div class="pre"><a id="l14" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l14" class="linenr">  14</a> </div>
+<div class="pre"><a id="l15" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l15" class="linenr">  15</a> The&nbsp;first&nbsp;cluster&nbsp;of&nbsp;a&nbsp;qcow2&nbsp;image&nbsp;contains&nbsp;the&nbsp;file&nbsp;header:</div>
+<div class="pre"><a id="l16" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l16" class="linenr">  16</a> </div>
+<div class="pre"><a id="l17" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l17" class="linenr">  17</a> &nbsp;&nbsp;&nbsp;&nbsp;Byte&nbsp;&nbsp;0&nbsp;-&nbsp;&nbsp;3:&nbsp;&nbsp;&nbsp;magic</div>
+<div class="pre"><a id="l18" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l18" class="linenr">  18</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;QCOW&nbsp;magic&nbsp;string&nbsp;("QFI\xfb")</div>
+<div class="pre"><a id="l19" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l19" class="linenr">  19</a> </div>
+<div class="pre"><a id="l20" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l20" class="linenr">  20</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;-&nbsp;&nbsp;7:&nbsp;&nbsp;&nbsp;version</div>
+<div class="pre"><a id="l21" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l21" class="linenr">  21</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Version&nbsp;number&nbsp;(valid&nbsp;values&nbsp;are&nbsp;2&nbsp;and&nbsp;3)</div>
+<div class="pre"><a id="l22" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l22" class="linenr">  22</a> </div>
+<div class="pre"><a id="l23" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l23" class="linenr">  23</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;-&nbsp;15:&nbsp;&nbsp;&nbsp;backing_file_offset</div>
+<div class="pre"><a id="l24" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l24" class="linenr">  24</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Offset&nbsp;into&nbsp;the&nbsp;image&nbsp;file&nbsp;at&nbsp;which&nbsp;the&nbsp;backing&nbsp;file&nbsp;name</div>
+<div class="pre"><a id="l25" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l25" class="linenr">  25</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;stored&nbsp;(NB:&nbsp;The&nbsp;string&nbsp;is&nbsp;not&nbsp;null&nbsp;terminated).&nbsp;0&nbsp;if&nbsp;the</div>
+<div class="pre"><a id="l26" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l26" class="linenr">  26</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;image&nbsp;doesn't&nbsp;have&nbsp;a&nbsp;backing&nbsp;file.</div>
+<div class="pre"><a id="l27" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l27" class="linenr">  27</a> </div>
+<div class="pre"><a id="l28" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l28" class="linenr">  28</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16&nbsp;-&nbsp;19:&nbsp;&nbsp;&nbsp;backing_file_size</div>
+<div class="pre"><a id="l29" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l29" class="linenr">  29</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Length&nbsp;of&nbsp;the&nbsp;backing&nbsp;file&nbsp;name&nbsp;in&nbsp;bytes.&nbsp;Must&nbsp;not&nbsp;be</div>
+<div class="pre"><a id="l30" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l30" class="linenr">  30</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;longer&nbsp;than&nbsp;1023&nbsp;bytes.&nbsp;Undefined&nbsp;if&nbsp;the&nbsp;image&nbsp;doesn't&nbsp;have</div>
+<div class="pre"><a id="l31" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l31" class="linenr">  31</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;backing&nbsp;file.</div>
+<div class="pre"><a id="l32" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l32" class="linenr">  32</a> </div>
+<div class="pre"><a id="l33" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l33" class="linenr">  33</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20&nbsp;-&nbsp;23:&nbsp;&nbsp;&nbsp;cluster_bits</div>
+<div class="pre"><a id="l34" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l34" class="linenr">  34</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number&nbsp;of&nbsp;bits&nbsp;that&nbsp;are&nbsp;used&nbsp;for&nbsp;addressing&nbsp;an&nbsp;offset</div>
+<div class="pre"><a id="l35" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l35" class="linenr">  35</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;within&nbsp;a&nbsp;cluster&nbsp;(1&nbsp;&lt;&lt;&nbsp;cluster_bits&nbsp;is&nbsp;the&nbsp;cluster&nbsp;size).</div>
+<div class="pre"><a id="l36" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l36" class="linenr">  36</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Must&nbsp;not&nbsp;be&nbsp;less&nbsp;than&nbsp;9&nbsp;(i.e.&nbsp;512&nbsp;byte&nbsp;clusters).</div>
+<div class="pre"><a id="l37" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l37" class="linenr">  37</a> </div>
+<div class="pre"><a id="l38" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l38" class="linenr">  38</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note:&nbsp;qemu&nbsp;as&nbsp;of&nbsp;today&nbsp;has&nbsp;an&nbsp;implementation&nbsp;limit&nbsp;of&nbsp;2&nbsp;MB</div>
+<div class="pre"><a id="l39" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l39" class="linenr">  39</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as&nbsp;the&nbsp;maximum&nbsp;cluster&nbsp;size&nbsp;and&nbsp;won't&nbsp;be&nbsp;able&nbsp;to&nbsp;open&nbsp;images</div>
+<div class="pre"><a id="l40" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l40" class="linenr">  40</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with&nbsp;larger&nbsp;cluster&nbsp;sizes.</div>
+<div class="pre"><a id="l41" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l41" class="linenr">  41</a> </div>
+<div class="pre"><a id="l42" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l42" class="linenr">  42</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;24&nbsp;-&nbsp;31:&nbsp;&nbsp;&nbsp;size</div>
+<div class="pre"><a id="l43" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l43" class="linenr">  43</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Virtual&nbsp;disk&nbsp;size&nbsp;in&nbsp;bytes</div>
+<div class="pre"><a id="l44" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l44" class="linenr">  44</a> </div>
+<div class="pre"><a id="l45" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l45" class="linenr">  45</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32&nbsp;-&nbsp;35:&nbsp;&nbsp;&nbsp;crypt_method</div>
+<div class="pre"><a id="l46" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l46" class="linenr">  46</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;for&nbsp;no&nbsp;encryption</div>
+<div class="pre"><a id="l47" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l47" class="linenr">  47</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;for&nbsp;AES&nbsp;encryption</div>
+<div class="pre"><a id="l48" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l48" class="linenr">  48</a> </div>
+<div class="pre"><a id="l49" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l49" class="linenr">  49</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;36&nbsp;-&nbsp;39:&nbsp;&nbsp;&nbsp;l1_size</div>
+<div class="pre"><a id="l50" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l50" class="linenr">  50</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number&nbsp;of&nbsp;entries&nbsp;in&nbsp;the&nbsp;active&nbsp;L1&nbsp;table</div>
+<div class="pre"><a id="l51" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l51" class="linenr">  51</a> </div>
+<div class="pre"><a id="l52" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l52" class="linenr">  52</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;40&nbsp;-&nbsp;47:&nbsp;&nbsp;&nbsp;l1_table_offset</div>
+<div class="pre"><a id="l53" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l53" class="linenr">  53</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Offset&nbsp;into&nbsp;the&nbsp;image&nbsp;file&nbsp;at&nbsp;which&nbsp;the&nbsp;active&nbsp;L1&nbsp;table</div>
+<div class="pre"><a id="l54" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l54" class="linenr">  54</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;starts.&nbsp;Must&nbsp;be&nbsp;aligned&nbsp;to&nbsp;a&nbsp;cluster&nbsp;boundary.</div>
+<div class="pre"><a id="l55" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l55" class="linenr">  55</a> </div>
+<div class="pre"><a id="l56" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l56" class="linenr">  56</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;48&nbsp;-&nbsp;55:&nbsp;&nbsp;&nbsp;refcount_table_offset</div>
+<div class="pre"><a id="l57" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l57" class="linenr">  57</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Offset&nbsp;into&nbsp;the&nbsp;image&nbsp;file&nbsp;at&nbsp;which&nbsp;the&nbsp;refcount&nbsp;table</div>
+<div class="pre"><a id="l58" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l58" class="linenr">  58</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;starts.&nbsp;Must&nbsp;be&nbsp;aligned&nbsp;to&nbsp;a&nbsp;cluster&nbsp;boundary.</div>
+<div class="pre"><a id="l59" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l59" class="linenr">  59</a> </div>
+<div class="pre"><a id="l60" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l60" class="linenr">  60</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;56&nbsp;-&nbsp;59:&nbsp;&nbsp;&nbsp;refcount_table_clusters</div>
+<div class="pre"><a id="l61" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l61" class="linenr">  61</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number&nbsp;of&nbsp;clusters&nbsp;that&nbsp;the&nbsp;refcount&nbsp;table&nbsp;occupies</div>
+<div class="pre"><a id="l62" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l62" class="linenr">  62</a> </div>
+<div class="pre"><a id="l63" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l63" class="linenr">  63</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;60&nbsp;-&nbsp;63:&nbsp;&nbsp;&nbsp;nb_snapshots</div>
+<div class="pre"><a id="l64" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l64" class="linenr">  64</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number&nbsp;of&nbsp;snapshots&nbsp;contained&nbsp;in&nbsp;the&nbsp;image</div>
+<div class="pre"><a id="l65" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l65" class="linenr">  65</a> </div>
+<div class="pre"><a id="l66" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l66" class="linenr">  66</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;64&nbsp;-&nbsp;71:&nbsp;&nbsp;&nbsp;snapshots_offset</div>
+<div class="pre"><a id="l67" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l67" class="linenr">  67</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Offset&nbsp;into&nbsp;the&nbsp;image&nbsp;file&nbsp;at&nbsp;which&nbsp;the&nbsp;snapshot&nbsp;table</div>
+<div class="pre"><a id="l68" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l68" class="linenr">  68</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;starts.&nbsp;Must&nbsp;be&nbsp;aligned&nbsp;to&nbsp;a&nbsp;cluster&nbsp;boundary.</div>
+<div class="pre"><a id="l69" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l69" class="linenr">  69</a> </div>
+<div class="pre"><a id="l70" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l70" class="linenr">  70</a> If&nbsp;the&nbsp;version&nbsp;is&nbsp;3&nbsp;or&nbsp;higher,&nbsp;the&nbsp;header&nbsp;has&nbsp;the&nbsp;following&nbsp;additional&nbsp;fields.</div>
+<div class="pre"><a id="l71" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l71" class="linenr">  71</a> For&nbsp;version&nbsp;2,&nbsp;the&nbsp;values&nbsp;are&nbsp;assumed&nbsp;to&nbsp;be&nbsp;zero,&nbsp;unless&nbsp;specified&nbsp;otherwise</div>
+<div class="pre"><a id="l72" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l72" class="linenr">  72</a> in&nbsp;the&nbsp;description&nbsp;of&nbsp;a&nbsp;field.</div>
+<div class="pre"><a id="l73" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l73" class="linenr">  73</a> </div>
+<div class="pre"><a id="l74" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l74" class="linenr">  74</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;72&nbsp;-&nbsp;&nbsp;79:&nbsp;&nbsp;incompatible_features</div>
+<div class="pre"><a id="l75" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l75" class="linenr">  75</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bitmask&nbsp;of&nbsp;incompatible&nbsp;features.&nbsp;An&nbsp;implementation&nbsp;must</div>
+<div class="pre"><a id="l76" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l76" class="linenr">  76</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fail&nbsp;to&nbsp;open&nbsp;an&nbsp;image&nbsp;if&nbsp;an&nbsp;unknown&nbsp;bit&nbsp;is&nbsp;set.</div>
+<div class="pre"><a id="l77" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l77" class="linenr">  77</a> </div>
+<div class="pre"><a id="l78" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l78" class="linenr">  78</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bit&nbsp;0:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dirty&nbsp;bit.&nbsp;&nbsp;If&nbsp;this&nbsp;bit&nbsp;is&nbsp;set&nbsp;then&nbsp;refcounts</div>
+<div class="pre"><a id="l79" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l79" class="linenr">  79</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;may&nbsp;be&nbsp;inconsistent,&nbsp;make&nbsp;sure&nbsp;to&nbsp;scan&nbsp;L1/L2</div>
+<div class="pre"><a id="l80" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l80" class="linenr">  80</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tables&nbsp;to&nbsp;repair&nbsp;refcounts&nbsp;before&nbsp;accessing&nbsp;the</div>
+<div class="pre"><a id="l81" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l81" class="linenr">  81</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;image.</div>
+<div class="pre"><a id="l82" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l82" class="linenr">  82</a> </div>
+<div class="pre"><a id="l83" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l83" class="linenr">  83</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bit&nbsp;1:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Corrupt&nbsp;bit.&nbsp;&nbsp;If&nbsp;this&nbsp;bit&nbsp;is&nbsp;set&nbsp;then&nbsp;any&nbsp;data</div>
+<div class="pre"><a id="l84" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l84" class="linenr">  84</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structure&nbsp;may&nbsp;be&nbsp;corrupt&nbsp;and&nbsp;the&nbsp;image&nbsp;must&nbsp;not</div>
+<div class="pre"><a id="l85" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l85" class="linenr">  85</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;be&nbsp;written&nbsp;to&nbsp;(unless&nbsp;for&nbsp;regaining</div>
+<div class="pre"><a id="l86" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l86" class="linenr">  86</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;consistency).</div>
+<div class="pre"><a id="l87" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l87" class="linenr">  87</a> </div>
+<div class="pre"><a id="l88" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l88" class="linenr">  88</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bits&nbsp;2-63:&nbsp;&nbsp;Reserved&nbsp;(set&nbsp;to&nbsp;0)</div>
+<div class="pre"><a id="l89" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l89" class="linenr">  89</a> </div>
+<div class="pre"><a id="l90" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l90" class="linenr">  90</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;80&nbsp;-&nbsp;&nbsp;87:&nbsp;&nbsp;compatible_features</div>
+<div class="pre"><a id="l91" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l91" class="linenr">  91</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bitmask&nbsp;of&nbsp;compatible&nbsp;features.&nbsp;An&nbsp;implementation&nbsp;can</div>
+<div class="pre"><a id="l92" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l92" class="linenr">  92</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;safely&nbsp;ignore&nbsp;any&nbsp;unknown&nbsp;bits&nbsp;that&nbsp;are&nbsp;set.</div>
+<div class="pre"><a id="l93" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l93" class="linenr">  93</a> </div>
+<div class="pre"><a id="l94" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l94" class="linenr">  94</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bit&nbsp;0:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lazy&nbsp;refcounts&nbsp;bit.&nbsp;&nbsp;If&nbsp;this&nbsp;bit&nbsp;is&nbsp;set&nbsp;then</div>
+<div class="pre"><a id="l95" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l95" class="linenr">  95</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lazy&nbsp;refcount&nbsp;updates&nbsp;can&nbsp;be&nbsp;used.&nbsp;&nbsp;This&nbsp;means</div>
+<div class="pre"><a id="l96" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l96" class="linenr">  96</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;marking&nbsp;the&nbsp;image&nbsp;file&nbsp;dirty&nbsp;and&nbsp;postponing</div>
+<div class="pre"><a id="l97" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l97" class="linenr">  97</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refcount&nbsp;metadata&nbsp;updates.</div>
+<div class="pre"><a id="l98" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l98" class="linenr">  98</a> </div>
+<div class="pre"><a id="l99" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l99" class="linenr">  99</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bits&nbsp;1-63:&nbsp;&nbsp;Reserved&nbsp;(set&nbsp;to&nbsp;0)</div>
+<div class="pre"><a id="l100" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l100" class="linenr"> 100</a> </div>
+<div class="pre"><a id="l101" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l101" class="linenr"> 101</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;88&nbsp;-&nbsp;&nbsp;95:&nbsp;&nbsp;autoclear_features</div>
+<div class="pre"><a id="l102" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l102" class="linenr"> 102</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bitmask&nbsp;of&nbsp;auto-clear&nbsp;features.&nbsp;An&nbsp;implementation&nbsp;may&nbsp;only</div>
+<div class="pre"><a id="l103" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l103" class="linenr"> 103</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write&nbsp;to&nbsp;an&nbsp;image&nbsp;with&nbsp;unknown&nbsp;auto-clear&nbsp;features&nbsp;if&nbsp;it</div>
+<div class="pre"><a id="l104" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l104" class="linenr"> 104</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clears&nbsp;the&nbsp;respective&nbsp;bits&nbsp;from&nbsp;this&nbsp;field&nbsp;first.</div>
+<div class="pre"><a id="l105" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l105" class="linenr"> 105</a> </div>
+<div class="pre"><a id="l106" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l106" class="linenr"> 106</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bit&nbsp;0:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bitmaps&nbsp;extension&nbsp;bit</div>
+<div class="pre"><a id="l107" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l107" class="linenr"> 107</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;bit&nbsp;indicates&nbsp;consistency&nbsp;for&nbsp;the&nbsp;bitmaps</div>
+<div class="pre"><a id="l108" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l108" class="linenr"> 108</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;extension&nbsp;data.</div>
+<div class="pre"><a id="l109" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l109" class="linenr"> 109</a> </div>
+<div class="pre"><a id="l110" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l110" class="linenr"> 110</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;if&nbsp;this&nbsp;bit&nbsp;is&nbsp;set&nbsp;without&nbsp;the</div>
+<div class="pre"><a id="l111" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l111" class="linenr"> 111</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bitmaps&nbsp;extension&nbsp;present.</div>
+<div class="pre"><a id="l112" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l112" class="linenr"> 112</a> </div>
+<div class="pre"><a id="l113" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l113" class="linenr"> 113</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;the&nbsp;bitmaps&nbsp;extension&nbsp;is&nbsp;present&nbsp;but&nbsp;this</div>
+<div class="pre"><a id="l114" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l114" class="linenr"> 114</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bit&nbsp;is&nbsp;unset,&nbsp;the&nbsp;bitmaps&nbsp;extension&nbsp;data&nbsp;must&nbsp;be</div>
+<div class="pre"><a id="l115" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l115" class="linenr"> 115</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;considered&nbsp;inconsistent.</div>
+<div class="pre"><a id="l116" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l116" class="linenr"> 116</a> </div>
+<div class="pre"><a id="l117" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l117" class="linenr"> 117</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bits&nbsp;1-63:&nbsp;&nbsp;Reserved&nbsp;(set&nbsp;to&nbsp;0)</div>
+<div class="pre"><a id="l118" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l118" class="linenr"> 118</a> </div>
+<div class="pre"><a id="l119" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l119" class="linenr"> 119</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;96&nbsp;-&nbsp;&nbsp;99:&nbsp;&nbsp;refcount_order</div>
+<div class="pre"><a id="l120" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l120" class="linenr"> 120</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Describes&nbsp;the&nbsp;width&nbsp;of&nbsp;a&nbsp;reference&nbsp;count&nbsp;block&nbsp;entry&nbsp;(width</div>
+<div class="pre"><a id="l121" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l121" class="linenr"> 121</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;bits:&nbsp;refcount_bits&nbsp;=&nbsp;1&nbsp;&lt;&lt;&nbsp;refcount_order).&nbsp;For&nbsp;version&nbsp;2</div>
+<div class="pre"><a id="l122" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l122" class="linenr"> 122</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;images,&nbsp;the&nbsp;order&nbsp;is&nbsp;always&nbsp;assumed&nbsp;to&nbsp;be&nbsp;4</div>
+<div class="pre"><a id="l123" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l123" class="linenr"> 123</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(i.e.&nbsp;refcount_bits&nbsp;=&nbsp;16).</div>
+<div class="pre"><a id="l124" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l124" class="linenr"> 124</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;value&nbsp;may&nbsp;not&nbsp;exceed&nbsp;6&nbsp;(i.e.&nbsp;refcount_bits&nbsp;=&nbsp;64).</div>
+<div class="pre"><a id="l125" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l125" class="linenr"> 125</a> </div>
+<div class="pre"><a id="l126" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l126" class="linenr"> 126</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100&nbsp;-&nbsp;103:&nbsp;&nbsp;header_length</div>
+<div class="pre"><a id="l127" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l127" class="linenr"> 127</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Length&nbsp;of&nbsp;the&nbsp;header&nbsp;structure&nbsp;in&nbsp;bytes.&nbsp;For&nbsp;version&nbsp;2</div>
+<div class="pre"><a id="l128" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l128" class="linenr"> 128</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;images,&nbsp;the&nbsp;length&nbsp;is&nbsp;always&nbsp;assumed&nbsp;to&nbsp;be&nbsp;72&nbsp;bytes.</div>
+<div class="pre"><a id="l129" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l129" class="linenr"> 129</a> </div>
+<div class="pre"><a id="l130" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l130" class="linenr"> 130</a> Directly&nbsp;after&nbsp;the&nbsp;image&nbsp;header,&nbsp;optional&nbsp;sections&nbsp;called&nbsp;header&nbsp;extensions&nbsp;can</div>
+<div class="pre"><a id="l131" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l131" class="linenr"> 131</a> be&nbsp;stored.&nbsp;Each&nbsp;extension&nbsp;has&nbsp;a&nbsp;structure&nbsp;like&nbsp;the&nbsp;following:</div>
+<div class="pre"><a id="l132" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l132" class="linenr"> 132</a> </div>
+<div class="pre"><a id="l133" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l133" class="linenr"> 133</a> &nbsp;&nbsp;&nbsp;&nbsp;Byte&nbsp;&nbsp;0&nbsp;-&nbsp;&nbsp;3:&nbsp;&nbsp;&nbsp;Header&nbsp;extension&nbsp;type:</div>
+<div class="pre"><a id="l134" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l134" class="linenr"> 134</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x00000000&nbsp;-&nbsp;End&nbsp;of&nbsp;the&nbsp;header&nbsp;extension&nbsp;area</div>
+<div class="pre"><a id="l135" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l135" class="linenr"> 135</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0xE2792ACA&nbsp;-&nbsp;Backing&nbsp;file&nbsp;format&nbsp;name</div>
+<div class="pre"><a id="l136" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l136" class="linenr"> 136</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x6803f857&nbsp;-&nbsp;Feature&nbsp;name&nbsp;table</div>
+<div class="pre"><a id="l137" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l137" class="linenr"> 137</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x23852875&nbsp;-&nbsp;Bitmaps&nbsp;extension</div>
+<div class="pre"><a id="l138" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l138" class="linenr"> 138</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;other&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Unknown&nbsp;header&nbsp;extension,&nbsp;can&nbsp;be&nbsp;safely</div>
+<div class="pre"><a id="l139" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l139" class="linenr"> 139</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignored</div>
+<div class="pre"><a id="l140" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l140" class="linenr"> 140</a> </div>
+<div class="pre"><a id="l141" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l141" class="linenr"> 141</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;-&nbsp;&nbsp;7:&nbsp;&nbsp;&nbsp;Length&nbsp;of&nbsp;the&nbsp;header&nbsp;extension&nbsp;data</div>
+<div class="pre"><a id="l142" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l142" class="linenr"> 142</a> </div>
+<div class="pre"><a id="l143" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l143" class="linenr"> 143</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;-&nbsp;&nbsp;n:&nbsp;&nbsp;&nbsp;Header&nbsp;extension&nbsp;data</div>
+<div class="pre"><a id="l144" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l144" class="linenr"> 144</a> </div>
+<div class="pre"><a id="l145" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l145" class="linenr"> 145</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n&nbsp;-&nbsp;&nbsp;m:&nbsp;&nbsp;&nbsp;Padding&nbsp;to&nbsp;round&nbsp;up&nbsp;the&nbsp;header&nbsp;extension&nbsp;size&nbsp;to&nbsp;the&nbsp;next</div>
+<div class="pre"><a id="l146" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l146" class="linenr"> 146</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiple&nbsp;of&nbsp;8.</div>
+<div class="pre"><a id="l147" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l147" class="linenr"> 147</a> </div>
+<div class="pre"><a id="l148" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l148" class="linenr"> 148</a> Unless&nbsp;stated&nbsp;otherwise,&nbsp;each&nbsp;header&nbsp;extension&nbsp;type&nbsp;shall&nbsp;appear&nbsp;at&nbsp;most&nbsp;once</div>
+<div class="pre"><a id="l149" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l149" class="linenr"> 149</a> in&nbsp;the&nbsp;same&nbsp;image.</div>
+<div class="pre"><a id="l150" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l150" class="linenr"> 150</a> </div>
+<div class="pre"><a id="l151" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l151" class="linenr"> 151</a> If&nbsp;the&nbsp;image&nbsp;has&nbsp;a&nbsp;backing&nbsp;file&nbsp;then&nbsp;the&nbsp;backing&nbsp;file&nbsp;name&nbsp;should&nbsp;be&nbsp;stored&nbsp;in</div>
+<div class="pre"><a id="l152" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l152" class="linenr"> 152</a> the&nbsp;remaining&nbsp;space&nbsp;between&nbsp;the&nbsp;end&nbsp;of&nbsp;the&nbsp;header&nbsp;extension&nbsp;area&nbsp;and&nbsp;the&nbsp;end&nbsp;of</div>
+<div class="pre"><a id="l153" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l153" class="linenr"> 153</a> the&nbsp;first&nbsp;cluster.&nbsp;It&nbsp;is&nbsp;not&nbsp;allowed&nbsp;to&nbsp;store&nbsp;other&nbsp;data&nbsp;here,&nbsp;so&nbsp;that&nbsp;an</div>
+<div class="pre"><a id="l154" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l154" class="linenr"> 154</a> implementation&nbsp;can&nbsp;safely&nbsp;modify&nbsp;the&nbsp;header&nbsp;and&nbsp;add&nbsp;extensions&nbsp;without&nbsp;harming</div>
+<div class="pre"><a id="l155" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l155" class="linenr"> 155</a> data&nbsp;of&nbsp;compatible&nbsp;features&nbsp;that&nbsp;it&nbsp;doesn't&nbsp;support.&nbsp;Compatible&nbsp;features&nbsp;that</div>
+<div class="pre"><a id="l156" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l156" class="linenr"> 156</a> need&nbsp;space&nbsp;for&nbsp;additional&nbsp;data&nbsp;can&nbsp;use&nbsp;a&nbsp;header&nbsp;extension.</div>
+<div class="pre"><a id="l157" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l157" class="linenr"> 157</a> </div>
+<div class="pre"><a id="l158" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l158" class="linenr"> 158</a> </div>
+<div class="pre"><a id="l159" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l159" class="linenr"> 159</a> ==&nbsp;Feature&nbsp;name&nbsp;table&nbsp;==</div>
+<div class="pre"><a id="l160" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l160" class="linenr"> 160</a> </div>
+<div class="pre"><a id="l161" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l161" class="linenr"> 161</a> The&nbsp;feature&nbsp;name&nbsp;table&nbsp;is&nbsp;an&nbsp;optional&nbsp;header&nbsp;extension&nbsp;that&nbsp;contains&nbsp;the&nbsp;name</div>
+<div class="pre"><a id="l162" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l162" class="linenr"> 162</a> for&nbsp;features&nbsp;used&nbsp;by&nbsp;the&nbsp;image.&nbsp;It&nbsp;can&nbsp;be&nbsp;used&nbsp;by&nbsp;applications&nbsp;that&nbsp;don't&nbsp;know</div>
+<div class="pre"><a id="l163" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l163" class="linenr"> 163</a> the&nbsp;respective&nbsp;feature&nbsp;(e.g.&nbsp;because&nbsp;the&nbsp;feature&nbsp;was&nbsp;introduced&nbsp;only&nbsp;later)&nbsp;to</div>
+<div class="pre"><a id="l164" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l164" class="linenr"> 164</a> display&nbsp;a&nbsp;useful&nbsp;error&nbsp;message.</div>
+<div class="pre"><a id="l165" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l165" class="linenr"> 165</a> </div>
+<div class="pre"><a id="l166" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l166" class="linenr"> 166</a> The&nbsp;number&nbsp;of&nbsp;entries&nbsp;in&nbsp;the&nbsp;feature&nbsp;name&nbsp;table&nbsp;is&nbsp;determined&nbsp;by&nbsp;the&nbsp;length&nbsp;of</div>
+<div class="pre"><a id="l167" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l167" class="linenr"> 167</a> the&nbsp;header&nbsp;extension&nbsp;data.&nbsp;Each&nbsp;entry&nbsp;look&nbsp;like&nbsp;this:</div>
+<div class="pre"><a id="l168" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l168" class="linenr"> 168</a> </div>
+<div class="pre"><a id="l169" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l169" class="linenr"> 169</a> &nbsp;&nbsp;&nbsp;&nbsp;Byte&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0:&nbsp;&nbsp;&nbsp;Type&nbsp;of&nbsp;feature&nbsp;(select&nbsp;feature&nbsp;bitmap)</div>
+<div class="pre"><a id="l170" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l170" class="linenr"> 170</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0:&nbsp;Incompatible&nbsp;feature</div>
+<div class="pre"><a id="l171" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l171" class="linenr"> 171</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;Compatible&nbsp;feature</div>
+<div class="pre"><a id="l172" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l172" class="linenr"> 172</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;Autoclear&nbsp;feature</div>
+<div class="pre"><a id="l173" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l173" class="linenr"> 173</a> </div>
+<div class="pre"><a id="l174" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l174" class="linenr"> 174</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;&nbsp;&nbsp;Bit&nbsp;number&nbsp;within&nbsp;the&nbsp;selected&nbsp;feature&nbsp;bitmap&nbsp;(valid</div>
+<div class="pre"><a id="l175" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l175" class="linenr"> 175</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;values:&nbsp;0-63)</div>
+<div class="pre"><a id="l176" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l176" class="linenr"> 176</a> </div>
+<div class="pre"><a id="l177" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l177" class="linenr"> 177</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;-&nbsp;47:&nbsp;&nbsp;&nbsp;Feature&nbsp;name&nbsp;(padded&nbsp;with&nbsp;zeros,&nbsp;but&nbsp;not&nbsp;necessarily&nbsp;null</div>
+<div class="pre"><a id="l178" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l178" class="linenr"> 178</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;terminated&nbsp;if&nbsp;it&nbsp;has&nbsp;full&nbsp;length)</div>
+<div class="pre"><a id="l179" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l179" class="linenr"> 179</a> </div>
+<div class="pre"><a id="l180" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l180" class="linenr"> 180</a> </div>
+<div class="pre"><a id="l181" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l181" class="linenr"> 181</a> ==&nbsp;Bitmaps&nbsp;extension&nbsp;==</div>
+<div class="pre"><a id="l182" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l182" class="linenr"> 182</a> </div>
+<div class="pre"><a id="l183" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l183" class="linenr"> 183</a> The&nbsp;bitmaps&nbsp;extension&nbsp;is&nbsp;an&nbsp;optional&nbsp;header&nbsp;extension.&nbsp;It&nbsp;provides&nbsp;the&nbsp;ability</div>
+<div class="pre"><a id="l184" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l184" class="linenr"> 184</a> to&nbsp;store&nbsp;bitmaps&nbsp;related&nbsp;to&nbsp;a&nbsp;virtual&nbsp;disk.&nbsp;For&nbsp;now,&nbsp;there&nbsp;is&nbsp;only&nbsp;one&nbsp;bitmap</div>
+<div class="pre"><a id="l185" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l185" class="linenr"> 185</a> type:&nbsp;the&nbsp;dirty&nbsp;tracking&nbsp;bitmap,&nbsp;which&nbsp;tracks&nbsp;virtual&nbsp;disk&nbsp;changes&nbsp;from&nbsp;some</div>
+<div class="pre"><a id="l186" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l186" class="linenr"> 186</a> point&nbsp;in&nbsp;time.</div>
+<div class="pre"><a id="l187" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l187" class="linenr"> 187</a> </div>
+<div class="pre"><a id="l188" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l188" class="linenr"> 188</a> The&nbsp;data&nbsp;of&nbsp;the&nbsp;extension&nbsp;should&nbsp;be&nbsp;considered&nbsp;consistent&nbsp;only&nbsp;if&nbsp;the</div>
+<div class="pre"><a id="l189" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l189" class="linenr"> 189</a> corresponding&nbsp;auto-clear&nbsp;feature&nbsp;bit&nbsp;is&nbsp;set,&nbsp;see&nbsp;autoclear_features&nbsp;above.</div>
+<div class="pre"><a id="l190" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l190" class="linenr"> 190</a> </div>
+<div class="pre"><a id="l191" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l191" class="linenr"> 191</a> The&nbsp;fields&nbsp;of&nbsp;the&nbsp;bitmaps&nbsp;extension&nbsp;are:</div>
+<div class="pre"><a id="l192" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l192" class="linenr"> 192</a> </div>
+<div class="pre"><a id="l193" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l193" class="linenr"> 193</a> &nbsp;&nbsp;&nbsp;&nbsp;Byte&nbsp;&nbsp;0&nbsp;-&nbsp;&nbsp;3:&nbsp;&nbsp;nb_bitmaps</div>
+<div class="pre"><a id="l194" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l194" class="linenr"> 194</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;number&nbsp;of&nbsp;bitmaps&nbsp;contained&nbsp;in&nbsp;the&nbsp;image.&nbsp;Must&nbsp;be</div>
+<div class="pre"><a id="l195" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l195" class="linenr"> 195</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;greater&nbsp;than&nbsp;or&nbsp;equal&nbsp;to&nbsp;1.</div>
+<div class="pre"><a id="l196" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l196" class="linenr"> 196</a> </div>
+<div class="pre"><a id="l197" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l197" class="linenr"> 197</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note:&nbsp;Qemu&nbsp;currently&nbsp;only&nbsp;supports&nbsp;up&nbsp;to&nbsp;65535&nbsp;bitmaps&nbsp;per</div>
+<div class="pre"><a id="l198" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l198" class="linenr"> 198</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;image.</div>
+<div class="pre"><a id="l199" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l199" class="linenr"> 199</a> </div>
+<div class="pre"><a id="l200" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l200" class="linenr"> 200</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;-&nbsp;&nbsp;7:&nbsp;&nbsp;Reserved,&nbsp;must&nbsp;be&nbsp;zero.</div>
+<div class="pre"><a id="l201" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l201" class="linenr"> 201</a> </div>
+<div class="pre"><a id="l202" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l202" class="linenr"> 202</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;-&nbsp;15:&nbsp;&nbsp;bitmap_directory_size</div>
+<div class="pre"><a id="l203" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l203" class="linenr"> 203</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Size&nbsp;of&nbsp;the&nbsp;bitmap&nbsp;directory&nbsp;in&nbsp;bytes.&nbsp;It&nbsp;is&nbsp;the&nbsp;cumulative</div>
+<div class="pre"><a id="l204" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l204" class="linenr"> 204</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size&nbsp;of&nbsp;all&nbsp;(nb_bitmaps)&nbsp;bitmap&nbsp;headers.</div>
+<div class="pre"><a id="l205" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l205" class="linenr"> 205</a> </div>
+<div class="pre"><a id="l206" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l206" class="linenr"> 206</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16&nbsp;-&nbsp;23:&nbsp;&nbsp;bitmap_directory_offset</div>
+<div class="pre"><a id="l207" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l207" class="linenr"> 207</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Offset&nbsp;into&nbsp;the&nbsp;image&nbsp;file&nbsp;at&nbsp;which&nbsp;the&nbsp;bitmap&nbsp;directory</div>
+<div class="pre"><a id="l208" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l208" class="linenr"> 208</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;starts.&nbsp;Must&nbsp;be&nbsp;aligned&nbsp;to&nbsp;a&nbsp;cluster&nbsp;boundary.</div>
+<div class="pre"><a id="l209" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l209" class="linenr"> 209</a> </div>
+<div class="pre"><a id="l210" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l210" class="linenr"> 210</a> </div>
+<div class="pre"><a id="l211" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l211" class="linenr"> 211</a> ==&nbsp;Host&nbsp;cluster&nbsp;management&nbsp;==</div>
+<div class="pre"><a id="l212" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l212" class="linenr"> 212</a> </div>
+<div class="pre"><a id="l213" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l213" class="linenr"> 213</a> qcow2&nbsp;manages&nbsp;the&nbsp;allocation&nbsp;of&nbsp;host&nbsp;clusters&nbsp;by&nbsp;maintaining&nbsp;a&nbsp;reference&nbsp;count</div>
+<div class="pre"><a id="l214" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l214" class="linenr"> 214</a> for&nbsp;each&nbsp;host&nbsp;cluster.&nbsp;A&nbsp;refcount&nbsp;of&nbsp;0&nbsp;means&nbsp;that&nbsp;the&nbsp;cluster&nbsp;is&nbsp;free,&nbsp;1&nbsp;means</div>
+<div class="pre"><a id="l215" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l215" class="linenr"> 215</a> that&nbsp;it&nbsp;is&nbsp;used,&nbsp;and&nbsp;&gt;=&nbsp;2&nbsp;means&nbsp;that&nbsp;it&nbsp;is&nbsp;used&nbsp;and&nbsp;any&nbsp;write&nbsp;access&nbsp;must</div>
+<div class="pre"><a id="l216" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l216" class="linenr"> 216</a> perform&nbsp;a&nbsp;COW&nbsp;(copy&nbsp;on&nbsp;write)&nbsp;operation.</div>
+<div class="pre"><a id="l217" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l217" class="linenr"> 217</a> </div>
+<div class="pre"><a id="l218" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l218" class="linenr"> 218</a> The&nbsp;refcounts&nbsp;are&nbsp;managed&nbsp;in&nbsp;a&nbsp;two-level&nbsp;table.&nbsp;The&nbsp;first&nbsp;level&nbsp;is&nbsp;called</div>
+<div class="pre"><a id="l219" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l219" class="linenr"> 219</a> refcount&nbsp;table&nbsp;and&nbsp;has&nbsp;a&nbsp;variable&nbsp;size&nbsp;(which&nbsp;is&nbsp;stored&nbsp;in&nbsp;the&nbsp;header).&nbsp;The</div>
+<div class="pre"><a id="l220" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l220" class="linenr"> 220</a> refcount&nbsp;table&nbsp;can&nbsp;cover&nbsp;multiple&nbsp;clusters,&nbsp;however&nbsp;it&nbsp;needs&nbsp;to&nbsp;be&nbsp;contiguous</div>
+<div class="pre"><a id="l221" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l221" class="linenr"> 221</a> in&nbsp;the&nbsp;image&nbsp;file.</div>
+<div class="pre"><a id="l222" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l222" class="linenr"> 222</a> </div>
+<div class="pre"><a id="l223" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l223" class="linenr"> 223</a> It&nbsp;contains&nbsp;pointers&nbsp;to&nbsp;the&nbsp;second&nbsp;level&nbsp;structures&nbsp;which&nbsp;are&nbsp;called&nbsp;refcount</div>
+<div class="pre"><a id="l224" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l224" class="linenr"> 224</a> blocks&nbsp;and&nbsp;are&nbsp;exactly&nbsp;one&nbsp;cluster&nbsp;in&nbsp;size.</div>
+<div class="pre"><a id="l225" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l225" class="linenr"> 225</a> </div>
+<div class="pre"><a id="l226" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l226" class="linenr"> 226</a> Given&nbsp;a&nbsp;offset&nbsp;into&nbsp;the&nbsp;image&nbsp;file,&nbsp;the&nbsp;refcount&nbsp;of&nbsp;its&nbsp;cluster&nbsp;can&nbsp;be&nbsp;obtained</div>
+<div class="pre"><a id="l227" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l227" class="linenr"> 227</a> as&nbsp;follows:</div>
+<div class="pre"><a id="l228" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l228" class="linenr"> 228</a> </div>
+<div class="pre"><a id="l229" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l229" class="linenr"> 229</a> &nbsp;&nbsp;&nbsp;&nbsp;refcount_block_entries&nbsp;=&nbsp;(cluster_size&nbsp;*&nbsp;8&nbsp;/&nbsp;refcount_bits)</div>
+<div class="pre"><a id="l230" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l230" class="linenr"> 230</a> </div>
+<div class="pre"><a id="l231" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l231" class="linenr"> 231</a> &nbsp;&nbsp;&nbsp;&nbsp;refcount_block_index&nbsp;=&nbsp;(offset&nbsp;/&nbsp;cluster_size)&nbsp;%&nbsp;refcount_block_entries</div>
+<div class="pre"><a id="l232" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l232" class="linenr"> 232</a> &nbsp;&nbsp;&nbsp;&nbsp;refcount_table_index&nbsp;=&nbsp;(offset&nbsp;/&nbsp;cluster_size)&nbsp;/&nbsp;refcount_block_entries</div>
+<div class="pre"><a id="l233" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l233" class="linenr"> 233</a> </div>
+<div class="pre"><a id="l234" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l234" class="linenr"> 234</a> &nbsp;&nbsp;&nbsp;&nbsp;refcount_block&nbsp;=&nbsp;load_cluster(refcount_table[refcount_table_index]);</div>
+<div class="pre"><a id="l235" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l235" class="linenr"> 235</a> &nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;refcount_block[refcount_block_index];</div>
+<div class="pre"><a id="l236" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l236" class="linenr"> 236</a> </div>
+<div class="pre"><a id="l237" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l237" class="linenr"> 237</a> Refcount&nbsp;table&nbsp;entry:</div>
+<div class="pre"><a id="l238" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l238" class="linenr"> 238</a> </div>
+<div class="pre"><a id="l239" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l239" class="linenr"> 239</a> &nbsp;&nbsp;&nbsp;&nbsp;Bit&nbsp;&nbsp;0&nbsp;-&nbsp;&nbsp;8:&nbsp;&nbsp;&nbsp;&nbsp;Reserved&nbsp;(set&nbsp;to&nbsp;0)</div>
+<div class="pre"><a id="l240" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l240" class="linenr"> 240</a> </div>
+<div class="pre"><a id="l241" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l241" class="linenr"> 241</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9&nbsp;-&nbsp;63:&nbsp;&nbsp;&nbsp;&nbsp;Bits&nbsp;9-63&nbsp;of&nbsp;the&nbsp;offset&nbsp;into&nbsp;the&nbsp;image&nbsp;file&nbsp;at&nbsp;which&nbsp;the</div>
+<div class="pre"><a id="l242" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l242" class="linenr"> 242</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refcount&nbsp;block&nbsp;starts.&nbsp;Must&nbsp;be&nbsp;aligned&nbsp;to&nbsp;a&nbsp;cluster</div>
+<div class="pre"><a id="l243" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l243" class="linenr"> 243</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boundary.</div>
+<div class="pre"><a id="l244" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l244" class="linenr"> 244</a> </div>
+<div class="pre"><a id="l245" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l245" class="linenr"> 245</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;this&nbsp;is&nbsp;0,&nbsp;the&nbsp;corresponding&nbsp;refcount&nbsp;block&nbsp;has&nbsp;not&nbsp;yet</div>
+<div class="pre"><a id="l246" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l246" class="linenr"> 246</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;been&nbsp;allocated.&nbsp;All&nbsp;refcounts&nbsp;managed&nbsp;by&nbsp;this&nbsp;refcount&nbsp;block</div>
+<div class="pre"><a id="l247" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l247" class="linenr"> 247</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;are&nbsp;0.</div>
+<div class="pre"><a id="l248" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l248" class="linenr"> 248</a> </div>
+<div class="pre"><a id="l249" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l249" class="linenr"> 249</a> Refcount&nbsp;block&nbsp;entry&nbsp;(x&nbsp;=&nbsp;refcount_bits&nbsp;-&nbsp;1):</div>
+<div class="pre"><a id="l250" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l250" class="linenr"> 250</a> </div>
+<div class="pre"><a id="l251" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l251" class="linenr"> 251</a> &nbsp;&nbsp;&nbsp;&nbsp;Bit&nbsp;&nbsp;0&nbsp;-&nbsp;&nbsp;x:&nbsp;&nbsp;&nbsp;&nbsp;Reference&nbsp;count&nbsp;of&nbsp;the&nbsp;cluster.&nbsp;If&nbsp;refcount_bits&nbsp;implies&nbsp;a</div>
+<div class="pre"><a id="l252" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l252" class="linenr"> 252</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sub-byte&nbsp;width,&nbsp;note&nbsp;that&nbsp;bit&nbsp;0&nbsp;means&nbsp;the&nbsp;least&nbsp;significant</div>
+<div class="pre"><a id="l253" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l253" class="linenr"> 253</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bit&nbsp;in&nbsp;this&nbsp;context.</div>
+<div class="pre"><a id="l254" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l254" class="linenr"> 254</a> </div>
+<div class="pre"><a id="l255" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l255" class="linenr"> 255</a> </div>
+<div class="pre"><a id="l256" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l256" class="linenr"> 256</a> ==&nbsp;Cluster&nbsp;mapping&nbsp;==</div>
+<div class="pre"><a id="l257" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l257" class="linenr"> 257</a> </div>
+<div class="pre"><a id="l258" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l258" class="linenr"> 258</a> Just&nbsp;as&nbsp;for&nbsp;refcounts,&nbsp;qcow2&nbsp;uses&nbsp;a&nbsp;two-level&nbsp;structure&nbsp;for&nbsp;the&nbsp;mapping&nbsp;of</div>
+<div class="pre"><a id="l259" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l259" class="linenr"> 259</a> guest&nbsp;clusters&nbsp;to&nbsp;host&nbsp;clusters.&nbsp;They&nbsp;are&nbsp;called&nbsp;L1&nbsp;and&nbsp;L2&nbsp;table.</div>
+<div class="pre"><a id="l260" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l260" class="linenr"> 260</a> </div>
+<div class="pre"><a id="l261" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l261" class="linenr"> 261</a> The&nbsp;L1&nbsp;table&nbsp;has&nbsp;a&nbsp;variable&nbsp;size&nbsp;(stored&nbsp;in&nbsp;the&nbsp;header)&nbsp;and&nbsp;may&nbsp;use&nbsp;multiple</div>
+<div class="pre"><a id="l262" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l262" class="linenr"> 262</a> clusters,&nbsp;however&nbsp;it&nbsp;must&nbsp;be&nbsp;contiguous&nbsp;in&nbsp;the&nbsp;image&nbsp;file.&nbsp;L2&nbsp;tables&nbsp;are</div>
+<div class="pre"><a id="l263" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l263" class="linenr"> 263</a> exactly&nbsp;one&nbsp;cluster&nbsp;in&nbsp;size.</div>
+<div class="pre"><a id="l264" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l264" class="linenr"> 264</a> </div>
+<div class="pre"><a id="l265" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l265" class="linenr"> 265</a> Given&nbsp;a&nbsp;offset&nbsp;into&nbsp;the&nbsp;virtual&nbsp;disk,&nbsp;the&nbsp;offset&nbsp;into&nbsp;the&nbsp;image&nbsp;file&nbsp;can&nbsp;be</div>
+<div class="pre"><a id="l266" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l266" class="linenr"> 266</a> obtained&nbsp;as&nbsp;follows:</div>
+<div class="pre"><a id="l267" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l267" class="linenr"> 267</a> </div>
+<div class="pre"><a id="l268" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l268" class="linenr"> 268</a> &nbsp;&nbsp;&nbsp;&nbsp;l2_entries&nbsp;=&nbsp;(cluster_size&nbsp;/&nbsp;sizeof(uint64_t))</div>
+<div class="pre"><a id="l269" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l269" class="linenr"> 269</a> </div>
+<div class="pre"><a id="l270" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l270" class="linenr"> 270</a> &nbsp;&nbsp;&nbsp;&nbsp;l2_index&nbsp;=&nbsp;(offset&nbsp;/&nbsp;cluster_size)&nbsp;%&nbsp;l2_entries</div>
+<div class="pre"><a id="l271" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l271" class="linenr"> 271</a> &nbsp;&nbsp;&nbsp;&nbsp;l1_index&nbsp;=&nbsp;(offset&nbsp;/&nbsp;cluster_size)&nbsp;/&nbsp;l2_entries</div>
+<div class="pre"><a id="l272" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l272" class="linenr"> 272</a> </div>
+<div class="pre"><a id="l273" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l273" class="linenr"> 273</a> &nbsp;&nbsp;&nbsp;&nbsp;l2_table&nbsp;=&nbsp;load_cluster(l1_table[l1_index]);</div>
+<div class="pre"><a id="l274" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l274" class="linenr"> 274</a> &nbsp;&nbsp;&nbsp;&nbsp;cluster_offset&nbsp;=&nbsp;l2_table[l2_index];</div>
+<div class="pre"><a id="l275" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l275" class="linenr"> 275</a> </div>
+<div class="pre"><a id="l276" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l276" class="linenr"> 276</a> &nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;cluster_offset&nbsp;+&nbsp;(offset&nbsp;%&nbsp;cluster_size)</div>
+<div class="pre"><a id="l277" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l277" class="linenr"> 277</a> </div>
+<div class="pre"><a id="l278" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l278" class="linenr"> 278</a> L1&nbsp;table&nbsp;entry:</div>
+<div class="pre"><a id="l279" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l279" class="linenr"> 279</a> </div>
+<div class="pre"><a id="l280" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l280" class="linenr"> 280</a> &nbsp;&nbsp;&nbsp;&nbsp;Bit&nbsp;&nbsp;0&nbsp;-&nbsp;&nbsp;8:&nbsp;&nbsp;&nbsp;&nbsp;Reserved&nbsp;(set&nbsp;to&nbsp;0)</div>
+<div class="pre"><a id="l281" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l281" class="linenr"> 281</a> </div>
+<div class="pre"><a id="l282" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l282" class="linenr"> 282</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9&nbsp;-&nbsp;55:&nbsp;&nbsp;&nbsp;&nbsp;Bits&nbsp;9-55&nbsp;of&nbsp;the&nbsp;offset&nbsp;into&nbsp;the&nbsp;image&nbsp;file&nbsp;at&nbsp;which&nbsp;the&nbsp;L2</div>
+<div class="pre"><a id="l283" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l283" class="linenr"> 283</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;table&nbsp;starts.&nbsp;Must&nbsp;be&nbsp;aligned&nbsp;to&nbsp;a&nbsp;cluster&nbsp;boundary.&nbsp;If&nbsp;the</div>
+<div class="pre"><a id="l284" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l284" class="linenr"> 284</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset&nbsp;is&nbsp;0,&nbsp;the&nbsp;L2&nbsp;table&nbsp;and&nbsp;all&nbsp;clusters&nbsp;described&nbsp;by&nbsp;this</div>
+<div class="pre"><a id="l285" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l285" class="linenr"> 285</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L2&nbsp;table&nbsp;are&nbsp;unallocated.</div>
+<div class="pre"><a id="l286" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l286" class="linenr"> 286</a> </div>
+<div class="pre"><a id="l287" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l287" class="linenr"> 287</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;56&nbsp;-&nbsp;62:&nbsp;&nbsp;&nbsp;&nbsp;Reserved&nbsp;(set&nbsp;to&nbsp;0)</div>
+<div class="pre"><a id="l288" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l288" class="linenr"> 288</a> </div>
+<div class="pre"><a id="l289" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l289" class="linenr"> 289</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;63:&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;for&nbsp;an&nbsp;L2&nbsp;table&nbsp;that&nbsp;is&nbsp;unused&nbsp;or&nbsp;requires&nbsp;COW,&nbsp;1&nbsp;if&nbsp;its</div>
+<div class="pre"><a id="l290" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l290" class="linenr"> 290</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refcount&nbsp;is&nbsp;exactly&nbsp;one.&nbsp;This&nbsp;information&nbsp;is&nbsp;only&nbsp;accurate</div>
+<div class="pre"><a id="l291" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l291" class="linenr"> 291</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;the&nbsp;active&nbsp;L1&nbsp;table.</div>
+<div class="pre"><a id="l292" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l292" class="linenr"> 292</a> </div>
+<div class="pre"><a id="l293" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l293" class="linenr"> 293</a> L2&nbsp;table&nbsp;entry:</div>
+<div class="pre"><a id="l294" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l294" class="linenr"> 294</a> </div>
+<div class="pre"><a id="l295" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l295" class="linenr"> 295</a> &nbsp;&nbsp;&nbsp;&nbsp;Bit&nbsp;&nbsp;0&nbsp;-&nbsp;&nbsp;61:&nbsp;&nbsp;&nbsp;Cluster&nbsp;descriptor</div>
+<div class="pre"><a id="l296" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l296" class="linenr"> 296</a> </div>
+<div class="pre"><a id="l297" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l297" class="linenr"> 297</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;62:&nbsp;&nbsp;&nbsp;0&nbsp;for&nbsp;standard&nbsp;clusters</div>
+<div class="pre"><a id="l298" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l298" class="linenr"> 298</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;for&nbsp;compressed&nbsp;clusters</div>
+<div class="pre"><a id="l299" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l299" class="linenr"> 299</a> </div>
+<div class="pre"><a id="l300" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l300" class="linenr"> 300</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;63:&nbsp;&nbsp;&nbsp;0&nbsp;for&nbsp;a&nbsp;cluster&nbsp;that&nbsp;is&nbsp;unused&nbsp;or&nbsp;requires&nbsp;COW,&nbsp;1&nbsp;if&nbsp;its</div>
+<div class="pre"><a id="l301" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l301" class="linenr"> 301</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refcount&nbsp;is&nbsp;exactly&nbsp;one.&nbsp;This&nbsp;information&nbsp;is&nbsp;only&nbsp;accurate</div>
+<div class="pre"><a id="l302" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l302" class="linenr"> 302</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;L2&nbsp;tables&nbsp;that&nbsp;are&nbsp;reachable&nbsp;from&nbsp;the&nbsp;active&nbsp;L1</div>
+<div class="pre"><a id="l303" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l303" class="linenr"> 303</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;table.</div>
+<div class="pre"><a id="l304" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l304" class="linenr"> 304</a> </div>
+<div class="pre"><a id="l305" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l305" class="linenr"> 305</a> Standard&nbsp;Cluster&nbsp;Descriptor:</div>
+<div class="pre"><a id="l306" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l306" class="linenr"> 306</a> </div>
+<div class="pre"><a id="l307" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l307" class="linenr"> 307</a> &nbsp;&nbsp;&nbsp;&nbsp;Bit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0:&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;set&nbsp;to&nbsp;1,&nbsp;the&nbsp;cluster&nbsp;reads&nbsp;as&nbsp;all&nbsp;zeros.&nbsp;The&nbsp;host</div>
+<div class="pre"><a id="l308" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l308" class="linenr"> 308</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cluster&nbsp;offset&nbsp;can&nbsp;be&nbsp;used&nbsp;to&nbsp;describe&nbsp;a&nbsp;preallocation,</div>
+<div class="pre"><a id="l309" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l309" class="linenr"> 309</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;but&nbsp;it&nbsp;won't&nbsp;be&nbsp;used&nbsp;for&nbsp;reading&nbsp;data&nbsp;from&nbsp;this&nbsp;cluster,</div>
+<div class="pre"><a id="l310" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l310" class="linenr"> 310</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nor&nbsp;is&nbsp;data&nbsp;read&nbsp;from&nbsp;the&nbsp;backing&nbsp;file&nbsp;if&nbsp;the&nbsp;cluster&nbsp;is</div>
+<div class="pre"><a id="l311" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l311" class="linenr"> 311</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unallocated.</div>
+<div class="pre"><a id="l312" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l312" class="linenr"> 312</a> </div>
+<div class="pre"><a id="l313" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l313" class="linenr"> 313</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;With&nbsp;version&nbsp;2,&nbsp;this&nbsp;is&nbsp;always&nbsp;0.</div>
+<div class="pre"><a id="l314" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l314" class="linenr"> 314</a> </div>
+<div class="pre"><a id="l315" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l315" class="linenr"> 315</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;-&nbsp;&nbsp;8:&nbsp;&nbsp;&nbsp;&nbsp;Reserved&nbsp;(set&nbsp;to&nbsp;0)</div>
+<div class="pre"><a id="l316" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l316" class="linenr"> 316</a> </div>
+<div class="pre"><a id="l317" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l317" class="linenr"> 317</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9&nbsp;-&nbsp;55:&nbsp;&nbsp;&nbsp;&nbsp;Bits&nbsp;9-55&nbsp;of&nbsp;host&nbsp;cluster&nbsp;offset.&nbsp;Must&nbsp;be&nbsp;aligned&nbsp;to&nbsp;a</div>
+<div class="pre"><a id="l318" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l318" class="linenr"> 318</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cluster&nbsp;boundary.&nbsp;If&nbsp;the&nbsp;offset&nbsp;is&nbsp;0,&nbsp;the&nbsp;cluster&nbsp;is</div>
+<div class="pre"><a id="l319" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l319" class="linenr"> 319</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unallocated.</div>
+<div class="pre"><a id="l320" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l320" class="linenr"> 320</a> </div>
+<div class="pre"><a id="l321" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l321" class="linenr"> 321</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;56&nbsp;-&nbsp;61:&nbsp;&nbsp;&nbsp;&nbsp;Reserved&nbsp;(set&nbsp;to&nbsp;0)</div>
+<div class="pre"><a id="l322" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l322" class="linenr"> 322</a> </div>
+<div class="pre"><a id="l323" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l323" class="linenr"> 323</a> </div>
+<div class="pre"><a id="l324" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l324" class="linenr"> 324</a> Compressed&nbsp;Clusters&nbsp;Descriptor&nbsp;(x&nbsp;=&nbsp;62&nbsp;-&nbsp;(cluster_bits&nbsp;-&nbsp;8)):</div>
+<div class="pre"><a id="l325" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l325" class="linenr"> 325</a> </div>
+<div class="pre"><a id="l326" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l326" class="linenr"> 326</a> &nbsp;&nbsp;&nbsp;&nbsp;Bit&nbsp;&nbsp;0&nbsp;-&nbsp;&nbsp;x:&nbsp;&nbsp;&nbsp;&nbsp;Host&nbsp;cluster&nbsp;offset.&nbsp;This&nbsp;is&nbsp;usually&nbsp;_not_&nbsp;aligned&nbsp;to&nbsp;a</div>
+<div class="pre"><a id="l327" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l327" class="linenr"> 327</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cluster&nbsp;boundary!</div>
+<div class="pre"><a id="l328" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l328" class="linenr"> 328</a> </div>
+<div class="pre"><a id="l329" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l329" class="linenr"> 329</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x+1&nbsp;-&nbsp;61:&nbsp;&nbsp;&nbsp;&nbsp;Compressed&nbsp;size&nbsp;of&nbsp;the&nbsp;images&nbsp;in&nbsp;sectors&nbsp;of&nbsp;512&nbsp;bytes</div>
+<div class="pre"><a id="l330" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l330" class="linenr"> 330</a> </div>
+<div class="pre"><a id="l331" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l331" class="linenr"> 331</a> If&nbsp;a&nbsp;cluster&nbsp;is&nbsp;unallocated,&nbsp;read&nbsp;requests&nbsp;shall&nbsp;read&nbsp;the&nbsp;data&nbsp;from&nbsp;the&nbsp;backing</div>
+<div class="pre"><a id="l332" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l332" class="linenr"> 332</a> file&nbsp;(except&nbsp;if&nbsp;bit&nbsp;0&nbsp;in&nbsp;the&nbsp;Standard&nbsp;Cluster&nbsp;Descriptor&nbsp;is&nbsp;set).&nbsp;If&nbsp;there&nbsp;is</div>
+<div class="pre"><a id="l333" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l333" class="linenr"> 333</a> no&nbsp;backing&nbsp;file&nbsp;or&nbsp;the&nbsp;backing&nbsp;file&nbsp;is&nbsp;smaller&nbsp;than&nbsp;the&nbsp;image,&nbsp;they&nbsp;shall&nbsp;read</div>
+<div class="pre"><a id="l334" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l334" class="linenr"> 334</a> zeros&nbsp;for&nbsp;all&nbsp;parts&nbsp;that&nbsp;are&nbsp;not&nbsp;covered&nbsp;by&nbsp;the&nbsp;backing&nbsp;file.</div>
+<div class="pre"><a id="l335" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l335" class="linenr"> 335</a> </div>
+<div class="pre"><a id="l336" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l336" class="linenr"> 336</a> </div>
+<div class="pre"><a id="l337" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l337" class="linenr"> 337</a> ==&nbsp;Snapshots&nbsp;==</div>
+<div class="pre"><a id="l338" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l338" class="linenr"> 338</a> </div>
+<div class="pre"><a id="l339" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l339" class="linenr"> 339</a> qcow2&nbsp;supports&nbsp;internal&nbsp;snapshots.&nbsp;Their&nbsp;basic&nbsp;principle&nbsp;of&nbsp;operation&nbsp;is&nbsp;to</div>
+<div class="pre"><a id="l340" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l340" class="linenr"> 340</a> switch&nbsp;the&nbsp;active&nbsp;L1&nbsp;table,&nbsp;so&nbsp;that&nbsp;a&nbsp;different&nbsp;set&nbsp;of&nbsp;host&nbsp;clusters&nbsp;are</div>
+<div class="pre"><a id="l341" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l341" class="linenr"> 341</a> exposed&nbsp;to&nbsp;the&nbsp;guest.</div>
+<div class="pre"><a id="l342" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l342" class="linenr"> 342</a> </div>
+<div class="pre"><a id="l343" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l343" class="linenr"> 343</a> When&nbsp;creating&nbsp;a&nbsp;snapshot,&nbsp;the&nbsp;L1&nbsp;table&nbsp;should&nbsp;be&nbsp;copied&nbsp;and&nbsp;the&nbsp;refcount&nbsp;of&nbsp;all</div>
+<div class="pre"><a id="l344" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l344" class="linenr"> 344</a> L2&nbsp;tables&nbsp;and&nbsp;clusters&nbsp;reachable&nbsp;from&nbsp;this&nbsp;L1&nbsp;table&nbsp;must&nbsp;be&nbsp;increased,&nbsp;so&nbsp;that</div>
+<div class="pre"><a id="l345" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l345" class="linenr"> 345</a> a&nbsp;write&nbsp;causes&nbsp;a&nbsp;COW&nbsp;and&nbsp;isn't&nbsp;visible&nbsp;in&nbsp;other&nbsp;snapshots.</div>
+<div class="pre"><a id="l346" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l346" class="linenr"> 346</a> </div>
+<div class="pre"><a id="l347" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l347" class="linenr"> 347</a> When&nbsp;loading&nbsp;a&nbsp;snapshot,&nbsp;bit&nbsp;63&nbsp;of&nbsp;all&nbsp;entries&nbsp;in&nbsp;the&nbsp;new&nbsp;active&nbsp;L1&nbsp;table&nbsp;and</div>
+<div class="pre"><a id="l348" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l348" class="linenr"> 348</a> all&nbsp;L2&nbsp;tables&nbsp;referenced&nbsp;by&nbsp;it&nbsp;must&nbsp;be&nbsp;reconstructed&nbsp;from&nbsp;the&nbsp;refcount&nbsp;table</div>
+<div class="pre"><a id="l349" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l349" class="linenr"> 349</a> as&nbsp;it&nbsp;doesn't&nbsp;need&nbsp;to&nbsp;be&nbsp;accurate&nbsp;in&nbsp;inactive&nbsp;L1&nbsp;tables.</div>
+<div class="pre"><a id="l350" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l350" class="linenr"> 350</a> </div>
+<div class="pre"><a id="l351" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l351" class="linenr"> 351</a> A&nbsp;directory&nbsp;of&nbsp;all&nbsp;snapshots&nbsp;is&nbsp;stored&nbsp;in&nbsp;the&nbsp;snapshot&nbsp;table,&nbsp;a&nbsp;contiguous&nbsp;area</div>
+<div class="pre"><a id="l352" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l352" class="linenr"> 352</a> in&nbsp;the&nbsp;image&nbsp;file,&nbsp;whose&nbsp;starting&nbsp;offset&nbsp;and&nbsp;length&nbsp;are&nbsp;given&nbsp;by&nbsp;the&nbsp;header</div>
+<div class="pre"><a id="l353" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l353" class="linenr"> 353</a> fields&nbsp;snapshots_offset&nbsp;and&nbsp;nb_snapshots.&nbsp;The&nbsp;entries&nbsp;of&nbsp;the&nbsp;snapshot&nbsp;table</div>
+<div class="pre"><a id="l354" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l354" class="linenr"> 354</a> have&nbsp;variable&nbsp;length,&nbsp;depending&nbsp;on&nbsp;the&nbsp;length&nbsp;of&nbsp;ID,&nbsp;name&nbsp;and&nbsp;extra&nbsp;data.</div>
+<div class="pre"><a id="l355" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l355" class="linenr"> 355</a> </div>
+<div class="pre"><a id="l356" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l356" class="linenr"> 356</a> Snapshot&nbsp;table&nbsp;entry:</div>
+<div class="pre"><a id="l357" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l357" class="linenr"> 357</a> </div>
+<div class="pre"><a id="l358" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l358" class="linenr"> 358</a> &nbsp;&nbsp;&nbsp;&nbsp;Byte&nbsp;0&nbsp;-&nbsp;&nbsp;7:&nbsp;&nbsp;&nbsp;&nbsp;Offset&nbsp;into&nbsp;the&nbsp;image&nbsp;file&nbsp;at&nbsp;which&nbsp;the&nbsp;L1&nbsp;table&nbsp;for&nbsp;the</div>
+<div class="pre"><a id="l359" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l359" class="linenr"> 359</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;snapshot&nbsp;starts.&nbsp;Must&nbsp;be&nbsp;aligned&nbsp;to&nbsp;a&nbsp;cluster&nbsp;boundary.</div>
+<div class="pre"><a id="l360" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l360" class="linenr"> 360</a> </div>
+<div class="pre"><a id="l361" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l361" class="linenr"> 361</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;-&nbsp;11:&nbsp;&nbsp;&nbsp;&nbsp;Number&nbsp;of&nbsp;entries&nbsp;in&nbsp;the&nbsp;L1&nbsp;table&nbsp;of&nbsp;the&nbsp;snapshots</div>
+<div class="pre"><a id="l362" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l362" class="linenr"> 362</a> </div>
+<div class="pre"><a id="l363" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l363" class="linenr"> 363</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12&nbsp;-&nbsp;13:&nbsp;&nbsp;&nbsp;&nbsp;Length&nbsp;of&nbsp;the&nbsp;unique&nbsp;ID&nbsp;string&nbsp;describing&nbsp;the&nbsp;snapshot</div>
+<div class="pre"><a id="l364" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l364" class="linenr"> 364</a> </div>
+<div class="pre"><a id="l365" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l365" class="linenr"> 365</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;14&nbsp;-&nbsp;15:&nbsp;&nbsp;&nbsp;&nbsp;Length&nbsp;of&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;snapshot</div>
+<div class="pre"><a id="l366" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l366" class="linenr"> 366</a> </div>
+<div class="pre"><a id="l367" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l367" class="linenr"> 367</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16&nbsp;-&nbsp;19:&nbsp;&nbsp;&nbsp;&nbsp;Time&nbsp;at&nbsp;which&nbsp;the&nbsp;snapshot&nbsp;was&nbsp;taken&nbsp;in&nbsp;seconds&nbsp;since&nbsp;the</div>
+<div class="pre"><a id="l368" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l368" class="linenr"> 368</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Epoch</div>
+<div class="pre"><a id="l369" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l369" class="linenr"> 369</a> </div>
+<div class="pre"><a id="l370" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l370" class="linenr"> 370</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20&nbsp;-&nbsp;23:&nbsp;&nbsp;&nbsp;&nbsp;Subsecond&nbsp;part&nbsp;of&nbsp;the&nbsp;time&nbsp;at&nbsp;which&nbsp;the&nbsp;snapshot&nbsp;was&nbsp;taken</div>
+<div class="pre"><a id="l371" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l371" class="linenr"> 371</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;nanoseconds</div>
+<div class="pre"><a id="l372" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l372" class="linenr"> 372</a> </div>
+<div class="pre"><a id="l373" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l373" class="linenr"> 373</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;24&nbsp;-&nbsp;31:&nbsp;&nbsp;&nbsp;&nbsp;Time&nbsp;that&nbsp;the&nbsp;guest&nbsp;was&nbsp;running&nbsp;until&nbsp;the&nbsp;snapshot&nbsp;was</div>
+<div class="pre"><a id="l374" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l374" class="linenr"> 374</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;taken&nbsp;in&nbsp;nanoseconds</div>
+<div class="pre"><a id="l375" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l375" class="linenr"> 375</a> </div>
+<div class="pre"><a id="l376" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l376" class="linenr"> 376</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32&nbsp;-&nbsp;35:&nbsp;&nbsp;&nbsp;&nbsp;Size&nbsp;of&nbsp;the&nbsp;VM&nbsp;state&nbsp;in&nbsp;bytes.&nbsp;0&nbsp;if&nbsp;no&nbsp;VM&nbsp;state&nbsp;is&nbsp;saved.</div>
+<div class="pre"><a id="l377" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l377" class="linenr"> 377</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;there&nbsp;is&nbsp;VM&nbsp;state,&nbsp;it&nbsp;starts&nbsp;at&nbsp;the&nbsp;first&nbsp;cluster</div>
+<div class="pre"><a id="l378" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l378" class="linenr"> 378</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;described&nbsp;by&nbsp;first&nbsp;L1&nbsp;table&nbsp;entry&nbsp;that&nbsp;doesn't&nbsp;describe&nbsp;a</div>
+<div class="pre"><a id="l379" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l379" class="linenr"> 379</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;regular&nbsp;guest&nbsp;cluster&nbsp;(i.e.&nbsp;VM&nbsp;state&nbsp;is&nbsp;stored&nbsp;like&nbsp;guest</div>
+<div class="pre"><a id="l380" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l380" class="linenr"> 380</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disk&nbsp;content,&nbsp;except&nbsp;that&nbsp;it&nbsp;is&nbsp;stored&nbsp;at&nbsp;offsets&nbsp;that&nbsp;are</div>
+<div class="pre"><a id="l381" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l381" class="linenr"> 381</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;larger&nbsp;than&nbsp;the&nbsp;virtual&nbsp;disk&nbsp;presented&nbsp;to&nbsp;the&nbsp;guest)</div>
+<div class="pre"><a id="l382" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l382" class="linenr"> 382</a> </div>
+<div class="pre"><a id="l383" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l383" class="linenr"> 383</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;36&nbsp;-&nbsp;39:&nbsp;&nbsp;&nbsp;&nbsp;Size&nbsp;of&nbsp;extra&nbsp;data&nbsp;in&nbsp;the&nbsp;table&nbsp;entry&nbsp;(used&nbsp;for&nbsp;future</div>
+<div class="pre"><a id="l384" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l384" class="linenr"> 384</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;extensions&nbsp;of&nbsp;the&nbsp;format)</div>
+<div class="pre"><a id="l385" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l385" class="linenr"> 385</a> </div>
+<div class="pre"><a id="l386" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l386" class="linenr"> 386</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;variable:&nbsp;&nbsp;&nbsp;Extra&nbsp;data&nbsp;for&nbsp;future&nbsp;extensions.&nbsp;Unknown&nbsp;fields&nbsp;must&nbsp;be</div>
+<div class="pre"><a id="l387" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l387" class="linenr"> 387</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignored.&nbsp;Currently&nbsp;defined&nbsp;are&nbsp;(offset&nbsp;relative&nbsp;to&nbsp;snapshot</div>
+<div class="pre"><a id="l388" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l388" class="linenr"> 388</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;table&nbsp;entry):</div>
+<div class="pre"><a id="l389" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l389" class="linenr"> 389</a> </div>
+<div class="pre"><a id="l390" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l390" class="linenr"> 390</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Byte&nbsp;40&nbsp;-&nbsp;47:&nbsp;&nbsp;&nbsp;Size&nbsp;of&nbsp;the&nbsp;VM&nbsp;state&nbsp;in&nbsp;bytes.&nbsp;0&nbsp;if&nbsp;no&nbsp;VM</div>
+<div class="pre"><a id="l391" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l391" class="linenr"> 391</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;state&nbsp;is&nbsp;saved.&nbsp;If&nbsp;this&nbsp;field&nbsp;is&nbsp;present,</div>
+<div class="pre"><a id="l392" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l392" class="linenr"> 392</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;32-bit&nbsp;value&nbsp;in&nbsp;bytes&nbsp;32-35&nbsp;is&nbsp;ignored.</div>
+<div class="pre"><a id="l393" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l393" class="linenr"> 393</a> </div>
+<div class="pre"><a id="l394" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l394" class="linenr"> 394</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Byte&nbsp;48&nbsp;-&nbsp;55:&nbsp;&nbsp;&nbsp;Virtual&nbsp;disk&nbsp;size&nbsp;of&nbsp;the&nbsp;snapshot&nbsp;in&nbsp;bytes</div>
+<div class="pre"><a id="l395" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l395" class="linenr"> 395</a> </div>
+<div class="pre"><a id="l396" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l396" class="linenr"> 396</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Version&nbsp;3&nbsp;images&nbsp;must&nbsp;include&nbsp;extra&nbsp;data&nbsp;at&nbsp;least&nbsp;up&nbsp;to</div>
+<div class="pre"><a id="l397" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l397" class="linenr"> 397</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;byte&nbsp;55.</div>
+<div class="pre"><a id="l398" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l398" class="linenr"> 398</a> </div>
+<div class="pre"><a id="l399" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l399" class="linenr"> 399</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;variable:&nbsp;&nbsp;&nbsp;Unique&nbsp;ID&nbsp;string&nbsp;for&nbsp;the&nbsp;snapshot&nbsp;(not&nbsp;null&nbsp;terminated)</div>
+<div class="pre"><a id="l400" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l400" class="linenr"> 400</a> </div>
+<div class="pre"><a id="l401" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l401" class="linenr"> 401</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;variable:&nbsp;&nbsp;&nbsp;Name&nbsp;of&nbsp;the&nbsp;snapshot&nbsp;(not&nbsp;null&nbsp;terminated)</div>
+<div class="pre"><a id="l402" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l402" class="linenr"> 402</a> </div>
+<div class="pre"><a id="l403" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l403" class="linenr"> 403</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;variable:&nbsp;&nbsp;&nbsp;Padding&nbsp;to&nbsp;round&nbsp;up&nbsp;the&nbsp;snapshot&nbsp;table&nbsp;entry&nbsp;size&nbsp;to&nbsp;the</div>
+<div class="pre"><a id="l404" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l404" class="linenr"> 404</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next&nbsp;multiple&nbsp;of&nbsp;8.</div>
+<div class="pre"><a id="l405" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l405" class="linenr"> 405</a> </div>
+<div class="pre"><a id="l406" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l406" class="linenr"> 406</a> </div>
+<div class="pre"><a id="l407" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l407" class="linenr"> 407</a> ==&nbsp;Bitmaps&nbsp;==</div>
+<div class="pre"><a id="l408" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l408" class="linenr"> 408</a> </div>
+<div class="pre"><a id="l409" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l409" class="linenr"> 409</a> As&nbsp;mentioned&nbsp;above,&nbsp;the&nbsp;bitmaps&nbsp;extension&nbsp;provides&nbsp;the&nbsp;ability&nbsp;to&nbsp;store&nbsp;bitmaps</div>
+<div class="pre"><a id="l410" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l410" class="linenr"> 410</a> related&nbsp;to&nbsp;a&nbsp;virtual&nbsp;disk.&nbsp;This&nbsp;section&nbsp;describes&nbsp;how&nbsp;these&nbsp;bitmaps&nbsp;are&nbsp;stored.</div>
+<div class="pre"><a id="l411" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l411" class="linenr"> 411</a> </div>
+<div class="pre"><a id="l412" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l412" class="linenr"> 412</a> All&nbsp;stored&nbsp;bitmaps&nbsp;are&nbsp;related&nbsp;to&nbsp;the&nbsp;virtual&nbsp;disk&nbsp;stored&nbsp;in&nbsp;the&nbsp;same&nbsp;image,&nbsp;so</div>
+<div class="pre"><a id="l413" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l413" class="linenr"> 413</a> each&nbsp;bitmap&nbsp;size&nbsp;is&nbsp;equal&nbsp;to&nbsp;the&nbsp;virtual&nbsp;disk&nbsp;size.</div>
+<div class="pre"><a id="l414" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l414" class="linenr"> 414</a> </div>
+<div class="pre"><a id="l415" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l415" class="linenr"> 415</a> Each&nbsp;bit&nbsp;of&nbsp;the&nbsp;bitmap&nbsp;is&nbsp;responsible&nbsp;for&nbsp;strictly&nbsp;defined&nbsp;range&nbsp;of&nbsp;the&nbsp;virtual</div>
+<div class="pre"><a id="l416" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l416" class="linenr"> 416</a> disk.&nbsp;For&nbsp;bit&nbsp;number&nbsp;bit_nr&nbsp;the&nbsp;corresponding&nbsp;range&nbsp;(in&nbsp;bytes)&nbsp;will&nbsp;be:</div>
+<div class="pre"><a id="l417" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l417" class="linenr"> 417</a> </div>
+<div class="pre"><a id="l418" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l418" class="linenr"> 418</a> &nbsp;&nbsp;&nbsp;&nbsp;[bit_nr&nbsp;*&nbsp;bitmap_granularity&nbsp;..&nbsp;(bit_nr&nbsp;+&nbsp;1)&nbsp;*&nbsp;bitmap_granularity&nbsp;-&nbsp;1]</div>
+<div class="pre"><a id="l419" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l419" class="linenr"> 419</a> </div>
+<div class="pre"><a id="l420" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l420" class="linenr"> 420</a> Granularity&nbsp;is&nbsp;a&nbsp;property&nbsp;of&nbsp;the&nbsp;concrete&nbsp;bitmap,&nbsp;see&nbsp;below.</div>
+<div class="pre"><a id="l421" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l421" class="linenr"> 421</a> </div>
+<div class="pre"><a id="l422" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l422" class="linenr"> 422</a> </div>
+<div class="pre"><a id="l423" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l423" class="linenr"> 423</a> ===&nbsp;Bitmap&nbsp;directory&nbsp;===</div>
+<div class="pre"><a id="l424" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l424" class="linenr"> 424</a> </div>
+<div class="pre"><a id="l425" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l425" class="linenr"> 425</a> Each&nbsp;bitmap&nbsp;saved&nbsp;in&nbsp;the&nbsp;image&nbsp;is&nbsp;described&nbsp;in&nbsp;a&nbsp;bitmap&nbsp;directory&nbsp;entry.&nbsp;The</div>
+<div class="pre"><a id="l426" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l426" class="linenr"> 426</a> bitmap&nbsp;directory&nbsp;is&nbsp;a&nbsp;contiguous&nbsp;area&nbsp;in&nbsp;the&nbsp;image&nbsp;file,&nbsp;whose&nbsp;starting&nbsp;offset</div>
+<div class="pre"><a id="l427" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l427" class="linenr"> 427</a> and&nbsp;length&nbsp;are&nbsp;given&nbsp;by&nbsp;the&nbsp;header&nbsp;extension&nbsp;fields&nbsp;bitmap_directory_offset&nbsp;and</div>
+<div class="pre"><a id="l428" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l428" class="linenr"> 428</a> bitmap_directory_size.&nbsp;The&nbsp;entries&nbsp;of&nbsp;the&nbsp;bitmap&nbsp;directory&nbsp;have&nbsp;variable</div>
+<div class="pre"><a id="l429" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l429" class="linenr"> 429</a> length,&nbsp;depending&nbsp;on&nbsp;the&nbsp;lengths&nbsp;of&nbsp;the&nbsp;bitmap&nbsp;name&nbsp;and&nbsp;extra&nbsp;data.&nbsp;These</div>
+<div class="pre"><a id="l430" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l430" class="linenr"> 430</a> entries&nbsp;are&nbsp;also&nbsp;called&nbsp;bitmap&nbsp;headers.</div>
+<div class="pre"><a id="l431" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l431" class="linenr"> 431</a> </div>
+<div class="pre"><a id="l432" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l432" class="linenr"> 432</a> Structure&nbsp;of&nbsp;a&nbsp;bitmap&nbsp;directory&nbsp;entry:</div>
+<div class="pre"><a id="l433" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l433" class="linenr"> 433</a> </div>
+<div class="pre"><a id="l434" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l434" class="linenr"> 434</a> &nbsp;&nbsp;&nbsp;&nbsp;Byte&nbsp;0&nbsp;-&nbsp;&nbsp;7:&nbsp;&nbsp;&nbsp;&nbsp;bitmap_table_offset</div>
+<div class="pre"><a id="l435" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l435" class="linenr"> 435</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Offset&nbsp;into&nbsp;the&nbsp;image&nbsp;file&nbsp;at&nbsp;which&nbsp;the&nbsp;bitmap&nbsp;table</div>
+<div class="pre"><a id="l436" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l436" class="linenr"> 436</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(described&nbsp;below)&nbsp;for&nbsp;the&nbsp;bitmap&nbsp;starts.&nbsp;Must&nbsp;be&nbsp;aligned&nbsp;to</div>
+<div class="pre"><a id="l437" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l437" class="linenr"> 437</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;cluster&nbsp;boundary.</div>
+<div class="pre"><a id="l438" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l438" class="linenr"> 438</a> </div>
+<div class="pre"><a id="l439" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l439" class="linenr"> 439</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;-&nbsp;11:&nbsp;&nbsp;&nbsp;&nbsp;bitmap_table_size</div>
+<div class="pre"><a id="l440" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l440" class="linenr"> 440</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number&nbsp;of&nbsp;entries&nbsp;in&nbsp;the&nbsp;bitmap&nbsp;table&nbsp;of&nbsp;the&nbsp;bitmap.</div>
+<div class="pre"><a id="l441" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l441" class="linenr"> 441</a> </div>
+<div class="pre"><a id="l442" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l442" class="linenr"> 442</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12&nbsp;-&nbsp;15:&nbsp;&nbsp;&nbsp;&nbsp;flags</div>
+<div class="pre"><a id="l443" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l443" class="linenr"> 443</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bit</div>
+<div class="pre"><a id="l444" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l444" class="linenr"> 444</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0:&nbsp;in_use</div>
+<div class="pre"><a id="l445" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l445" class="linenr"> 445</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;bitmap&nbsp;was&nbsp;not&nbsp;saved&nbsp;correctly&nbsp;and&nbsp;may&nbsp;be</div>
+<div class="pre"><a id="l446" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l446" class="linenr"> 446</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inconsistent.</div>
+<div class="pre"><a id="l447" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l447" class="linenr"> 447</a> </div>
+<div class="pre"><a id="l448" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l448" class="linenr"> 448</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;auto</div>
+<div class="pre"><a id="l449" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l449" class="linenr"> 449</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;bitmap&nbsp;must&nbsp;reflect&nbsp;all&nbsp;changes&nbsp;of&nbsp;the&nbsp;virtual</div>
+<div class="pre"><a id="l450" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l450" class="linenr"> 450</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disk&nbsp;by&nbsp;any&nbsp;application&nbsp;that&nbsp;would&nbsp;write&nbsp;to&nbsp;this&nbsp;qcow2</div>
+<div class="pre"><a id="l451" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l451" class="linenr"> 451</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file&nbsp;(including&nbsp;writes,&nbsp;snapshot&nbsp;switching,&nbsp;etc.).&nbsp;The</div>
+<div class="pre"><a id="l452" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l452" class="linenr"> 452</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type&nbsp;of&nbsp;this&nbsp;bitmap&nbsp;must&nbsp;be&nbsp;'dirty&nbsp;tracking&nbsp;bitmap'.</div>
+<div class="pre"><a id="l453" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l453" class="linenr"> 453</a> </div>
+<div class="pre"><a id="l454" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l454" class="linenr"> 454</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;extra_data_compatible</div>
+<div class="pre"><a id="l455" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l455" class="linenr"> 455</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;flags&nbsp;is&nbsp;meaningful&nbsp;when&nbsp;the&nbsp;extra&nbsp;data&nbsp;is</div>
+<div class="pre"><a id="l456" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l456" class="linenr"> 456</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unknown&nbsp;to&nbsp;the&nbsp;software&nbsp;(currently&nbsp;any&nbsp;extra&nbsp;data&nbsp;is</div>
+<div class="pre"><a id="l457" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l457" class="linenr"> 457</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unknown&nbsp;to&nbsp;Qemu).</div>
+<div class="pre"><a id="l458" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l458" class="linenr"> 458</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;it&nbsp;is&nbsp;set,&nbsp;the&nbsp;bitmap&nbsp;may&nbsp;be&nbsp;used&nbsp;as&nbsp;expected,&nbsp;extra</div>
+<div class="pre"><a id="l459" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l459" class="linenr"> 459</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data&nbsp;must&nbsp;be&nbsp;left&nbsp;as&nbsp;is.</div>
+<div class="pre"><a id="l460" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l460" class="linenr"> 460</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;it&nbsp;is&nbsp;not&nbsp;set,&nbsp;the&nbsp;bitmap&nbsp;must&nbsp;not&nbsp;be&nbsp;used,&nbsp;but</div>
+<div class="pre"><a id="l461" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l461" class="linenr"> 461</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;both&nbsp;it&nbsp;and&nbsp;its&nbsp;extra&nbsp;data&nbsp;be&nbsp;left&nbsp;as&nbsp;is.</div>
+<div class="pre"><a id="l462" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l462" class="linenr"> 462</a> </div>
+<div class="pre"><a id="l463" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l463" class="linenr"> 463</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bits&nbsp;3&nbsp;-&nbsp;31&nbsp;are&nbsp;reserved&nbsp;and&nbsp;must&nbsp;be&nbsp;0.</div>
+<div class="pre"><a id="l464" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l464" class="linenr"> 464</a> </div>
+<div class="pre"><a id="l465" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l465" class="linenr"> 465</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16:&nbsp;&nbsp;&nbsp;&nbsp;type</div>
+<div class="pre"><a id="l466" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l466" class="linenr"> 466</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;field&nbsp;describes&nbsp;the&nbsp;sort&nbsp;of&nbsp;the&nbsp;bitmap.</div>
+<div class="pre"><a id="l467" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l467" class="linenr"> 467</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Values:</div>
+<div class="pre"><a id="l468" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l468" class="linenr"> 468</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;Dirty&nbsp;tracking&nbsp;bitmap</div>
+<div class="pre"><a id="l469" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l469" class="linenr"> 469</a> </div>
+<div class="pre"><a id="l470" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l470" class="linenr"> 470</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Values&nbsp;0,&nbsp;2&nbsp;-&nbsp;255&nbsp;are&nbsp;reserved.</div>
+<div class="pre"><a id="l471" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l471" class="linenr"> 471</a> </div>
+<div class="pre"><a id="l472" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l472" class="linenr"> 472</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;17:&nbsp;&nbsp;&nbsp;&nbsp;granularity_bits</div>
+<div class="pre"><a id="l473" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l473" class="linenr"> 473</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Granularity&nbsp;bits.&nbsp;Valid&nbsp;values:&nbsp;0&nbsp;-&nbsp;63.</div>
+<div class="pre"><a id="l474" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l474" class="linenr"> 474</a> </div>
+<div class="pre"><a id="l475" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l475" class="linenr"> 475</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note:&nbsp;Qemu&nbsp;currently&nbsp;doesn't&nbsp;support&nbsp;granularity_bits</div>
+<div class="pre"><a id="l476" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l476" class="linenr"> 476</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;greater&nbsp;than&nbsp;31.</div>
+<div class="pre"><a id="l477" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l477" class="linenr"> 477</a> </div>
+<div class="pre"><a id="l478" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l478" class="linenr"> 478</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Granularity&nbsp;is&nbsp;calculated&nbsp;as</div>
+<div class="pre"><a id="l479" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l479" class="linenr"> 479</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;granularity&nbsp;=&nbsp;1&nbsp;&lt;&lt;&nbsp;granularity_bits</div>
+<div class="pre"><a id="l480" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l480" class="linenr"> 480</a> </div>
+<div class="pre"><a id="l481" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l481" class="linenr"> 481</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;bitmap's&nbsp;granularity&nbsp;is&nbsp;how&nbsp;many&nbsp;bytes&nbsp;of&nbsp;the&nbsp;image</div>
+<div class="pre"><a id="l482" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l482" class="linenr"> 482</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;accounts&nbsp;for&nbsp;one&nbsp;bit&nbsp;of&nbsp;the&nbsp;bitmap.</div>
+<div class="pre"><a id="l483" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l483" class="linenr"> 483</a> </div>
+<div class="pre"><a id="l484" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l484" class="linenr"> 484</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;18&nbsp;-&nbsp;19:&nbsp;&nbsp;&nbsp;&nbsp;name_size</div>
+<div class="pre"><a id="l485" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l485" class="linenr"> 485</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Size&nbsp;of&nbsp;the&nbsp;bitmap&nbsp;name.&nbsp;Must&nbsp;be&nbsp;non-zero.</div>
+<div class="pre"><a id="l486" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l486" class="linenr"> 486</a> </div>
+<div class="pre"><a id="l487" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l487" class="linenr"> 487</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note:&nbsp;Qemu&nbsp;currently&nbsp;doesn't&nbsp;support&nbsp;values&nbsp;greater&nbsp;than</div>
+<div class="pre"><a id="l488" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l488" class="linenr"> 488</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1023.</div>
+<div class="pre"><a id="l489" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l489" class="linenr"> 489</a> </div>
+<div class="pre"><a id="l490" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l490" class="linenr"> 490</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20&nbsp;-&nbsp;23:&nbsp;&nbsp;&nbsp;&nbsp;extra_data_size</div>
+<div class="pre"><a id="l491" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l491" class="linenr"> 491</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Size&nbsp;of&nbsp;type-specific&nbsp;extra&nbsp;data.</div>
+<div class="pre"><a id="l492" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l492" class="linenr"> 492</a> </div>
+<div class="pre"><a id="l493" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l493" class="linenr"> 493</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For&nbsp;now,&nbsp;as&nbsp;no&nbsp;extra&nbsp;data&nbsp;is&nbsp;defined,&nbsp;extra_data_size&nbsp;is</div>
+<div class="pre"><a id="l494" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l494" class="linenr"> 494</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reserved&nbsp;and&nbsp;should&nbsp;be&nbsp;zero.&nbsp;If&nbsp;it&nbsp;is&nbsp;non-zero&nbsp;the</div>
+<div class="pre"><a id="l495" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l495" class="linenr"> 495</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;behavior&nbsp;is&nbsp;defined&nbsp;by&nbsp;extra_data_compatible&nbsp;flag.</div>
+<div class="pre"><a id="l496" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l496" class="linenr"> 496</a> </div>
+<div class="pre"><a id="l497" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l497" class="linenr"> 497</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;variable:&nbsp;&nbsp;&nbsp;extra_data</div>
+<div class="pre"><a id="l498" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l498" class="linenr"> 498</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Extra&nbsp;data&nbsp;for&nbsp;the&nbsp;bitmap,&nbsp;occupying&nbsp;extra_data_size&nbsp;bytes.</div>
+<div class="pre"><a id="l499" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l499" class="linenr"> 499</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Extra&nbsp;data&nbsp;must&nbsp;never&nbsp;contain&nbsp;references&nbsp;to&nbsp;clusters&nbsp;or&nbsp;in</div>
+<div class="pre"><a id="l500" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l500" class="linenr"> 500</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;some&nbsp;other&nbsp;way&nbsp;allocate&nbsp;additional&nbsp;clusters.</div>
+<div class="pre"><a id="l501" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l501" class="linenr"> 501</a> </div>
+<div class="pre"><a id="l502" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l502" class="linenr"> 502</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;variable:&nbsp;&nbsp;&nbsp;name</div>
+<div class="pre"><a id="l503" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l503" class="linenr"> 503</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;bitmap&nbsp;(not&nbsp;null&nbsp;terminated),&nbsp;occupying</div>
+<div class="pre"><a id="l504" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l504" class="linenr"> 504</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name_size&nbsp;bytes.&nbsp;Must&nbsp;be&nbsp;unique&nbsp;among&nbsp;all&nbsp;bitmap&nbsp;names</div>
+<div class="pre"><a id="l505" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l505" class="linenr"> 505</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;within&nbsp;the&nbsp;bitmaps&nbsp;extension.</div>
+<div class="pre"><a id="l506" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l506" class="linenr"> 506</a> </div>
+<div class="pre"><a id="l507" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l507" class="linenr"> 507</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;variable:&nbsp;&nbsp;&nbsp;Padding&nbsp;to&nbsp;round&nbsp;up&nbsp;the&nbsp;bitmap&nbsp;directory&nbsp;entry&nbsp;size&nbsp;to&nbsp;the</div>
+<div class="pre"><a id="l508" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l508" class="linenr"> 508</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next&nbsp;multiple&nbsp;of&nbsp;8.&nbsp;All&nbsp;bytes&nbsp;of&nbsp;the&nbsp;padding&nbsp;must&nbsp;be&nbsp;zero.</div>
+<div class="pre"><a id="l509" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l509" class="linenr"> 509</a> </div>
+<div class="pre"><a id="l510" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l510" class="linenr"> 510</a> </div>
+<div class="pre"><a id="l511" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l511" class="linenr"> 511</a> ===&nbsp;Bitmap&nbsp;table&nbsp;===</div>
+<div class="pre"><a id="l512" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l512" class="linenr"> 512</a> </div>
+<div class="pre"><a id="l513" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l513" class="linenr"> 513</a> Each&nbsp;bitmap&nbsp;is&nbsp;stored&nbsp;using&nbsp;a&nbsp;one-level&nbsp;structure&nbsp;(as&nbsp;opposed&nbsp;to&nbsp;two-level</div>
+<div class="pre"><a id="l514" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l514" class="linenr"> 514</a> structures&nbsp;like&nbsp;for&nbsp;refcounts&nbsp;and&nbsp;guest&nbsp;clusters&nbsp;mapping)&nbsp;for&nbsp;the&nbsp;mapping&nbsp;of</div>
+<div class="pre"><a id="l515" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l515" class="linenr"> 515</a> bitmap&nbsp;data&nbsp;to&nbsp;host&nbsp;clusters.&nbsp;This&nbsp;structure&nbsp;is&nbsp;called&nbsp;the&nbsp;bitmap&nbsp;table.</div>
+<div class="pre"><a id="l516" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l516" class="linenr"> 516</a> </div>
+<div class="pre"><a id="l517" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l517" class="linenr"> 517</a> Each&nbsp;bitmap&nbsp;table&nbsp;has&nbsp;a&nbsp;variable&nbsp;size&nbsp;(stored&nbsp;in&nbsp;the&nbsp;bitmap&nbsp;directory&nbsp;entry)</div>
+<div class="pre"><a id="l518" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l518" class="linenr"> 518</a> and&nbsp;may&nbsp;use&nbsp;multiple&nbsp;clusters,&nbsp;however,&nbsp;it&nbsp;must&nbsp;be&nbsp;contiguous&nbsp;in&nbsp;the&nbsp;image</div>
+<div class="pre"><a id="l519" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l519" class="linenr"> 519</a> file.</div>
+<div class="pre"><a id="l520" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l520" class="linenr"> 520</a> </div>
+<div class="pre"><a id="l521" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l521" class="linenr"> 521</a> Structure&nbsp;of&nbsp;a&nbsp;bitmap&nbsp;table&nbsp;entry:</div>
+<div class="pre"><a id="l522" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l522" class="linenr"> 522</a> </div>
+<div class="pre"><a id="l523" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l523" class="linenr"> 523</a> &nbsp;&nbsp;&nbsp;&nbsp;Bit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0:&nbsp;&nbsp;&nbsp;&nbsp;Reserved&nbsp;and&nbsp;must&nbsp;be&nbsp;zero&nbsp;if&nbsp;bits&nbsp;9&nbsp;-&nbsp;55&nbsp;are&nbsp;non-zero.</div>
+<div class="pre"><a id="l524" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l524" class="linenr"> 524</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;bits&nbsp;9&nbsp;-&nbsp;55&nbsp;are&nbsp;zero:</div>
+<div class="pre"><a id="l525" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l525" class="linenr"> 525</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0:&nbsp;Cluster&nbsp;should&nbsp;be&nbsp;read&nbsp;as&nbsp;all&nbsp;zeros.</div>
+<div class="pre"><a id="l526" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l526" class="linenr"> 526</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;Cluster&nbsp;should&nbsp;be&nbsp;read&nbsp;as&nbsp;all&nbsp;ones.</div>
+<div class="pre"><a id="l527" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l527" class="linenr"> 527</a> </div>
+<div class="pre"><a id="l528" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l528" class="linenr"> 528</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;-&nbsp;&nbsp;8:&nbsp;&nbsp;&nbsp;&nbsp;Reserved&nbsp;and&nbsp;must&nbsp;be&nbsp;zero.</div>
+<div class="pre"><a id="l529" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l529" class="linenr"> 529</a> </div>
+<div class="pre"><a id="l530" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l530" class="linenr"> 530</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9&nbsp;-&nbsp;55:&nbsp;&nbsp;&nbsp;&nbsp;Bits&nbsp;9&nbsp;-&nbsp;55&nbsp;of&nbsp;the&nbsp;host&nbsp;cluster&nbsp;offset.&nbsp;Must&nbsp;be&nbsp;aligned&nbsp;to</div>
+<div class="pre"><a id="l531" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l531" class="linenr"> 531</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;cluster&nbsp;boundary.&nbsp;If&nbsp;the&nbsp;offset&nbsp;is&nbsp;0,&nbsp;the&nbsp;cluster&nbsp;is</div>
+<div class="pre"><a id="l532" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l532" class="linenr"> 532</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unallocated;&nbsp;in&nbsp;that&nbsp;case,&nbsp;bit&nbsp;0&nbsp;determines&nbsp;how&nbsp;this</div>
+<div class="pre"><a id="l533" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l533" class="linenr"> 533</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cluster&nbsp;should&nbsp;be&nbsp;treated&nbsp;during&nbsp;reads.</div>
+<div class="pre"><a id="l534" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l534" class="linenr"> 534</a> </div>
+<div class="pre"><a id="l535" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l535" class="linenr"> 535</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;56&nbsp;-&nbsp;63:&nbsp;&nbsp;&nbsp;&nbsp;Reserved&nbsp;and&nbsp;must&nbsp;be&nbsp;zero.</div>
+<div class="pre"><a id="l536" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l536" class="linenr"> 536</a> </div>
+<div class="pre"><a id="l537" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l537" class="linenr"> 537</a> </div>
+<div class="pre"><a id="l538" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l538" class="linenr"> 538</a> ===&nbsp;Bitmap&nbsp;data&nbsp;===</div>
+<div class="pre"><a id="l539" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l539" class="linenr"> 539</a> </div>
+<div class="pre"><a id="l540" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l540" class="linenr"> 540</a> As&nbsp;noted&nbsp;above,&nbsp;bitmap&nbsp;data&nbsp;is&nbsp;stored&nbsp;in&nbsp;separate&nbsp;clusters,&nbsp;described&nbsp;by&nbsp;the</div>
+<div class="pre"><a id="l541" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l541" class="linenr"> 541</a> bitmap&nbsp;table.&nbsp;Given&nbsp;an&nbsp;offset&nbsp;(in&nbsp;bytes)&nbsp;into&nbsp;the&nbsp;bitmap&nbsp;data,&nbsp;the&nbsp;offset&nbsp;into</div>
+<div class="pre"><a id="l542" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l542" class="linenr"> 542</a> the&nbsp;image&nbsp;file&nbsp;can&nbsp;be&nbsp;obtained&nbsp;as&nbsp;follows:</div>
+<div class="pre"><a id="l543" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l543" class="linenr"> 543</a> </div>
+<div class="pre"><a id="l544" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l544" class="linenr"> 544</a> &nbsp;&nbsp;&nbsp;&nbsp;image_offset(bitmap_data_offset)&nbsp;=</div>
+<div class="pre"><a id="l545" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l545" class="linenr"> 545</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bitmap_table[bitmap_data_offset&nbsp;/&nbsp;cluster_size]&nbsp;+</div>
+<div class="pre"><a id="l546" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l546" class="linenr"> 546</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(bitmap_data_offset&nbsp;%&nbsp;cluster_size)</div>
+<div class="pre"><a id="l547" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l547" class="linenr"> 547</a> </div>
+<div class="pre"><a id="l548" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l548" class="linenr"> 548</a> This&nbsp;offset&nbsp;is&nbsp;not&nbsp;defined&nbsp;if&nbsp;bits&nbsp;9&nbsp;-&nbsp;55&nbsp;of&nbsp;bitmap&nbsp;table&nbsp;entry&nbsp;are&nbsp;zero&nbsp;(see</div>
+<div class="pre"><a id="l549" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l549" class="linenr"> 549</a> above).</div>
+<div class="pre"><a id="l550" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l550" class="linenr"> 550</a> </div>
+<div class="pre"><a id="l551" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l551" class="linenr"> 551</a> Given&nbsp;an&nbsp;offset&nbsp;byte_nr&nbsp;into&nbsp;the&nbsp;virtual&nbsp;disk&nbsp;and&nbsp;the&nbsp;bitmap's&nbsp;granularity,&nbsp;the</div>
+<div class="pre"><a id="l552" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l552" class="linenr"> 552</a> bit&nbsp;offset&nbsp;into&nbsp;the&nbsp;image&nbsp;file&nbsp;to&nbsp;the&nbsp;corresponding&nbsp;bit&nbsp;of&nbsp;the&nbsp;bitmap&nbsp;can&nbsp;be</div>
+<div class="pre"><a id="l553" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l553" class="linenr"> 553</a> calculated&nbsp;like&nbsp;this:</div>
+<div class="pre"><a id="l554" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l554" class="linenr"> 554</a> </div>
+<div class="pre"><a id="l555" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l555" class="linenr"> 555</a> &nbsp;&nbsp;&nbsp;&nbsp;bit_offset(byte_nr)&nbsp;=</div>
+<div class="pre"><a id="l556" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l556" class="linenr"> 556</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;image_offset(byte_nr&nbsp;/&nbsp;granularity&nbsp;/&nbsp;8)&nbsp;*&nbsp;8&nbsp;+</div>
+<div class="pre"><a id="l557" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l557" class="linenr"> 557</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(byte_nr&nbsp;/&nbsp;granularity)&nbsp;%&nbsp;8</div>
+<div class="pre"><a id="l558" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l558" class="linenr"> 558</a> </div>
+<div class="pre"><a id="l559" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l559" class="linenr"> 559</a> If&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;bitmap&nbsp;data&nbsp;is&nbsp;not&nbsp;a&nbsp;multiple&nbsp;of&nbsp;the&nbsp;cluster&nbsp;size&nbsp;then&nbsp;the</div>
+<div class="pre"><a id="l560" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l560" class="linenr"> 560</a> last&nbsp;cluster&nbsp;of&nbsp;the&nbsp;bitmap&nbsp;data&nbsp;contains&nbsp;some&nbsp;unused&nbsp;tail&nbsp;bits.&nbsp;These&nbsp;bits&nbsp;must</div>
+<div class="pre"><a id="l561" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l561" class="linenr"> 561</a> be&nbsp;zero.</div>
+<div class="pre"><a id="l562" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l562" class="linenr"> 562</a> </div>
+<div class="pre"><a id="l563" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l563" class="linenr"> 563</a> </div>
+<div class="pre"><a id="l564" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l564" class="linenr"> 564</a> ===&nbsp;Dirty&nbsp;tracking&nbsp;bitmaps&nbsp;===</div>
+<div class="pre"><a id="l565" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l565" class="linenr"> 565</a> </div>
+<div class="pre"><a id="l566" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l566" class="linenr"> 566</a> Bitmaps&nbsp;with&nbsp;'type'&nbsp;field&nbsp;equal&nbsp;to&nbsp;one&nbsp;are&nbsp;dirty&nbsp;tracking&nbsp;bitmaps.</div>
+<div class="pre"><a id="l567" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l567" class="linenr"> 567</a> </div>
+<div class="pre"><a id="l568" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l568" class="linenr"> 568</a> When&nbsp;the&nbsp;virtual&nbsp;disk&nbsp;is&nbsp;in&nbsp;use&nbsp;dirty&nbsp;tracking&nbsp;bitmap&nbsp;may&nbsp;be&nbsp;'enabled'&nbsp;or</div>
+<div class="pre"><a id="l569" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l569" class="linenr"> 569</a> 'disabled'.&nbsp;While&nbsp;the&nbsp;bitmap&nbsp;is&nbsp;'enabled',&nbsp;all&nbsp;writes&nbsp;to&nbsp;the&nbsp;virtual&nbsp;disk</div>
+<div class="pre"><a id="l570" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l570" class="linenr"> 570</a> should&nbsp;be&nbsp;reflected&nbsp;in&nbsp;the&nbsp;bitmap.&nbsp;A&nbsp;set&nbsp;bit&nbsp;in&nbsp;the&nbsp;bitmap&nbsp;means&nbsp;that&nbsp;the</div>
+<div class="pre"><a id="l571" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l571" class="linenr"> 571</a> corresponding&nbsp;range&nbsp;of&nbsp;the&nbsp;virtual&nbsp;disk&nbsp;(see&nbsp;above)&nbsp;was&nbsp;written&nbsp;to&nbsp;while&nbsp;the</div>
+<div class="pre"><a id="l572" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l572" class="linenr"> 572</a> bitmap&nbsp;was&nbsp;'enabled'.&nbsp;An&nbsp;unset&nbsp;bit&nbsp;means&nbsp;that&nbsp;this&nbsp;range&nbsp;was&nbsp;not&nbsp;written&nbsp;to.</div>
+<div class="pre"><a id="l573" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l573" class="linenr"> 573</a> </div>
+<div class="pre"><a id="l574" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l574" class="linenr"> 574</a> The&nbsp;software&nbsp;doesn't&nbsp;have&nbsp;to&nbsp;sync&nbsp;the&nbsp;bitmap&nbsp;in&nbsp;the&nbsp;image&nbsp;file&nbsp;with&nbsp;its</div>
+<div class="pre"><a id="l575" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l575" class="linenr"> 575</a> representation&nbsp;in&nbsp;RAM&nbsp;after&nbsp;each&nbsp;write.&nbsp;Flag&nbsp;'in_use'&nbsp;should&nbsp;be&nbsp;set&nbsp;while&nbsp;the</div>
+<div class="pre"><a id="l576" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l576" class="linenr"> 576</a> bitmap&nbsp;is&nbsp;not&nbsp;synced.</div>
+<div class="pre"><a id="l577" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l577" class="linenr"> 577</a> </div>
+<div class="pre"><a id="l578" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l578" class="linenr"> 578</a> In&nbsp;the&nbsp;image&nbsp;file&nbsp;the&nbsp;'enabled'&nbsp;state&nbsp;is&nbsp;reflected&nbsp;by&nbsp;the&nbsp;'auto'&nbsp;flag.&nbsp;If&nbsp;this</div>
+<div class="pre"><a id="l579" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l579" class="linenr"> 579</a> flag&nbsp;is&nbsp;set,&nbsp;the&nbsp;software&nbsp;must&nbsp;consider&nbsp;the&nbsp;bitmap&nbsp;as&nbsp;'enabled'&nbsp;and&nbsp;start</div>
+<div class="pre"><a id="l580" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l580" class="linenr"> 580</a> tracking&nbsp;virtual&nbsp;disk&nbsp;changes&nbsp;to&nbsp;this&nbsp;bitmap&nbsp;from&nbsp;the&nbsp;first&nbsp;write&nbsp;to&nbsp;the</div>
+<div class="pre"><a id="l581" href="/?p=qemu.git;a=blob;f=docs/specs/qcow2.txt#l581" class="linenr"> 581</a> virtual&nbsp;disk.&nbsp;If&nbsp;this&nbsp;flag&nbsp;is&nbsp;not&nbsp;set&nbsp;then&nbsp;the&nbsp;bitmap&nbsp;is&nbsp;disabled.</div>
+</div><div class="page_footer">
+<div class="page_footer_text">Official QEMU source repository</div>
+<a class="rss_logo" title="history of docs/specs/qcow2.txt RSS feed" href="http://git.qemu-project.org/?p=qemu.git;a=rss;f=docs/specs/qcow2.txt">RSS</a>
+<a class="rss_logo" title="history of docs/specs/qcow2.txt Atom feed" href="http://git.qemu-project.org/?p=qemu.git;a=atom;f=docs/specs/qcow2.txt">Atom</a>
+</div>
+
+
+
+</body></html>
