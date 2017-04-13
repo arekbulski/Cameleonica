@@ -1,9 +1,18 @@
+
+
+Offtopic. If you would like to check out my newest creation, please enjoy. :smile:
+
+This is a ~2h video course with programming assignments teaching filesystem internals,
+some of which are actually taken from this project.
+https://stepik.org/course/Applied-Computer-Science-Filesystems-internals-2475
+
+
   Cameleonica filesystem
 ==========================
 
 Cameleonica is a prototype safe cryptographic steganographic advanced filesystem.
 
-It aims to guarantee confidentiality, authenticity, plausible deniability, permanent deletion, versioning, snapshots, transactions, directory cloning, high throughputs, low delays, internal compression, non-transparent compression and hashing, deduplication, departitioning, serializability, multiple-device replication and tiering. 
+It aims to guarantee confidentiality, authenticity, plausible deniability, permanent deletion, versioning, snapshots, transactions, directory cloning, high throughputs, low delays, internal compression, non-transparent compression and hashing, deduplication, departitioning, serializability, multiple-device replication and tiering.
 
 Internal design includes atomic and ordered operations, diskless fsync, extents, complete inodes, copy on write, segmented log structured disk layout, append only operations, copying garbage collector, complete dictionary and alternative B-tree, rings and chains abstract data structures, file level RAID modes.
 
