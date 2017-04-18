@@ -6,6 +6,9 @@ This is a ~2h video course with programming assignments teaching filesystem inte
 some of which are actually taken from this project.
 https://stepik.org/course/Applied-Computer-Science-Filesystems-internals-2475
 
+You can also support me on Patreon:
+https://www.patreon.com/cameleonica
+
 
   Cameleonica filesystem
 ==========================
