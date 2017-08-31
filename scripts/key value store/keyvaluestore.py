@@ -3,7 +3,6 @@ import struct, pickle, os
 import diskfile
 
 
-
 class Container:
     """Key-value file based database. Item access can only be used for single key query and update, or `...` for query all items.
 

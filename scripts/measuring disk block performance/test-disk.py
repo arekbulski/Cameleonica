@@ -83,102 +83,102 @@ print('Disk name: {0}  Disk size: {1}  Scheduler disabled.'.format(disk.name, By
 
 
 #--------------------------------------------------------------------------------------------------
-#
-# print()
-# print('Measuring: Track buffer working forward.')
-#
-# for bufsize in [512*2**i for i in range(0,16)]:
-#     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
-#
-#     def f():
-#         offset = random.randint(0, disksize-512-bufsize)
-#         os.pread(disk.fileno(), 512, offset)
-#         return offset
-#     def f2(offset):
-#         os.pread(disk.fileno(), bufsize, offset+512)
-#     times = timeit2(f, f2)
-#
-#     print('Size tested: {:6}   Average: {:6.2f} ms   Max: {:6.2f} ms'.format(
-#         BytesString(bufsize), sum(times)/len(times)*1000, max(times)*1000 ))
-#
-#
-# #--------------------------------------------------------------------------------------------------
-#
-# print()
-# print('Measuring: Track buffer working backwards.')
-#
-# for bufsize in [512*2**i for i in range(0,16)]:
-#     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
-#
-#     def f():
-#         offset = random.randint(0, disksize-512)
-#         os.pread(disk.fileno(), 512, offset)
-#         return offset
-#     def f2(offset):
-#         os.pread(disk.fileno(), bufsize, offset-bufsize)
-#     times = timeit2(f, f2)
-#
-#     print('Size tested: {:6}   Average: {:6.2f} ms   Max: {:6.2f} ms'.format(
-#         BytesString(bufsize), sum(times)/len(times)*1000, max(times)*1000 ))
-#
-#
-# #--------------------------------------------------------------------------------------------------
 
-# bufsize = 512
-# bufcount = 100
-#
-# print()
-# print('Measuring: Concurrent random seek time using readahead.')
-# print('Samples: {0}   Sample size: {1}'.format(
-#     bufcount, bufsize))
-#
-# for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
-#     if area > disksize:
-#         continue
-#
-#     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
-#
-#     offsets = [random.randint(0, area-bufsize) for i in range(bufcount)]
-#     for i in offsets:
-#         readahead(disk.fileno(), i, bufsize)
-#     times = [timeit.timeit(lambda: os.pread(disk.fileno(), bufsize, i), number=1) for i in offsets]
-#
-#     print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
-#         BytesString(area) if area < disksize else BytesStringFloat(area),
-#         sum(times)/len(times)*1000, max(times)*1000, sum(times)))
-#
-#
-# #--------------------------------------------------------------------------------------------------
+print()
+print('Measuring: Track buffer working forward.')
 
-# print()
-# print('Measuring: Random seek time using beginning of disk.')
-#
-# for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
-#     if area > disksize:
-#         continue
-#
-#     bufsize = 512
-#     os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
-#     os.pread(disk.fileno(), bufsize, 0)
-#     times = timeit(lambda: os.pread(disk.fileno(), bufsize, random.randint(0, area-bufsize)))
-#
-#     print('Area tested: {:6}   Average: {:5.2f} ms   Min: {:5.2f} ms   Max: {:5.2f} ms'.format(
-#         BytesString(area) if area < disksize else BytesStringFloat(area),
-#         sum(times)/len(times)*1000, min(times)*1000, max(times)*1000))
-#
-#
+for bufsize in [512*2**i for i in range(0,16)]:
+    os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
+
+    def f():
+        offset = random.randint(0, disksize-512-bufsize)
+        os.pread(disk.fileno(), 512, offset)
+        return offset
+    def f2(offset):
+        os.pread(disk.fileno(), bufsize, offset+512)
+    times = timeit2(f, f2)
+
+    print('Size tested: {:6}   Average: {:6.2f} ms   Max: {:6.2f} ms'.format(
+        BytesString(bufsize), sum(times)/len(times)*1000, max(times)*1000 ))
+
+
 #--------------------------------------------------------------------------------------------------
 
-# print()
-# print('Measuring: Random read throughput with various sizes.')
-#
-# for i in range(8):
-#     bufsize = BytesInt('1MB')*2**i
-#     times = timeit(lambda: os.pread(disk.fileno(), bufsize, random.randint(0, disksize-bufsize)),
-#                    lambda: os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null') )
-#
-#     print('Buffer: {:5}   Average: {:0.2f}sec   Average: {}/sec   Samples: {}'.format(
-#         BytesString(bufsize), sum(times)/len(times), BytesStringFloat(bufsize/(sum(times)/len(times))).rjust(9), len(times), ))
+print()
+print('Measuring: Track buffer working backwards.')
+
+for bufsize in [512*2**i for i in range(0,16)]:
+    os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
+
+    def f():
+        offset = random.randint(0, disksize-512)
+        os.pread(disk.fileno(), 512, offset)
+        return offset
+    def f2(offset):
+        os.pread(disk.fileno(), bufsize, offset-bufsize)
+    times = timeit2(f, f2)
+
+    print('Size tested: {:6}   Average: {:6.2f} ms   Max: {:6.2f} ms'.format(
+        BytesString(bufsize), sum(times)/len(times)*1000, max(times)*1000 ))
+
+
+#--------------------------------------------------------------------------------------------------
+
+bufsize = 512
+bufcount = 100
+
+print()
+print('Measuring: Concurrent random seek time using readahead.')
+print('Samples: {0}   Sample size: {1}'.format(
+    bufcount, bufsize))
+
+for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
+    if area > disksize:
+        continue
+
+    os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
+
+    offsets = [random.randint(0, area-bufsize) for i in range(bufcount)]
+    for i in offsets:
+        readahead(disk.fileno(), i, bufsize)
+    times = [timeit.timeit(lambda: os.pread(disk.fileno(), bufsize, i), number=1) for i in offsets]
+
+    print('Area tested: {0:6}   Average: {1:5.2f} ms   Max: {2:5.2f} ms   Total: {3:0.2f} sec'.format(
+        BytesString(area) if area < disksize else BytesStringFloat(area),
+        sum(times)/len(times)*1000, max(times)*1000, sum(times)))
+
+
+#--------------------------------------------------------------------------------------------------
+
+print()
+print('Measuring: Random seek time using beginning of disk.')
+
+for area in [BytesInt('1MB')*2**i for i in range(0,64)]+[disksize]:
+    if area > disksize:
+        continue
+
+    bufsize = 512
+    os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null')
+    os.pread(disk.fileno(), bufsize, 0)
+    times = timeit(lambda: os.pread(disk.fileno(), bufsize, random.randint(0, area-bufsize)))
+
+    print('Area tested: {:6}   Average: {:5.2f} ms   Min: {:5.2f} ms   Max: {:5.2f} ms'.format(
+        BytesString(area) if area < disksize else BytesStringFloat(area),
+        sum(times)/len(times)*1000, min(times)*1000, max(times)*1000))
+
+
+#--------------------------------------------------------------------------------------------------
+
+print()
+print('Measuring: Random read throughput with various sizes.')
+
+for i in range(8):
+    bufsize = BytesInt('1MB')*2**i
+    times = timeit(lambda: os.pread(disk.fileno(), bufsize, random.randint(0, disksize-bufsize)),
+                   lambda: os.system('echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null') )
+
+    print('Buffer: {:5}   Average: {:0.2f}sec   Average: {}/sec   Samples: {}'.format(
+        BytesString(bufsize), sum(times)/len(times), BytesStringFloat(bufsize/(sum(times)/len(times))).rjust(9), len(times), ))
 
 
 #--------------------------------------------------------------------------------------------------

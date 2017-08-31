@@ -7,4 +7,4 @@ Contribution recognition image comes from [nuxeo.com](http://www.nuxeo.com/).
 
 Standards comic comes from [xkcd.com](https://xkcd.com/927/).
 
-Wallpaper author is unknown. If you know him, please contact me.
+Wallpaper author is unknown.
