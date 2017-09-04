@@ -8,7 +8,6 @@ https://stepik.org/course/Applied-Computer-Science-Filesystems-internals-2475
 You can also support me on Patreon:
 https://www.patreon.com/cameleonica
 
-
   Cameleonica filesystem
 ==========================
 
@@ -38,6 +37,6 @@ Experimental code is also in the repository.
   Development notice
 ----------------------
 
-Code will be developed in Python/Fuse and later possibly in kernel. Documentation is created in LibreOffice, XMind and [draw.io](https://www.draw.io/). User experience design will be done in Glade.
+Code will be developed in Python/FUSE and later possibly in-kernel. Documentation is created in LibreOffice, XMind and [draw.io](https://www.draw.io/). User experience design will be done in Glade.
 
 License is set to MIT Licence, unless something changes.
