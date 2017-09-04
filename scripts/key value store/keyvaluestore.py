@@ -4,9 +4,9 @@ import diskfile
 
 
 class Container:
-    """Key-value file based database. Item access can only be used for single key query and update, or `...` for query all items.
+    """Key-value file based database. Item access can only be used for single key query and update, or `...` to query all items.
 
-    Requires an *atomic ordered filesystem* to guarantee crash consistency. Database can get compacted by sparsing or truncating the file. No thread safety. No file locking or concurrency. Pickle module restrictions apply. Should not be used for large entries or large amounts of entries. Changes are seekless, and commits need 2 seeks. """
+    Requires an *atomic ordered filesystem* to guarantee crash consistency. Database can get compacted by sparsing or truncating the file. No thread safety. No file locking. Pickle module restrictions apply. Should not be used for large entries or large amounts of entries. Changes are seekless, and commit need 2 seeks. """
 
     def __init__(self, filename, overwrite=False, autocommit=False):
         """Constructor. Opens a file holding database that is of required binary read-write mode. """
