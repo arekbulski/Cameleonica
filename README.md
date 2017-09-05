@@ -20,16 +20,16 @@ Internal design includes atomic and ordered operations, diskless fsync, extents,
   Project status and roadmap
 ------------------------------
 
-Only design documentation is being developed at this point. You can help by reviewing these documents and posting questions or suggestions for improvement, just create a new Issue.
+Only design documentation is being developed at this point. You can help by reviewing these documents and posting questions or suggestions for improvement, just create a new Issue. Please do NOT submit Pull Requests, unless recording changes was enabled. It is impossible to diff odt files.
 
-- [Complete specification pdf](documentation/combined.pdf) (50 pages)
+- [Complete specification pdf](documentation/combined.pdf) (48 pages)
 
 Documentation is divided into sections:
 
-- Mission statement (8 pages)
-- Ideas and Observations (currently edited, 20 pages)
-- Preliminary design (currently edited, 10 pages)
-- Python/Fuse implementation plan (currently edited, 6 pages)
+- Mission statement (6 pages)
+- Ideas and Observations (20 pages)
+- Preliminary design (work in progress, 10 pages)
+- Python/Fuse implementation plan (work in progress, 6 pages)
 - Questions and Answers (4 pages)
 
 Experimental code is also in the repository.
