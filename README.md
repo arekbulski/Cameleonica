@@ -1,13 +1,4 @@
 
-Offtopic. If you would like to check out my newest creation, please enjoy. :smile:
-
-This is a ~2h video course with programming assignments teaching filesystem internals,
-some of which are actually taken from this project.
-https://stepik.org/course/Applied-Computer-Science-Filesystems-internals-2475
-
-You can also support me on Patreon:
-https://www.patreon.com/cameleonica
-
   Cameleonica filesystem
 ==========================
 
