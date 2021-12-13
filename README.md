@@ -4,26 +4,18 @@
 
 Cameleonica is a prototype safe cryptographic steganographic advanced filesystem.
 
-Features include confidentiality, authenticity, plausible deniability, permanent deletion, versioning, snapshots, atomicity, transactions, file and directory cloning, internal compression, non-transparent compression and hashing, deduplication, serializability, multiple-device replication and tiering. 
+Features include integrity, versioning, snapshots, atomicity, transactions, confidentiality, authenticity, permanent deletion, plausible deniability, file and directory cloning, internal compression, integration of compression and hashing, serializability, file-level replication and tiering. 
 
-Internal design includes atomic and ordered operations, diskless fsync, copy on write, segmented log-structured disk layout, copying garbage collector, complete inodes, complete dictionary, rings and chains abstract data structures, file-level replication and tiering. 
+(***) Internal design includes atomic and ordered operations, diskless fsync, copy on write, segmented log-structured disk layout, copying garbage collector, complete inodes, complete dictionary, rings and chains abstract data structures, file-level replication and tiering. 
 
   Project status and roadmap
 ------------------------------
 
-Only design documentation is being developed at this point. You can help by reviewing these documents and posting questions or suggestions for improvement, just create a new Issue. Please do NOT submit Pull Requests, unless recording changes was enabled. It is impossible to diff odt files.
+Only design documentation is being developed at this point. You can help by reviewing the combined document and posting questions or suggestions for improvement. Just create a new GitHub Issue.
 
-- [Complete specification pdf](documentation/combined.pdf) (48 pages)
+- [Complete specification pdf](documentation/combined.pdf) (46 pages)
 
-Documentation is divided into sections:
-
-- Mission statement (6 pages)
-- Ideas and Observations (20 pages)
-- Preliminary design (currently edited, 10 pages)
-- Python/Fuse implementation plan (currently edited, 6 pages)
-- Questions and Answers (4 pages)
-
-Experimental code is also in the repository.
+I recommend downloading it and opening in your favorite PDF viewer.
 
   Development notice
 ----------------------
@@ -31,3 +23,4 @@ Experimental code is also in the repository.
 Code will be developed in Python/FUSE and later possibly in-kernel. Documentation is created in LibreOffice, XMind and [draw.io](https://www.draw.io/). User experience design will be done in Glade.
 
 License is set to MIT Licence, unless something changes.
+

@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> <html lang=en><!--
+ Page saved with SingleFile 
+ url: https://lwn.net/Articles/14633/ 
+ saved date: Wed Dec 15 2021 13:35:25 GMT+0100 (czas środkowoeuropejski standardowy)
+--><meta charset=utf-8><title>The Orlov block allocator [LWN.net]</title>
+<meta name=twitter:card content=summary>
+<meta name=twitter:site content=@lwnnet>
+<meta name=twitter:title content="The Orlov block allocator">
+<meta name=twitter:description content="The performance of a file system is dependent on many things; one of the
+crucial factors is just how that filesystem lays out files on the disk.  In
+general, it is best to keep related items together; a kernel compilation
+will go more quickly if the files within the kernel source tree all live
+close to each other on the disk.  To achieve this goal, the ext2 and ext3
+filesystems have long tried to lay out the contents of a directory in the
+same cylinder group (or, at least, in nearby groups).
+">
+<meta name=viewport content="width=device-width, initial-scale=1">
+<link rel=alternate type=application/rss+xml title="LWN.net headlines" href=https://lwn.net/headlines/newrss>
+<link rel=alternate type=application/rss+xml title="Comments posted to this article" href=https://lwn.net/headlines/14633/>
+<style>body{color:black;background-color:#ffffff;padding:0px}h1{padding:0px;color:black}a{text-decoration:underline}a:link{color:DarkBlue}a:visited{color:#444}a:hover{color:DarkBlue;background-color:#eeeeee}a:visited:hover{color:#444}DIV.PageHeadline{text-align:center;max-width:75em;margin-top:1em;margin-bottom:2em}DIV.PageHeadline H1{margin-bottom:0.2em}DIV.Byline{font-size:smaller;text-align:center}DIV.CommentBox{border-style:none none none solid;border-width:thin;max-width:60em;margin-top:1em;background-color:inherit}DIV.CommentBox{border-color:#ffcc99}H3.CommentTitle{padding:2px 2px 2px 4px;margin:0px}DIV.CommentBox H3.CommentTitle{background-color:#ffcc99}DIV.CommentBody{padding:0px 4px 0px 4px;background-color:inherit}P.CommentPoster{margin-top:0px}div.CommentReplyButton{display:block;text-align:right;padding:4px}DIV.ArticleText{margin:0px 0px 0px 0px;padding:0px 2px 0px 0px;max-width:75em}html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}a{background-color:transparent}a:active,a:hover{outline:0}b{font-weight:700}h1{font-size:2em;margin:.67em 0}img{border:0}hr{box-sizing:content-box;height:0}input{font:inherit;margin:0}input[type=submit]{-webkit-appearance:button;cursor:pointer}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}input{line-height:normal}.pure-g{letter-spacing:-.31em;text-rendering:optimizespeed;display:-webkit-flex;-webkit-flex-flow:row wrap;display:-ms-flexbox;-ms-flex-flow:row wrap;-ms-align-content:flex-start;-webkit-align-content:flex-start;align-content:flex-start}</style>
+<!--[if lte IE 8]>
+             <link rel="stylesheet" href="/CSS/grids-responsive-old-ie-min">
+           <![endif]-->
+<!--[if gt IE 8]><!-->
+<style>@media screen and (min-width:48em){.pure-u-md-1-6,.pure-u-md-19-24{display:inline-block;letter-spacing:normal;word-spacing:normal;vertical-align:top;text-rendering:auto}.pure-u-md-1-6{width:16.6667%}.pure-u-md-19-24{width:79.1667%}}.pure-g>div{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}#menu{width:100%;position:fixed;top:0;left:0;right:0;background-color:#eeeeee;padding:0 0.2em 0 0.2em;overflow-y:visible;display:block;z-index:20;height:42px}DIV.navmenu-container{margin-left:0.5em;margin-top:0.5em;min-width:70%;border-radius:0.8em;padding:0.1em;display:inline-block}ul.navmenu{list-style:none;position:relative;display:inline-table;padding:0;margin:0}.navmenu li{display:inline-block;margin-right:0.4em}.navmenu ul{display:none;position:absolute;top:100%;width:15em;list-style:none;z-index:10;background:#eeeeee;padding-left:0;margin-left:0;border-style:solid}.navmenu ul li{display:block;margin-top:0.2em;margin-left:0.2em;line-height:1.4}.navmenu ul li:first-child{margin-top:1.2em}.navmenu li:hover>ul{display:block}a.navmenu{color:black}.navmenu a{text-decoration:none}.navmenu a:hover{text-decoration:underline}.navmenu a:visited,.topnav-container a:visited{color:DarkBlue}a.navmenu::after{content:" ▶"}font.logo,font.logobl,img.logo{display:none}DIV.topnav-container{margin-left:0.5em;margin-top:45px;margin-right:0.5em;background:#eeeeee;border-radius:0.8em;padding:0.3em}@media screen and (min-width:48em){div.maincolumn{padding-left:10em}#menu{display:block;width:9.6em;height:100%;bottom:0;overflow-y:visible}#menu:hover{overflow-y:auto}div.navmenu-container{display:block;margin-top:120px;margin-left:0;padding:0}.navmenu ul{display:block;position:static;width:9.6em;border-style:none;top:0}.navmenu li{margin:0.5em 0 0 0.1em;width:100%}.navmenu ul li{margin:0.1em 0 0 0.5em;text-indent:-0.4em;padding-right:0;width:auto;line-height:1.2}.navmenu ul li:first-child{margin-top:0}a.navmenu::after{content:""}DIV.topnav-container{margin-left:10.5em;margin-top:0.5em}img.logo{padding-right:0.2em;display:inline;float:left;position:absolute;top:3px;left:3px}font.logo{font-weight:bold;color:green;display:inline;font-size:180%;text-align:right;float:left;padding-left:60px;font-family:sans-serif;line-height:0.8;padding-top:0.3em}font.logobl{color:green;display:inline;font-size:80%;text-align:center;position:absolute;top:85px;left:5px;font-family:sans-serif}}.not-handset{display:none}@media (min-width:48em){.not-handset{display:inline-block}}DIV.ArticleText{padding-left:0.5em}H3.CommentTitle{border-radius:0 2em 2em 0}DIV.CommentBox{margin-left:0.2em}html{font-family:inherit}.pure-g{font-family:inherit}.lwn-u-1{letter-spacing:normal;word-spacing:normal;vertical-align:top;text-rendering:auto}input{background-color:#ffffff;color:black;padding:3px;border-radius:0.5em}input:focus{border-color:DarkBlue}input[type="submit"]{background-color:#eeeeee}input[type="submit"]:hover{background-color:#ccc}form.loginform{display:inline}</style>
+<link rel=icon href="data:image/png;base64,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" type=image/png><style>.sf-hidden{display:none!important}</style><link rel=canonical href=https://lwn.net/Articles/14633/><meta http-equiv=content-security-policy content="default-src 'none'; font-src 'self' data:; img-src 'self' data:; style-src 'unsafe-inline'; media-src 'self' data:; script-src 'unsafe-inline' data:;"></head>
+ <body vlink=Green link=Blue bgcolor=#ffffff alink=Green>
+ <a name=t></a>
+<div id=menu><a href=https://lwn.net/><img src=data:image/png;base64,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 class=logo alt="LWN.net Logo" border=0>
+ <font class=logo>LWN<br>.net</font>
+ <font class=logobl>News from the source</font></a>
+ <a href=https://lwn.net/><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class="sslogo sf-hidden" alt=LWN border=0></a><div class=navmenu-container>
+ <ul class=navmenu>
+ <li><a class=navmenu href=#t><b>Content</b></a><ul><li><a href=https://lwn.net/current/>Weekly Edition</a><li><a href=https://lwn.net/Archives/>Archives</a><li><a href=https://lwn.net/Search/>Search</a><li><a href=https://lwn.net/Kernel/>Kernel</a><li><a href=https://lwn.net/Security/>Security</a><li><a href=https://lwn.net/Distributions/>Distributions</a><li><a href=https://lwn.net/Calendar/>Events calendar</a><li><a href=https://lwn.net/Comments/unread>Unread comments</a><li><hr><li><a href=https://lwn.net/op/FAQ.lwn>LWN FAQ</a><li><a href=https://lwn.net/op/AuthorGuide.lwn>Write for us</a></ul></li>
+<li><a class=navmenu href=#t><b>Edition</b></a><ul><li><a href=https://lwn.net/Articles/14215/>Return to the Kernel page</a></ul></li>
+</ul></div>
+</div> 
+<div class="pure-g not-handset" style=margin-left:10.5em>
+ <div class=not-print>
+ <div id=azk13321_leaderboard></div>
+ </div>
+ </div>
+ <div class=topnav-container>
+<div class=not-handset><form action=https://lwn.net/Login/ method=post name=loginform class=loginform>
+ <label><b>User:</b> <input type=text name=Username value size=8 id=uc></label> 
+ <label><b>Password:</b> <input type=password name=Password size=8 id=pc value></label> <input type=submit name=submit value="Log in"></form> |
+ <form action=https://lwn.net/subscribe/ method=post class=loginform>
+ <input type=submit name=submit value=Subscribe>
+ </form> |
+ <form action=https://lwn.net/Login/newaccount method=post class=loginform>
+ <input type=submit name=submit value=Register>
+ </form>
+ </div>
+ <div class="handset-only sf-hidden">
+ /
+ /
+ 
+ </div>
+ </div><div class="pure-grid maincolumn">
+<div class="lwn-u-1 pure-u-md-19-24">
+<div class=PageHeadline>
+<h1>The Orlov block allocator</h1>
+<div class=Byline>[Posted November 5, 2002 by corbet]
+ <p>
+ </p></div>
+</div>
+<div class=ArticleText>
+The performance of a file system is dependent on many things; one of the
+crucial factors is just how that filesystem lays out files on the disk. In
+general, it is best to keep related items together; a kernel compilation
+will go more quickly if the files within the kernel source tree all live
+close to each other on the disk. To achieve this goal, the ext2 and ext3
+filesystems have long tried to lay out the contents of a directory in the
+same cylinder group (or, at least, in nearby groups).
+<p>
+In the real world, however, it turns out to be better, sometimes, to spread
+things out. Imagine setting up a system with users' home directories in
+<tt>/home</tt>. If all the first-level directories within <tt>/home</tt>
+(i.e. the home directories for numerous users) are placed next to each
+other, there may be no space left for the contents of those directores.
+User files thus end up being placed far from the directories that contain
+them, and performance suffers. The ext2 filesystem has suffered from this
+sort of performance degradation for some time.
+<p>
+The 2.5.46 kernel contains a new block allocator which attempts to address
+this problem. The new scheme, borrowed from BSD, is named the "Orlov
+allocator," after its creator Grigory Orlov; he has posted <a href=http://www.ptci.ru/gluk/dirpref/old/dirpref.html>a brief
+description</a> of the technique as it is used in the BSD kernels. The
+Linux implementation, as <a href=https://lwn.net/Articles/14447/>implemented</a> by
+Alexander Viro, Andrew Morton, and Ted Ts'o, uses a similar technique but
+adds a few changes.
+<p>
+Essentially, the Orlov algorithm tries to spread out "top-level"
+directories, on the assumption that they are unrelated to each other.
+Directories created in the root directory of a filesystem are considered
+top-level directories; Ted has added a special inode flag that allows
+the system administrator to mark other directories as being top-level
+directories as well. If <tt>/home</tt> lives in the root filesystem (and
+people do set up systems that way), a simple <tt>chattr</tt> command will
+make the system treat it as a top-level directory.
+<p>
+When creating a directory which is <i>not</i> in a top-level directory, the
+Orlov algorithm tries, as before, to put it into the same cylinder group as
+its parent. A little more care is taken, however, to ensure that the
+directory's contents will also be able to fit into that cylinder group; if
+there are not many inodes or blocks available in the group, the directory
+will be placed in a different cylinder group which has more resources
+available. The result of all this, hopefully, is much better locality for
+files which are truly related to each other and likely to be accessed
+together.
+<p>
+As of this writing, only one <a href=https://lwn.net/Articles/14631/>benchmark
+result</a> with the new allocator has been posted. The results are
+promising: the time required to traverse through a Linux kernel tree (a
+dauntingly big thing, these days) was reduced by 30% or so. The Orlov
+scheme needs more rigorous benchmarking; it also needs some serious stress
+testing to demonstrate that performance does not degrade as the filesystem
+is changed over time. But the initial results are encouraging. Linux has, once
+again, benefitted from the ability to borrow good ideas from other free
+kernels.<br clear=all><hr width=60% align=left>
+ (<a href="https://lwn.net/Login/?target=/Articles/14633/">Log in</a> to post comments)
+ <p>
+ 
+</p></div> 
+<p><a name=Comments></a>
+<a name=CommAnchor14911></a>
+<div class=CommentBox>
+ <h3 class=CommentTitle>The Orlov block allocator</h3>
+ <div class=CommentBody>
+ <p class=CommentPoster>Posted Nov 7, 2002 14:29 UTC (Thu) by <b>jlnance</b> (guest, #4081)
+ [<a href=https://lwn.net/Articles/14911/>Link</a>]
+ </p>
+ I think you have this backwards. The old ext2/3 code always tried to<br>spread directories out. The new code does not EXCEPT for top level<br>directories.
+ </div>
+ 
+ <div class=CommentReplyButton>
+ <form action=/Articles/14911/comment method=post>
+ <input type=submit value="Reply to this comment">
+ </form>
+ </div>
+ <p>
+ 
+</p></div>
+</div>
+<div class="lwn-u-1 pure-u-md-1-6 not-print">
+<div id=azk93271_right_zone></div>
+</div>
+</div> 
+ <br clear=all>
+ <center>
+ <p>
+ <font size=-2>
+ Copyright © 2002, Eklektix, Inc.<br>
+ 
+ Comments and public postings are copyrighted by their creators.<br>
+ Linux is a registered trademark of Linus Torvalds<br>
+ </font>
+ </p></center>
+ 
+ 
+ 
+ 
+ 
+ 
