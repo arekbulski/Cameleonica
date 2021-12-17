@@ -1,0 +1,117 @@
+Disk name: /dev/sdb  Disk size: 465.76GB  Scheduler disabled.
+
+Measuring: Seek times when track buffer is working forwards.
+Buffer size: 512 bytes
+Area size: 1MB      Average:   0.00 ms   Max:   1.65 ms
+Area size: 2MB      Average:   0.00 ms   Max:   2.96 ms
+Area size: 4MB      Average:   0.00 ms   Max:   8.19 ms
+Area size: 8MB      Average:   0.00 ms   Max:   0.64 ms
+Area size: 16MB     Average:   0.00 ms   Max:   9.71 ms
+Area size: 32MB     Average:   0.09 ms   Max:   9.79 ms
+Area size: 64MB     Average:   0.09 ms   Max:  12.44 ms
+Area size: 128MB    Average:   0.14 ms   Max:  24.03 ms
+Area size: 256MB    Average:   0.07 ms   Max:   8.73 ms
+Area size: 512MB    Average:   0.06 ms   Max:   0.91 ms
+Area size: 1GB      Average:   0.05 ms   Max:   0.57 ms
+Area size: 2GB      Average:   0.06 ms   Max:   0.64 ms
+Area size: 4GB      Average:   0.07 ms   Max:   8.08 ms
+Area size: 8GB      Average:   0.07 ms   Max:   1.87 ms
+Area size: 16GB     Average:   0.06 ms   Max:   8.49 ms
+Area size: 32GB     Average:   0.10 ms   Max:   8.78 ms
+Area size: 64GB     Average:   0.07 ms   Max:   2.30 ms
+Area size: 128GB    Average:   0.07 ms   Max:   1.80 ms
+Area size: 256GB    Average:   0.06 ms   Max:   0.61 ms
+Area size: 465.76GB   Average:   0.10 ms   Max:   8.48 ms
+
+Measuring: Seek times when track buffer is working backwards.
+Buffer size: 512 bytes
+Area size: 1MB      Average:   0.00 ms   Max:   0.44 ms
+Area size: 2MB      Average:   0.00 ms   Max:   0.72 ms
+Area size: 4MB      Average:   0.00 ms   Max:   0.53 ms
+Area size: 8MB      Average:   0.00 ms   Max:   1.09 ms
+Area size: 16MB     Average:   0.00 ms   Max:  17.72 ms
+Area size: 32MB     Average:   0.16 ms   Max:   8.40 ms
+Area size: 64MB     Average:   0.17 ms   Max:   9.52 ms
+Area size: 128MB    Average:   0.23 ms   Max:   8.45 ms
+Area size: 256MB    Average:   0.17 ms   Max:   8.39 ms
+Area size: 512MB    Average:   0.11 ms   Max:   8.46 ms
+Area size: 1GB      Average:   0.17 ms   Max:   8.45 ms
+Area size: 2GB      Average:   0.23 ms   Max:  10.78 ms
+Area size: 4GB      Average:   0.24 ms   Max:  16.67 ms
+Area size: 8GB      Average:   0.10 ms   Max:   8.45 ms
+Area size: 16GB     Average:   0.11 ms   Max:   8.43 ms
+Area size: 32GB     Average:   0.16 ms   Max:   8.45 ms
+Area size: 64GB     Average:   0.18 ms   Max:   8.43 ms
+Area size: 128GB    Average:   0.29 ms   Max:   8.50 ms
+Area size: 256GB    Average:   0.38 ms   Max:   8.43 ms
+Area size: 465.76GB   Average:   0.20 ms   Max:   8.50 ms
+
+Measuring: Seek times of random reads made in sequence (no readahead) over some area.
+Buffer size: 512 bytes
+Area size: 1MB      Average:  0.00 ms   Min:  0.00 ms   Max: 14.27 ms
+Area size: 2MB      Average:  0.00 ms   Min:  0.00 ms   Max:  8.89 ms
+Area size: 4MB      Average:  0.00 ms   Min:  0.00 ms   Max:  9.43 ms
+Area size: 8MB      Average:  0.00 ms   Min:  0.00 ms   Max:  9.26 ms
+Area size: 16MB     Average:  0.01 ms   Min:  0.00 ms   Max: 16.90 ms
+Area size: 32MB     Average:  3.36 ms   Min:  0.00 ms   Max: 10.53 ms
+Area size: 64MB     Average:  4.78 ms   Min:  0.01 ms   Max: 10.96 ms
+Area size: 128MB    Average:  5.77 ms   Min:  0.01 ms   Max: 12.46 ms
+Area size: 256MB    Average:  6.34 ms   Min:  0.01 ms   Max: 11.97 ms
+Area size: 512MB    Average:  6.90 ms   Min:  0.01 ms   Max: 11.99 ms
+Area size: 1GB      Average:  7.14 ms   Min:  0.02 ms   Max: 18.25 ms
+Area size: 2GB      Average:  7.71 ms   Min:  0.02 ms   Max: 18.75 ms
+Area size: 4GB      Average:  8.16 ms   Min:  0.19 ms   Max: 19.67 ms
+Area size: 8GB      Average:  8.21 ms   Min:  0.39 ms   Max: 17.31 ms
+Area size: 16GB     Average:  8.77 ms   Min:  1.59 ms   Max: 22.28 ms
+Area size: 32GB     Average:  9.40 ms   Min:  1.93 ms   Max: 28.61 ms
+Area size: 64GB     Average: 10.13 ms   Min:  2.32 ms   Max: 22.36 ms
+Area size: 128GB    Average: 10.93 ms   Min:  4.38 ms   Max: 18.39 ms
+Area size: 256GB    Average: 12.54 ms   Min:  4.32 ms   Max: 27.29 ms
+Area size: 465.76GB   Average: 14.45 ms   Min:  4.16 ms   Max: 30.34 ms
+
+Measuring: Seek times of random reads made concurrently (using readahead) over some area.
+Buffer count: 100   Buffer size: 512
+Area size: 1MB      Average:  0.49 ms   Min:  0.00 ms   Max:  9.20 ms
+Area size: 2MB      Average:  0.50 ms   Min:  0.00 ms   Max:  9.22 ms
+Area size: 4MB      Average:  0.55 ms   Min:  0.00 ms   Max:  8.39 ms
+Area size: 8MB      Average:  0.92 ms   Min:  0.00 ms   Max: 12.15 ms
+Area size: 16MB     Average:  1.62 ms   Min:  0.13 ms   Max:  9.53 ms
+Area size: 32MB     Average:  3.55 ms   Min:  0.14 ms   Max: 10.01 ms
+Area size: 64MB     Average:  4.94 ms   Min:  0.02 ms   Max: 22.64 ms
+Area size: 128MB    Average:  5.59 ms   Min:  0.15 ms   Max: 10.60 ms
+Area size: 256MB    Average:  6.27 ms   Min:  0.19 ms   Max: 11.78 ms
+Area size: 512MB    Average:  6.63 ms   Min:  0.18 ms   Max: 11.53 ms
+Area size: 1GB      Average:  6.92 ms   Min:  0.02 ms   Max: 11.61 ms
+Area size: 2GB      Average:  7.54 ms   Min:  3.51 ms   Max: 15.15 ms
+Area size: 4GB      Average:  8.33 ms   Min:  0.19 ms   Max: 20.31 ms
+Area size: 8GB      Average:  9.29 ms   Min:  2.72 ms   Max: 19.72 ms
+Area size: 16GB     Average: 10.32 ms   Min:  0.18 ms   Max: 23.80 ms
+Area size: 32GB     Average:  9.45 ms   Min:  3.52 ms   Max: 17.68 ms
+Area size: 64GB     Average:  9.88 ms   Min:  2.94 ms   Max: 23.99 ms
+Area size: 128GB    Average: 10.80 ms   Min:  3.45 ms   Max: 23.85 ms
+Area size: 256GB    Average: 13.02 ms   Min:  5.24 ms   Max: 24.33 ms
+Area size: 465.76GB   Average: 14.58 ms   Min:  5.71 ms   Max: 25.29 ms
+
+Measuring: Random read throughput with various buffer sizes.
+Buffer size: 1MB     Average:   39.70MB/sec   Samples: 199
+Buffer size: 2MB     Average:   43.84MB/sec   Samples: 110
+Buffer size: 4MB     Average:   61.74MB/sec   Samples: 78
+Buffer size: 8MB     Average:   78.60MB/sec   Samples: 50
+Buffer size: 16MB    Average:   94.50MB/sec   Samples: 30
+Buffer size: 32MB    Average:   91.77MB/sec   Samples: 15
+Buffer size: 64MB    Average:  101.27MB/sec   Samples: 9
+Buffer size: 128MB   Average:  102.40MB/sec   Samples: 5
+Buffer size: 256MB   Average:  130.62MB/sec   Samples: 3
+
+Measuring: Sequential read throughput with various buffer sizes.
+Buffer size: 1MB     Average:  146.71MB/sec   Samples: 734
+Buffer size: 2MB     Average:  146.89MB/sec   Samples: 368
+Buffer size: 4MB     Average:  146.46MB/sec   Samples: 184
+Buffer size: 8MB     Average:  147.01MB/sec   Samples: 92
+Buffer size: 16MB    Average:  147.10MB/sec   Samples: 46
+Buffer size: 32MB    Average:  145.10MB/sec   Samples: 23
+Buffer size: 64MB    Average:  143.72MB/sec   Samples: 12
+Buffer size: 128MB   Average:  141.96MB/sec   Samples: 6
+Buffer size: 256MB   Average:  141.64MB/sec   Samples: 3
+
+Returned disk scheduler to mq-deadline.
