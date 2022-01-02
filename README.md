@@ -13,7 +13,7 @@ Internal design includes complete inodes, complete dictionaries, segmented log-s
 
 Only design documentation is being developed at this point. You can help by reviewing the combined document and posting questions or suggestions for improvement. Just create a new GitHub Issue.
 
-- [Complete specification pdf](documentation/combined.pdf) (38 pages)
+- [Complete specification pdf](documentation/combined.pdf) (40 pages)
 
 Implementation effort should start with the beginning of 2022. Wish me luck.
 
