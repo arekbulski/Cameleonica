@@ -15,5 +15,3 @@ Only design documentation is being developed at this point. You can help by revi
 
 - [Complete specification pdf](documentation/combined.pdf) (40 pages)
 
-Implementation effort should start with the beginning of 2022. Wish me luck.
-
